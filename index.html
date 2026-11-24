@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="googlebot" content="noindex, nofollow" />
-  <title>Параметрический генератор коробок — Автодно и FEFCO-0215</title>
+  <title>Параметрический генератор коробок ECMA 1</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -79,7 +79,7 @@
       <div>
         <div class="flex items-center gap-2">
           <h1 class="text-sm sm:text-base font-bold text-white tracking-tight">Генератор развёртки коробок</h1>
-          <span id="headerTypeBadge" class="px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-[10px] font-mono font-semibold text-cyan-300">АВТОДНО</span>
+          <span id="headerTypeBadge" class="px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-[10px] font-mono font-semibold text-cyan-300">ECMA A60.20</span>
         </div>
         <p class="text-[11px] text-slate-400">Параметрический штамп 1:1 (Рез #FF0000 / Биговка #0000FF) для CorelDRAW</p>
       </div>
@@ -109,34 +109,45 @@
   <div class="flex-1 flex flex-col lg:flex-row min-h-0">
 
     <!-- ЛЕВАЯ ПАНЕЛЬ ПАРАМЕТРОВ -->
-    <aside class="w-full lg:w-[380px] xl:w-[405px] bg-slate-900/95 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col shrink-0 lg:h-[calc(100vh-58px)]">
+    <aside class="w-full lg:w-[390px] xl:w-[415px] bg-slate-900/95 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col shrink-0 lg:h-[calc(100vh-58px)]">
       <div class="flex-1 overflow-y-auto p-4 space-y-4">
 
-        <!-- 0. ТИП КОНСТРУКЦИИ КОРОБКИ -->
+        <!-- 0. ТИП КОНСТРУКЦИИ КОРОБКИ (ECMA) -->
         <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
           <div class="flex items-center justify-between">
             <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
               <span class="w-1.5 h-4 rounded-full bg-purple-500"></span>
-              Тип конструкции дна
+              Тип конструкции (ECMA)
             </h2>
-            <span class="text-[10px] font-mono text-slate-400">2 вида</span>
+            <span class="text-[10px] font-mono text-slate-400">3 вида</span>
           </div>
 
-          <div class="grid grid-cols-2 gap-2">
-            <button id="btnTypeAutolock" type="button" class="text-left p-2.5 rounded-xl border-2 border-cyan-500 bg-cyan-500/10 transition cursor-pointer">
+          <div class="grid grid-cols-3 gap-1.5">
+            <button id="btnTypeAutolock" type="button" class="text-left p-2 rounded-xl border-2 border-cyan-500 bg-cyan-500/10 transition cursor-pointer">
               <div class="flex items-center justify-between mb-1">
-                <span class="text-xs font-bold text-white">Автодно</span>
-                <span id="dotTypeAutolock" class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
+                <span class="text-[11px] font-bold text-white leading-none">Автодно</span>
+                <span id="dotTypeAutolock" class="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] shrink-0"></span>
               </div>
-              <div class="text-[10px] text-slate-300 leading-tight">Ласточкин хвост с окошком</div>
+              <div class="text-[9px] font-mono text-cyan-300/90 leading-tight">A60.20.01.01</div>
+              <div class="text-[9px] text-slate-400 leading-tight mt-0.5">С окошком</div>
             </button>
 
-            <button id="btnTypeFefco0215" type="button" class="text-left p-2.5 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer">
+            <button id="btnTypeEcma055" type="button" class="text-left p-2 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer">
               <div class="flex items-center justify-between mb-1">
-                <span class="text-xs font-bold text-white font-mono">FEFCO-0215</span>
-                <span id="dotTypeFefco0215" class="w-2 h-2 rounded-full bg-slate-700"></span>
+                <span class="text-[11px] font-bold text-white leading-none">Замок</span>
+                <span id="dotTypeEcma055" class="w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0"></span>
               </div>
-              <div class="text-[10px] text-slate-400 leading-tight">Крючки + язычок в паз</div>
+              <div class="text-[9px] font-mono text-purple-300/90 leading-tight">A55.20.01.01</div>
+              <div class="text-[9px] text-slate-400 leading-tight mt-0.5">Крючки + паз</div>
+            </button>
+
+            <button id="btnTypeEcma020" type="button" class="text-left p-2 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-[11px] font-bold text-white leading-none">Встречн.</span>
+                <span id="dotTypeEcma020" class="w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0"></span>
+              </div>
+              <div class="text-[9px] font-mono text-amber-300/90 leading-tight">A20.20.03.01</div>
+              <div class="text-[9px] text-slate-400 leading-tight mt-0.5">Клапаны P1/P3</div>
             </button>
           </div>
         </section>
@@ -318,7 +329,7 @@
 
   <script>
     // =========================================================================
-    // СОСТОЯНИЕ ПАРАМЕТРОВ ГЕНЕРАТОРА КОРОБОК (АВТОДНО И FEFCO-0215)
+    // СОСТОЯНИЕ ПАРАМЕТРОВ ГЕНЕРАТОРА КОРОБОК ECMA
     // =========================================================================
     const PRESETS_BY_TYPE = {
       autolock: [
@@ -327,16 +338,22 @@
         { label: '100×70×250', l: 100, w: 70, h: 250 },
         { label: '120×80×180', l: 120, w: 80, h: 180 }
       ],
-      fefco0215: [
+      ecma055: [
         { label: '70×65×290 (Эталон)', l: 65, w: 70, h: 290, primary: true },
         { label: '80×80×200', l: 80, w: 80, h: 200 },
         { label: '100×70×250', l: 100, w: 70, h: 250 },
         { label: '60×60×150', l: 60, w: 60, h: 150 }
+      ],
+      ecma020: [
+        { label: '80×60×180 (Эталон)', l: 60, w: 80, h: 180, primary: true },
+        { label: '90×90×297', l: 90, w: 90, h: 297 },
+        { label: '70×65×290', l: 65, w: 70, h: 290 },
+        { label: '100×50×200', l: 50, w: 100, h: 200 }
       ]
     };
 
     const state = {
-      boxType: 'autolock', // 'autolock' | 'fefco0215'
+      boxType: 'autolock', // 'autolock' (ECMA A60.20.01.01) | 'ecma055' (ECMA A55.20.01.01) | 'ecma020' (ECMA A20.20.03.01)
       L: 90,               // Длина / глубина (Панели 2, 4 и глубина крышки)
       W: 90,               // Ширина / фасад (Панели 1, 3)
       H: 297,              // Номинальная высота боковых стенок (P2, P3, P4)
@@ -420,13 +437,19 @@
     }
 
     // =========================================================================
-    // РАСЧЁТ ПАРАМЕТРИЧЕСКОЙ ГЕОМЕТРИИ РАЗВЁРТКИ (АВТОДНО И FEFCO-0215)
+    // РАСЧЁТ ПАРАМЕТРИЧЕСКОЙ ГЕОМЕТРИИ РАЗВЁРТКИ (ECMA A60 / A55 / A20)
     // =========================================================================
     function calculateGeometry() {
-      const isFefco0215 = state.boxType === 'fefco0215';
-      const L = Math.max(25, Math.min(600, Number(state.L) || (isFefco0215 ? 65 : 90)));
-      const W = Math.max(25, Math.min(600, Number(state.W) || (isFefco0215 ? 70 : 90)));
-      const H = Math.max(30, Math.min(900, Number(state.H) || (isFefco0215 ? 290 : 297)));
+      const isEcma055 = state.boxType === 'ecma055';
+      const isEcma020 = state.boxType === 'ecma020';
+
+      const defaultL = isEcma055 ? 65 : (isEcma020 ? 60 : 90);
+      const defaultW = isEcma055 ? 70 : (isEcma020 ? 80 : 90);
+      const defaultH = isEcma055 ? 290 : (isEcma020 ? 180 : 297);
+
+      const L = Math.max(25, Math.min(600, Number(state.L) || defaultL));
+      const W = Math.max(25, Math.min(600, Number(state.W) || defaultW));
+      const H = Math.max(30, Math.min(900, Number(state.H) || defaultH));
       const d = Math.max(0, Math.min(5, Number(state.d) || 0));
       const glueW = Math.max(8, Math.min(40, Number(state.glueW) || 15));
       const tuckH = Math.max(8, Math.min(40, Number(state.tuckH) || 15));
@@ -454,7 +477,7 @@
       const yTopSide = yTop1 + d;           // Верхний уровень боковин P2, P3, P4 и клеевого клапана (P1 выше на d)
       const yBot = yTopSide + H;            // Линия биговки дна (высота P2..P4 = H, высота P1 = H + d)
 
-      // 3. ПАРАМЕТРЫ ВЕРХНЕЙ КРЫШКИ И ПЫЛЕЗАЩИТНЫХ КЛАПАНОВ (ОБЩИЕ ДЛЯ ОБЕИХ КОРОБОК)
+      // 3. ПАРАМЕТРЫ ВЕРХНЕЙ КРЫШКИ И ПЫЛЕЗАЩИТНЫХ КЛАПАНОВ (ОБЩИЕ ДЛЯ ВСЕХ ТРЁХ КОРОБОК)
       const tuckOffset = 0.5;                                 // Отступ язычка от краёв крышки (0.5 мм)
       const earW = Math.min(Math.max(4, W * 0.055), 8);       // Ширина бокового замочка-ушка
       const tuckInset = Math.min(tuckH * 0.65, W * 0.14);     // Плавный заход дуги язычка
@@ -507,132 +530,109 @@
       outer.push(`L ${f(x5)} ${f(yBot)}`);
 
       // =======================================================================
-      // НИЖНИЕ КЛАПАНЫ ДНА (ЗАВИСЯТ ОТ ТИПА КОРОБКИ: АВТОДНО ИЛИ FEFCO-0215)
+      // НИЖНИЕ КЛАПАНЫ (ЗАВИСЯТ ОТ ТИПА КОРОБКИ ECMA)
       // =======================================================================
       const innerCuts = [];
+      const extraCreases = [];
+      let vCrease3End = yBot;
+      let vCrease4End = yBot;
       let maxBottomDepth = 0;
       let bottomInfoHtml = '';
+      let heightSummaryHtml = `Высота: P1 = <span class="text-cyan-300">${f(H + d)} мм</span>, P2–P4 = <span class="text-slate-200">${f(H)} мм</span><br/>`;
 
-      if (!isFefco0215) {
+      if (isEcma020) {
         // ---------------------------------------------------------------------
-        // ВАРИАНТ 1: АВТОДНО (ЛАСТОЧКИН ХВОСТ)
+        // ВАРИАНТ 3: ECMA A20.20.03.01 (ВСТРЕЧНЫЙ КЛАПАН / REVERSE TUCK END)
+        // Верхняя крышка на P1 (01), нижняя крышка на P3 (03), пыльники на P2 и P4
         // ---------------------------------------------------------------------
-        const bot1H = Math.max(25, L * 0.83);                   // Основная створка P1 с окошком
-        const bot2H = Math.max(18, W * 0.46);                   // Боковые крылья P2 и P4
-        const bot3H = Math.max(22, L * 0.68);                   // Центральный клиновидный замок P3
-        const innerGap = 3.0;                                   // Технологический отступ 45° на стыках с P3
+        const yBot3 = yBot + d;                     // Нижняя биговка крышки на P3 (P3 ниже боковин на d)
+        const yBotLidCrease = yBot3 + L;            // Синяя биговка нижнего запорного язычка
+        const yBotEar = yBotLidCrease + earUp;      // Выступ ушка ниже биговки язычка
+        const yBotTuck = yBotLidCrease + tuckH;     // Нижний край нижнего язычка
+        const yDustBot = yBot + dustH;              // Нижний край нижних пылезащитных клапанов
 
-        // Центральный замок P3
-        const tongueW = Math.max(12, W * 0.48);
-        const cx3 = (x3 + x4) / 2;
-        const tLeft = cx3 - tongueW / 2;
-        const tRight = cx3 + tongueW / 2;
-        const shoulderY = yBot + L * 0.48;
-        const tBotY = yBot + bot3H;
-        const r3 = Math.min(5.0, tongueW * 0.25, Math.max(1, (tBotY - shoulderY) * 0.45));
+        vCrease3End = yBot3;
+        vCrease4End = yBot3;
 
-        // Окошко в основной створке P1 (верхняя ширина строго tongueW + 1 мм)
-        const cx1 = (x1 + x2) / 2;
-        const winTopY = yBot + bot1H * 0.60;
-        const winBotY = yBot + bot1H * 0.85;
-        const winH = winBotY - winTopY;
-        const winTopW = tongueW + 1.0;
-        const winBotW = Math.max(8, winTopW - winH * 0.24);
-
-        const chamfer1 = 1.5;
-        const taperY = yBot + bot1H * 0.56;
-        const taperIn = Math.min(W * 0.08, 9);
-
-        // Нижний боковой клапан автодна Панели 4 (x5 -> x4)
-        const wingDiag4 = Math.min(p4W * 0.14, bot2H * 0.35);
-        const notchP4 = { x: x5 - p4W * 0.50, y: yBot + bot2H * 0.58 };
-        const cornerP4 = { x: x5 - p4W * 0.42, y: yBot + bot2H };
-        const endBotP4 = { x: x4 + innerGap, y: yBot + bot2H };
-        const f4 = filletCorner(notchP4, cornerP4, endBotP4, 6.0);
-
-        outer.push(`L ${f(x5 - wingDiag4)} ${f(yBot + wingDiag4)}`);
-        outer.push(`L ${f(notchP4.x)} ${f(notchP4.y)}`);
-        outer.push(f4.svg);
-        outer.push(`L ${f(endBotP4.x)} ${f(endBotP4.y)}`);
-        outer.push(`L ${f(x4 + innerGap)} ${f(yBot + innerGap)}`);
+        // 1. Нижний пылезащитный клапан Панели 4 (x5 -> x4 + dustInnerOffset)
+        outer.push(`L ${f(x5 - 3.5)} ${f(yBot + 2.8)}`);
+        outer.push(`L ${f(x5 - 3.5 - (dustH - 2.8) * 0.08)} ${f(yDustBot)}`);
+        outer.push(`L ${f(x4 + 3.0 + (dustH - 5.0) * 0.25)} ${f(yDustBot)}`);
+        outer.push(`L ${f(x4 + 3.0)} ${f(yBot + 5.0)}`);
+        outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yBot + 2.5)}`);
+        outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yBot)}`);
         outer.push(`L ${f(x4)} ${f(yBot)}`);
 
-        // Центральный клиновидный замок автодна Панели 3 (x4 -> x3)
-        const p3TR = { x: tRight, y: shoulderY };
-        const p3BR = { x: tRight, y: tBotY };
-        const p3BL = { x: tLeft, y: tBotY };
-        const p3TL = { x: tLeft, y: shoulderY };
-        const f3R = filletCorner(p3TR, p3BR, p3BL, r3);
-        const f3L = filletCorner(p3BR, p3BL, p3TL, r3);
-
-        outer.push(`L ${f(p3TR.x)} ${f(p3TR.y)}`);
-        outer.push(f3R.svg);
-        outer.push(f3L.svg);
-        outer.push(`L ${f(p3TL.x)} ${f(p3TL.y)}`);
+        // 2. Нижняя откидная крышка и запорный язычок Панели 3 (x4 -> x3)
+        outer.push(`L ${f(x4)} ${f(yBotEar)}`);
+        outer.push(`L ${f(x4 - tuckOffset)} ${f(yBotEar)}`);
+        outer.push(`Q ${f(x4 - tuckOffset)} ${f(yBotTuck)} ${f(x4 - tuckOffset - tuckInset)} ${f(yBotTuck)}`);
+        outer.push(`L ${f(x3 + tuckOffset + tuckInset)} ${f(yBotTuck)}`);
+        outer.push(`Q ${f(x3 + tuckOffset)} ${f(yBotTuck)} ${f(x3 + tuckOffset)} ${f(yBotEar)}`);
+        outer.push(`L ${f(x3)} ${f(yBotEar)}`);
         outer.push(`L ${f(x3)} ${f(yBot)}`);
 
-        // Нижний боковой клапан автодна Панели 2 (x3 -> x2, точное зеркало P4)
-        const wingDiag2 = Math.min(p2W * 0.14, bot2H * 0.35);
-        const startBotP2 = { x: x3 - innerGap, y: yBot + bot2H };
-        const cornerP2 = { x: x2 + p2W * 0.42, y: yBot + bot2H };
-        const notchP2 = { x: x2 + p2W * 0.50, y: yBot + bot2H * 0.58 };
-        const f2 = filletCorner(startBotP2, cornerP2, notchP2, 6.0);
-
-        outer.push(`L ${f(x3 - innerGap)} ${f(yBot + innerGap)}`);
-        outer.push(`L ${f(startBotP2.x)} ${f(startBotP2.y)}`);
-        outer.push(f2.svg);
-        outer.push(`L ${f(notchP2.x)} ${f(notchP2.y)}`);
-        outer.push(`L ${f(x2 + wingDiag2)} ${f(yBot + wingDiag2)}`);
+        // 3. Нижний пылезащитный клапан Панели 2 (x3 - dustInnerOffset -> x2)
+        outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yBot)}`);
+        outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yBot + 2.5)}`);
+        outer.push(`L ${f(x3 - 3.0)} ${f(yBot + 5.0)}`);
+        outer.push(`L ${f(x3 - 3.0 - (dustH - 5.0) * 0.25)} ${f(yDustBot)}`);
+        outer.push(`L ${f(x2 + 3.5 + (dustH - 2.8) * 0.08)} ${f(yDustBot)}`);
+        outer.push(`L ${f(x2 + 3.5)} ${f(yBot + 2.8)}`);
         outer.push(`L ${f(x2)} ${f(yBot)}`);
 
-        // Основная створка автодна Панели 1 (x2 -> x1)
-        outer.push(`L ${f(x2 - chamfer1)} ${f(yBot + chamfer1)}`);
-        outer.push(`L ${f(x2 - chamfer1)} ${f(taperY)}`);
-        outer.push(`L ${f(x2 - taperIn)} ${f(yBot + bot1H)}`);
-        outer.push(`L ${f(x1 + taperIn)} ${f(yBot + bot1H)}`);
-        outer.push(`L ${f(x1 + chamfer1)} ${f(taperY)}`);
-        outer.push(`L ${f(x1 + chamfer1)} ${f(yBot + chamfer1)}`);
+        // 4. Нижний горизонтальный рез Панели 1 (x2 -> x1)
         outer.push(`L ${f(x1)} ${f(yBot)}`);
 
-        // Вырез-окошко в Панели 1
+        // Прорези нижних замочков-ушек на крышке P3 (с заходом 1.0 мм выше биговки)
         innerCuts.push(
-          `M ${f(cx1 - winTopW / 2)} ${f(winTopY)} ` +
-          `L ${f(cx1 + winTopW / 2)} ${f(winTopY)} ` +
-          `L ${f(cx1 + winBotW / 2)} ${f(winBotY)} ` +
-          `L ${f(cx1 - winBotW / 2)} ${f(winBotY)} Z`
+          `M ${f(x3 + tuckOffset)} ${f(yBotEar)} ` +
+          `L ${f(x3 + earW)} ${f(yBotEar)} ` +
+          `L ${f(x3 + earW)} ${f(yBotLidCrease - 1.0)}`
+        );
+        innerCuts.push(
+          `M ${f(x4 - tuckOffset)} ${f(yBotEar)} ` +
+          `L ${f(x4 - earW)} ${f(yBotEar)} ` +
+          `L ${f(x4 - earW)} ${f(yBotLidCrease - 1.0)}`
         );
 
-        maxBottomDepth = Math.max(bot1H, bot2H, bot3H);
-        bottomInfoHtml = `Автодно: язычок <span class="text-slate-200">${f(tongueW)} мм</span> / окошко <span class="text-emerald-300">${f(winTopW)} мм</span>`;
-      } else {
+        // Горизонтальные биговки нижних клапанов и нижней крышки P3
+        extraCreases.push(
+          { x1: x2, y1: yBot, x2: x3 - dustInnerOffset, y2: yBot },
+          { x1: x3, y1: yBot3, x2: x4, y2: yBot3 },
+          { x1: x3 + earW, y1: yBotLidCrease, x2: x4 - earW, y2: yBotLidCrease },
+          { x1: x4 + dustInnerOffset, y1: yBot, x2: x5, y2: yBot }
+        );
+
+        maxBottomDepth = d + L + tuckH;
+        heightSummaryHtml = `Высота: P1, P3 = <span class="text-cyan-300">${f(H + d)} мм</span>, P2, P4 = <span class="text-slate-200">${f(H)} мм</span><br/>`;
+        bottomInfoHtml = `A20.20.03.01: крышки P1/P3 <span class="text-slate-200">${f(L)} мм</span> / пыльники <span class="text-emerald-300">${f(dustH)} мм</span>`;
+
+      } else if (isEcma055) {
         // ---------------------------------------------------------------------
-        // ВАРИАНТ 2: FEFCO-0215 (САМОСБОРНОЕ ДНО С КРЮЧКАМИ И ЯЗЫЧКОМ В ПАЗ)
+        // ВАРИАНТ 2: ECMA A55.20.01.01 (САМОСБОРНОЕ ДНО С КРЮЧКАМИ И ЯЗЫЧКОМ В ПАЗ)
         // Эталон: 70 × 65 × 290 мм (W = 70, L = 65, H = 290, d = 0.5)
-        // P1 и P3 (ширина W) перекрывают глубину L: hHook = L/2 + 6.5 мм (39.0 мм при L=65)
-        // P2 и P4 (ширина L) перекрывают ширину W: slotTop = W/2 + 2.5 мм (37.5 мм), полная глубина = 41.0 мм
         // ---------------------------------------------------------------------
-        const stepX = Math.min(3.5, W * 0.05, L * 0.054);        // Разгрузочный уступ 3.5 × 3.5 мм у биговок
+        const stepX = Math.min(3.5, W * 0.05, L * 0.054);
         const stepY = stepX;
 
         const hookOverlap = Math.max(3.5, L * 0.10);
-        const hHook = Math.max(18, L / 2 + hookOverlap);          // 39.0 мм при L=65
+        const hHook = Math.max(18, L / 2 + hookOverlap);
 
-        const slotTopDepth = Math.max(18, W / 2 + 2.5);           // 37.5 мм при W=70
-        const legH = Math.max(3.0, Math.min(6.0, W * 0.05));      // 3.5 мм при W=70
-        const hSlotFlap = slotTopDepth + legH;                    // 41.0 мм при W=70
+        const slotTopDepth = Math.max(18, W / 2 + 2.5);
+        const legH = Math.max(3.0, Math.min(6.0, W * 0.05));
+        const hSlotFlap = slotTopDepth + legH;
         const slotTopY = yBot + slotTopDepth;
         const yBotDeep = yBot + hSlotFlap;
 
-        // 1. Геометрия опорного клапана P2 с П-образным пазом (ширина паза 41.0 мм, ножки по 8.5 мм при L=65)
         const outerSpan2 = Math.max(16, (x3 - stepX) - (x2 + stepX));
         const legW = Math.max(4.5, Math.min(16.0, outerSpan2 * 0.1466));
         const slotW = Math.max(8.0, outerSpan2 - 2 * legW);
         const legR = Math.min(2.0, legW * 0.24, legH * 0.45);
 
-        // 2. Клапан P4 (x5 -> x4): трапециевидный запорный язычок (ширина 27.0 мм, уровень плеч 33.0 мм при W=70, L=65)
         const shoulderOffset = Math.max(3.5, Math.min(8.0, W * 0.0643));
-        const shoulderY4 = yBot + slotTopDepth - shoulderOffset;  // 33.0 мм при W=70
-        const tongueW4 = Math.max(10.0, slotW * 0.6585);          // 27.0 мм при slotW=41.0
+        const shoulderY4 = yBot + slotTopDepth - shoulderOffset;
+        const tongueW4 = Math.max(10.0, slotW * 0.6585);
         const cx4 = (x4 + x5) / 2;
         const t4Right = cx4 + tongueW4 / 2;
         const t4Left = cx4 - tongueW4 / 2;
@@ -651,10 +651,9 @@
         outer.push(`L ${f(p4TL.x)} ${f(p4TL.y)}`);
         outer.push(`L ${f(x4)} ${f(yBot)}`);
 
-        // 3. Клапан P3 (x4 -> x3): правый крючковый клапан (угол скоса горловины 23.89°)
-        const throatInsetX = W * 0.55;                            // 38.5 мм при W=70
-        const throatDropY = Math.min(hHook * 0.48, throatInsetX * Math.tan(23.89 * Math.PI / 180)); // 17.05 мм
-        const noseCornerX = W * 0.37;                             // 25.9 мм при W=70
+        const throatInsetX = W * 0.55;
+        const throatDropY = Math.min(hHook * 0.48, throatInsetX * Math.tan(23.89 * Math.PI / 180));
+        const noseCornerX = W * 0.37;
         const noseR = Math.min(5.5, hHook * 0.16, W * 0.08);
 
         const p3BotRight = { x: x4 - stepX, y: yBot + hHook };
@@ -668,7 +667,6 @@
         outer.push(`L ${f(p3Throat.x)} ${f(p3Throat.y)}`);
         outer.push(`L ${f(x3)} ${f(yBot)}`);
 
-        // 4. Клапан P2 (x3 -> x2): опорный клапан с центральным П-образным пазом
         const cx2 = (x2 + x3) / 2;
         const slotRight = cx2 + slotW / 2;
         const slotLeft = cx2 - slotW / 2;
@@ -698,7 +696,6 @@
         outer.push(`L ${f(p2TopL.x)} ${f(p2TopL.y)}`);
         outer.push(`L ${f(x2)} ${f(yBot)}`);
 
-        // 5. Клапан P1 (x2 -> x1): левый крючковый клапан (точное зеркало P3)
         const p1Throat = { x: x2 - throatInsetX, y: yBot + throatDropY };
         const p1NoseCorner = { x: x2 - noseCornerX, y: yBot + hHook };
         const p1BotLeft = { x: x1 + stepX, y: yBot + hHook };
@@ -710,8 +707,95 @@
         outer.push(`L ${f(x1 + stepX)} ${f(yBot + stepY)}`);
         outer.push(`L ${f(x1)} ${f(yBot)}`);
 
+        extraCreases.push({ x1: x1, y1: yBot, x2: x5, y2: yBot });
         maxBottomDepth = hSlotFlap;
-        bottomInfoHtml = `FEFCO-0215: язычок P4 <span class="text-slate-200">${f(tongueW4)} мм</span> / паз P2 <span class="text-emerald-300">${f(slotW)} мм</span>`;
+        bottomInfoHtml = `A55.20.01.01: язычок P4 <span class="text-slate-200">${f(tongueW4)} мм</span> / паз P2 <span class="text-emerald-300">${f(slotW)} мм</span>`;
+
+      } else {
+        // ---------------------------------------------------------------------
+        // ВАРИАНТ 1: ECMA A60.20.01.01 (АВТОДНО / ЛАСТОЧКИН ХВОСТ)
+        // ---------------------------------------------------------------------
+        const bot1H = Math.max(25, L * 0.83);
+        const bot2H = Math.max(18, W * 0.46);
+        const bot3H = Math.max(22, L * 0.68);
+        const innerGap = 3.0;
+
+        const tongueW = Math.max(12, W * 0.48);
+        const cx3 = (x3 + x4) / 2;
+        const tLeft = cx3 - tongueW / 2;
+        const tRight = cx3 + tongueW / 2;
+        const shoulderY = yBot + L * 0.48;
+        const tBotY = yBot + bot3H;
+        const r3 = Math.min(5.0, tongueW * 0.25, Math.max(1, (tBotY - shoulderY) * 0.45));
+
+        const cx1 = (x1 + x2) / 2;
+        const winTopY = yBot + bot1H * 0.60;
+        const winBotY = yBot + bot1H * 0.85;
+        const winH = winBotY - winTopY;
+        const winTopW = tongueW + 1.0;
+        const winBotW = Math.max(8, winTopW - winH * 0.24);
+
+        const chamfer1 = 1.5;
+        const taperY = yBot + bot1H * 0.56;
+        const taperIn = Math.min(W * 0.08, 9);
+
+        const wingDiag4 = Math.min(p4W * 0.14, bot2H * 0.35);
+        const notchP4 = { x: x5 - p4W * 0.50, y: yBot + bot2H * 0.58 };
+        const cornerP4 = { x: x5 - p4W * 0.42, y: yBot + bot2H };
+        const endBotP4 = { x: x4 + innerGap, y: yBot + bot2H };
+        const f4 = filletCorner(notchP4, cornerP4, endBotP4, 6.0);
+
+        outer.push(`L ${f(x5 - wingDiag4)} ${f(yBot + wingDiag4)}`);
+        outer.push(`L ${f(notchP4.x)} ${f(notchP4.y)}`);
+        outer.push(f4.svg);
+        outer.push(`L ${f(endBotP4.x)} ${f(endBotP4.y)}`);
+        outer.push(`L ${f(x4 + innerGap)} ${f(yBot + innerGap)}`);
+        outer.push(`L ${f(x4)} ${f(yBot)}`);
+
+        const p3TR = { x: tRight, y: shoulderY };
+        const p3BR = { x: tRight, y: tBotY };
+        const p3BL = { x: tLeft, y: tBotY };
+        const p3TL = { x: tLeft, y: shoulderY };
+        const f3R = filletCorner(p3TR, p3BR, p3BL, r3);
+        const f3L = filletCorner(p3BR, p3BL, p3TL, r3);
+
+        outer.push(`L ${f(p3TR.x)} ${f(p3TR.y)}`);
+        outer.push(f3R.svg);
+        outer.push(f3L.svg);
+        outer.push(`L ${f(p3TL.x)} ${f(p3TL.y)}`);
+        outer.push(`L ${f(x3)} ${f(yBot)}`);
+
+        const wingDiag2 = Math.min(p2W * 0.14, bot2H * 0.35);
+        const startBotP2 = { x: x3 - innerGap, y: yBot + bot2H };
+        const cornerP2 = { x: x2 + p2W * 0.42, y: yBot + bot2H };
+        const notchP2 = { x: x2 + p2W * 0.50, y: yBot + bot2H * 0.58 };
+        const f2 = filletCorner(startBotP2, cornerP2, notchP2, 6.0);
+
+        outer.push(`L ${f(x3 - innerGap)} ${f(yBot + innerGap)}`);
+        outer.push(`L ${f(startBotP2.x)} ${f(startBotP2.y)}`);
+        outer.push(f2.svg);
+        outer.push(`L ${f(notchP2.x)} ${f(notchP2.y)}`);
+        outer.push(`L ${f(x2 + wingDiag2)} ${f(yBot + wingDiag2)}`);
+        outer.push(`L ${f(x2)} ${f(yBot)}`);
+
+        outer.push(`L ${f(x2 - chamfer1)} ${f(yBot + chamfer1)}`);
+        outer.push(`L ${f(x2 - chamfer1)} ${f(taperY)}`);
+        outer.push(`L ${f(x2 - taperIn)} ${f(yBot + bot1H)}`);
+        outer.push(`L ${f(x1 + taperIn)} ${f(yBot + bot1H)}`);
+        outer.push(`L ${f(x1 + chamfer1)} ${f(taperY)}`);
+        outer.push(`L ${f(x1 + chamfer1)} ${f(yBot + chamfer1)}`);
+        outer.push(`L ${f(x1)} ${f(yBot)}`);
+
+        innerCuts.push(
+          `M ${f(cx1 - winTopW / 2)} ${f(winTopY)} ` +
+          `L ${f(cx1 + winTopW / 2)} ${f(winTopY)} ` +
+          `L ${f(cx1 + winBotW / 2)} ${f(winBotY)} ` +
+          `L ${f(cx1 - winBotW / 2)} ${f(winBotY)} Z`
+        );
+
+        extraCreases.push({ x1: x1, y1: yBot, x2: x5, y2: yBot });
+        maxBottomDepth = Math.max(bot1H, bot2H, bot3H);
+        bottomInfoHtml = `A60.20.01.01: язычок <span class="text-slate-200">${f(tongueW)} мм</span> / окошко <span class="text-emerald-300">${f(winTopW)} мм</span>`;
       }
 
       // Боковой клеевой клапан слева (x1 -> x0 -> yTopSide)
@@ -720,7 +804,7 @@
       outer.push(`Z`);
 
       // =======================================================================
-      // ОБЩИЕ ВНУТРЕННИЕ ЛИНИИ РЕЗА (ПРОРЕЗИ УШЕК КРЫШКИ И НАСЕЧКИ ПОД КЛЕЙ)
+      // ОБЩИЕ ВНУТРЕННИЕ ЛИНИИ РЕЗА (ПРОРЕЗИ ВЕРХНЕЙ КРЫШКИ И НАСЕЧКИ ПОД КЛЕЙ)
       // =======================================================================
       innerCuts.push(
         `M ${f(x1 + tuckOffset)} ${f(yEarTop)} ` +
@@ -752,14 +836,15 @@
         // Вертикальные
         { x1: x1, y1: yTopSide, x2: x1, y2: yBot },
         { x1: x2, y1: yTop1, x2: x2, y2: yBot },
-        { x1: x3, y1: yTopSide, x2: x3, y2: yBot },
-        { x1: x4, y1: yTopSide, x2: x4, y2: yBot },
-        // Горизонтальные
+        { x1: x3, y1: yTopSide, x2: x3, y2: vCrease3End },
+        { x1: x4, y1: yTopSide, x2: x4, y2: vCrease4End },
+        // Горизонтальные (верхние)
         { x1: x1 + earW, y1: yLidCrease, x2: x2 - earW, y2: yLidCrease },
         { x1: x1, y1: yTop1, x2: x2, y2: yTop1 },
         { x1: x2, y1: yTopSide, x2: x3 - dustInnerOffset, y2: yTopSide },
         { x1: x4 + dustInnerOffset, y1: yTopSide, x2: x5, y2: yTopSide },
-        { x1: x1, y1: yBot, x2: x5, y2: yBot }
+        // Горизонтальные (нижние, зависят от конструкции)
+        ...extraCreases
       ];
 
       const totalW = x5;
@@ -767,7 +852,8 @@
 
       return {
         boxType: state.boxType,
-        isFefco0215,
+        isEcma055,
+        isEcma020,
         L, W, H, d, glueW, tuckH,
         p1W, p2W, p3W, p4W,
         x0, x1, x2, x3, x4, x5,
@@ -778,6 +864,7 @@
         innerCuts,
         glueNotchLines,
         creases,
+        heightSummaryHtml,
         bottomInfoHtml
       };
     }
@@ -798,10 +885,13 @@
         ? Math.floor((workW + gap) / (bh + gap)) * Math.floor((workH + gap) / (bw + gap))
         : 0;
 
-      // 2. Укладка «валетом» (переворот 180° / 270°, крышка одной входит мимо крышки другой)
-      const flapProtrusion = (g.yTopSide - g.yTuckTop) + g.maxBottomDepth;
+      // 2. Укладка «валетом» (переворот 180° / 270°)
+      const topFlapH = g.yTopSide - g.yTuckTop;
       const bodyOnlyH = g.H + g.d;
-      const pairSpanH = bodyOnlyH + flapProtrusion + gap;
+      // Для A20.20.03.01 при 180° крышка P1 входит напротив пылезащитного клапана P4 (высота dustH)
+      const pairSpanH = g.isEcma020
+        ? (2 * g.H + topFlapH + g.dustH + gap)
+        : (bodyOnlyH + topFlapH + g.maxBottomDepth + gap);
 
       let nValet0 = 0;
       if (bw <= workW && pairSpanH <= workH) {
@@ -839,41 +929,66 @@
     // ОБНОВЛЕНИЕ КНОПОК ТИПА КОРОБКИ И ПРЕСЕТОВ
     // =========================================================================
     function syncTypeUI() {
-      const isFefco = state.boxType === 'fefco0215';
+      const t = state.boxType;
 
-      // Шапка
+      // Бейдж в шапке
       const badge = document.getElementById('headerTypeBadge');
-      badge.textContent = isFefco ? 'FEFCO-0215' : 'АВТОДНО';
-      badge.className = isFefco
-        ? 'px-2 py-0.5 rounded-md bg-purple-500/15 border border-purple-500/35 text-[10px] font-mono font-semibold text-purple-300'
-        : 'px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-[10px] font-mono font-semibold text-cyan-300';
-
-      // Карточки выбора типа
-      const btnAuto = document.getElementById('btnTypeAutolock');
-      const dotAuto = document.getElementById('dotTypeAutolock');
-      const btnFefco = document.getElementById('btnTypeFefco0215');
-      const dotFefco = document.getElementById('dotTypeFefco0215');
-
-      if (!isFefco) {
-        btnAuto.className = 'text-left p-2.5 rounded-xl border-2 border-cyan-500 bg-cyan-500/10 transition cursor-pointer';
-        dotAuto.className = 'w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]';
-        btnFefco.className = 'text-left p-2.5 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer';
-        dotFefco.className = 'w-2 h-2 rounded-full bg-slate-700';
+      if (t === 'ecma020') {
+        badge.textContent = 'ECMA A20.20';
+        badge.className = 'px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/35 text-[10px] font-mono font-semibold text-amber-300';
+      } else if (t === 'ecma055') {
+        badge.textContent = 'ECMA A55.20';
+        badge.className = 'px-2 py-0.5 rounded-md bg-purple-500/15 border border-purple-500/35 text-[10px] font-mono font-semibold text-purple-300';
       } else {
-        btnFefco.className = 'text-left p-2.5 rounded-xl border-2 border-purple-500 bg-purple-500/10 transition cursor-pointer';
-        dotFefco.className = 'w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)]';
-        btnAuto.className = 'text-left p-2.5 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer';
-        dotAuto.className = 'w-2 h-2 rounded-full bg-slate-700';
+        badge.textContent = 'ECMA A60.20';
+        badge.className = 'px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-[10px] font-mono font-semibold text-cyan-300';
       }
 
+      // Карточки выбора типа
+      const cards = [
+        {
+          id: 'btnTypeAutolock',
+          dot: 'dotTypeAutolock',
+          active: t === 'autolock',
+          activeCls: 'text-left p-2 rounded-xl border-2 border-cyan-500 bg-cyan-500/10 transition cursor-pointer',
+          dotCls: 'w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] shrink-0'
+        },
+        {
+          id: 'btnTypeEcma055',
+          dot: 'dotTypeEcma055',
+          active: t === 'ecma055',
+          activeCls: 'text-left p-2 rounded-xl border-2 border-purple-500 bg-purple-500/10 transition cursor-pointer',
+          dotCls: 'w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)] shrink-0'
+        },
+        {
+          id: 'btnTypeEcma020',
+          dot: 'dotTypeEcma020',
+          active: t === 'ecma020',
+          activeCls: 'text-left p-2 rounded-xl border-2 border-amber-500 bg-amber-500/10 transition cursor-pointer',
+          dotCls: 'w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)] shrink-0'
+        }
+      ];
+
+      const inactiveBtn = 'text-left p-2 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer';
+      const inactiveDot = 'w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0';
+
+      cards.forEach(c => {
+        document.getElementById(c.id).className = c.active ? c.activeCls : inactiveBtn;
+        document.getElementById(c.dot).className = c.active ? c.dotCls : inactiveDot;
+      });
+
       // Пресеты
-      const presets = PRESETS_BY_TYPE[state.boxType] || PRESETS_BY_TYPE.autolock;
+      const presets = PRESETS_BY_TYPE[t] || PRESETS_BY_TYPE.autolock;
+      const primaryCls = t === 'ecma020'
+        ? 'preset-btn px-2.5 py-1 rounded-md bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-[11px] font-mono text-amber-200 font-semibold transition cursor-pointer'
+        : (t === 'ecma055'
+            ? 'preset-btn px-2.5 py-1 rounded-md bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/40 text-[11px] font-mono text-purple-200 font-semibold transition cursor-pointer'
+            : 'preset-btn px-2.5 py-1 rounded-md bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-[11px] font-mono text-cyan-200 font-semibold transition cursor-pointer');
+
       const container = document.getElementById('presetsContainer');
       container.innerHTML = presets.map(p => {
         const cls = p.primary
-          ? (isFefco
-              ? 'preset-btn px-2.5 py-1 rounded-md bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/40 text-[11px] font-mono text-purple-200 font-semibold transition cursor-pointer'
-              : 'preset-btn px-2.5 py-1 rounded-md bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-[11px] font-mono text-cyan-200 font-semibold transition cursor-pointer')
+          ? primaryCls
           : 'preset-btn px-2.5 py-1 rounded-md bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-mono text-slate-300 transition cursor-pointer';
         return `<button type="button" data-l="${p.l}" data-w="${p.w}" data-h="${p.h}" class="${cls}">${p.label}</button>`;
       }).join('');
@@ -923,7 +1038,7 @@
         `P2(<span class="text-cyan-300">${f(g.p2W)}</span>) + ` +
         `P3(<span class="text-cyan-300">${f(g.p3W)}</span>) + ` +
         `P4(<span class="text-amber-300">${f(g.p4W)}</span>) = <span class="text-white font-semibold">${f(g.totalW)} мм</span><br/>` +
-        `Высота: P1 = <span class="text-cyan-300">${f(g.H + g.d)} мм</span>, P2–P4 = <span class="text-slate-200">${f(g.H)} мм</span><br/>` +
+        g.heightSummaryHtml +
         g.bottomInfoHtml;
 
       // Генерируем SVG для превью (с отступами под размерные выноски)
@@ -1015,7 +1130,9 @@
       const g = calculateGeometry();
       const w = f(g.totalW);
       const h = f(g.totalH);
-      const typeLabel = g.isFefco0215 ? 'FEFCO-0215' : 'AUTOLOCK';
+      const typeLabel = g.isEcma020
+        ? 'ECMA-A20.20.03.01'
+        : (g.isEcma055 ? 'ECMA-A55.20.01.01' : 'ECMA-A60.20.01.01');
 
       const creaseLines = g.creases
         .map(c => `    <line x1="${f(c.x1)}" y1="${f(c.y1)}" x2="${f(c.x2)}" y2="${f(c.y2)}" />`)
@@ -1080,20 +1197,24 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
     // =========================================================================
     // ПЕРЕКЛЮЧЕНИЕ ТИПА КОРОБКИ
     // =========================================================================
+    function isDefaultPreset(type, l, w, h) {
+      if (type === 'autolock') return l === 90 && w === 90 && h === 297;
+      if (type === 'ecma055') return l === 65 && w === 70 && h === 290;
+      if (type === 'ecma020') return l === 60 && w === 80 && h === 180;
+      return false;
+    }
+
     function setBoxType(newType) {
       if (state.boxType === newType) return;
       const prevType = state.boxType;
       state.boxType = newType;
 
       // Если текущие размеры совпадают с эталоном предыдущего типа, подставляем эталон нового
-      if (newType === 'fefco0215' && prevType === 'autolock' && state.L === 90 && state.W === 90 && state.H === 297) {
-        state.L = 65;
-        state.W = 70;
-        state.H = 290;
-      } else if (newType === 'autolock' && prevType === 'fefco0215' && state.L === 65 && state.W === 70 && state.H === 290) {
-        state.L = 90;
-        state.W = 90;
-        state.H = 297;
+      if (isDefaultPreset(prevType, state.L, state.W, state.H)) {
+        const firstPreset = (PRESETS_BY_TYPE[newType] || PRESETS_BY_TYPE.autolock)[0];
+        state.L = firstPreset.l;
+        state.W = firstPreset.w;
+        state.H = firstPreset.h;
       }
 
       document.getElementById('inputL').value = state.L;
@@ -1110,7 +1231,8 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
     // =========================================================================
     function bindEvents() {
       document.getElementById('btnTypeAutolock').addEventListener('click', () => setBoxType('autolock'));
-      document.getElementById('btnTypeFefco0215').addEventListener('click', () => setBoxType('fefco0215'));
+      document.getElementById('btnTypeEcma055').addEventListener('click', () => setBoxType('ecma055'));
+      document.getElementById('btnTypeEcma020').addEventListener('click', () => setBoxType('ecma020'));
 
       const bindNum = (id, key) => {
         const el = document.getElementById(id);
@@ -1159,7 +1281,9 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
       // Экспорт SVG 1:1
       document.getElementById('btnDownloadSvg').addEventListener('click', () => {
         const svgText = buildCleanExportSvg();
-        const tag = state.boxType === 'fefco0215' ? 'FEFCO-0215' : 'AUTOLOCK';
+        const tag = state.boxType === 'ecma020'
+          ? 'ECMA-A20.20'
+          : (state.boxType === 'ecma055' ? 'ECMA-A55.20' : 'ECMA-A60.20');
         const fname = `BOX_${tag}_${f(state.W)}x${f(state.L)}x${f(state.H)}mm.svg`;
         downloadFile(svgText, fname, 'image/svg+xml;charset=utf-8');
         showToast(`Сохранён 1:1 макет: ${fname}`);

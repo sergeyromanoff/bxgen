@@ -931,4 +931,417 @@
       const badge = document.getElementById('headerTypeBadge');
       if (t === 'ecma020') {
         badge.textContent = 'ECMA A20.20';
-        badge.className = 'px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/35 text
+        badge.className = 'px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/35 text-[10px] font-mono font-semibold text-amber-300';
+      } else if (t === 'ecma055') {
+        badge.textContent = 'ECMA A55.20';
+        badge.className = 'px-2 py-0.5 rounded-md bg-purple-500/15 border border-purple-500/35 text-[10px] font-mono font-semibold text-purple-300';
+      } else {
+        badge.textContent = 'ECMA A60.20';
+        badge.className = 'px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-[10px] font-mono font-semibold text-cyan-300';
+      }
+
+      // Карточки выбора типа
+      const cards = [
+        {
+          id: 'btnTypeAutolock',
+          dot: 'dotTypeAutolock',
+          active: t === 'autolock',
+          activeCls: 'text-left p-2 rounded-xl border-2 border-cyan-500 bg-cyan-500/10 transition cursor-pointer',
+          dotCls: 'w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] shrink-0'
+        },
+        {
+          id: 'btnTypeEcma055',
+          dot: 'dotTypeEcma055',
+          active: t === 'ecma055',
+          activeCls: 'text-left p-2 rounded-xl border-2 border-purple-500 bg-purple-500/10 transition cursor-pointer',
+          dotCls: 'w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)] shrink-0'
+        },
+        {
+          id: 'btnTypeEcma020',
+          dot: 'dotTypeEcma020',
+          active: t === 'ecma020',
+          activeCls: 'text-left p-2 rounded-xl border-2 border-amber-500 bg-amber-500/10 transition cursor-pointer',
+          dotCls: 'w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)] shrink-0'
+        }
+      ];
+
+      const inactiveBtn = 'text-left p-2 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer';
+      const inactiveDot = 'w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0';
+
+      cards.forEach(c => {
+        document.getElementById(c.id).className = c.active ? c.activeCls : inactiveBtn;
+        document.getElementById(c.dot).className = c.active ? c.dotCls : inactiveDot;
+      });
+
+      // Пресеты
+      const presets = PRESETS_BY_TYPE[t] || PRESETS_BY_TYPE.autolock;
+      const primaryCls = t === 'ecma020'
+        ? 'preset-btn px-2.5 py-1 rounded-md bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-[11px] font-mono text-amber-200 font-semibold transition cursor-pointer'
+        : (t === 'ecma055'
+            ? 'preset-btn px-2.5 py-1 rounded-md bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/40 text-[11px] font-mono text-purple-200 font-semibold transition cursor-pointer'
+            : 'preset-btn px-2.5 py-1 rounded-md bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-[11px] font-mono text-cyan-200 font-semibold transition cursor-pointer');
+
+      const container = document.getElementById('presetsContainer');
+      container.innerHTML = presets.map(p => {
+        const cls = p.primary
+          ? primaryCls
+          : 'preset-btn px-2.5 py-1 rounded-md bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-mono text-slate-300 transition cursor-pointer';
+        return `<button type="button" data-l="${p.l}" data-w="${p.w}" data-h="${p.h}" class="${cls}">${p.label}</button>`;
+      }).join('');
+
+      container.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.L = parseFloat(btn.dataset.l);
+          state.W = parseFloat(btn.dataset.w);
+          state.H = parseFloat(btn.dataset.h);
+          document.getElementById('inputL').value = state.L;
+          document.getElementById('inputW').value = state.W;
+          document.getElementById('inputH').value = state.H;
+          render();
+          fitToViewport();
+        });
+      });
+    }
+
+    // =========================================================================
+    // ОТРИСОВКА ИНТЕРАКТИВНОГО ПРЕДПРОСМОТРА SVG
+    // =========================================================================
+    function render() {
+      const g = calculateGeometry();
+
+      // Обновляем статистику в левой панели
+      document.getElementById('statBlankSize').textContent = `${f(g.totalW)} × ${f(g.totalH)} мм`;
+      const areaM2 = (g.totalW * g.totalH) / 1e6;
+      document.getElementById('statBlankArea').textContent = `${areaM2.toFixed(4)} м²`;
+
+      const fit35 = checkSheetFit(g, 330, 480);
+      const badge35 = document.getElementById('fitBadge35');
+      badge35.textContent = fit35.text;
+      badge35.className = fit35.fits
+        ? 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+        : 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30';
+
+      const fit50 = checkSheetFit(g, 480, 680);
+      const badge50 = document.getElementById('fitBadge50');
+      badge50.textContent = fit50.text;
+      badge50.className = fit50.fits
+        ? 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+        : 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30';
+
+      document.getElementById('panelSummaryText').innerHTML =
+        `Панели: Клей <span class="text-slate-200">${f(g.glueW)}</span> + ` +
+        `P1(<span class="text-cyan-300">${f(g.p1W)}</span>) + ` +
+        `P2(<span class="text-cyan-300">${f(g.p2W)}</span>) + ` +
+        `P3(<span class="text-cyan-300">${f(g.p3W)}</span>) + ` +
+        `P4(<span class="text-amber-300">${f(g.p4W)}</span>) = <span class="text-white font-semibold">${f(g.totalW)} мм</span><br/>` +
+        g.heightSummaryHtml +
+        g.bottomInfoHtml;
+
+      // Генерируем SVG для превью (с отступами под размерные выноски)
+      const padLeft = state.showDims ? 36 : 16;
+      const padTop = state.showDims ? 30 : 16;
+      const padRight = state.showDims ? 44 : 16;
+      const padBottom = state.showDims ? 34 : 16;
+
+      const vbW = g.totalW + padLeft + padRight;
+      const vbH = g.totalH + padTop + padBottom;
+      const strokeW = Math.max(0.55, Math.min(1.4, Math.max(g.totalW, g.totalH) / 520));
+      const fontSize = Math.max(7, Math.min(13, Math.max(g.totalW, g.totalH) / 48));
+
+      let svgContent = `
+        <g transform="translate(${f(padLeft)}, ${f(padTop)})">
+          <!-- Полупрозрачная заливка картона -->
+          <path d="${g.outerPath}" fill="rgba(56, 189, 248, 0.05)" stroke="none" />
+
+          <!-- Слой БИГОВКИ (синий пунктир) -->
+          <g id="CREASE" stroke="#3b82f6" stroke-width="${f(strokeW)}" stroke-dasharray="${f(strokeW * 4)} ${f(strokeW * 3)}" fill="none" stroke-linecap="round">
+            ${g.creases.map(c => `<line x1="${f(c.x1)}" y1="${f(c.y1)}" x2="${f(c.x2)}" y2="${f(c.y2)}" />`).join('')}
+          </g>
+
+          <!-- Слой РЕЗА (красный сплошной) -->
+          <g id="CUT" stroke="#ef4444" stroke-width="${f(strokeW * 1.15)}" fill="none" stroke-linejoin="round" stroke-linecap="round">
+            <path d="${g.outerPath}" />
+            ${g.innerCuts.map(p => `<path d="${p}" />`).join('')}
+            ${g.glueNotchLines.map(n => `<line x1="${f(n.x1)}" y1="${f(n.y1)}" x2="${f(n.x2)}" y2="${f(n.y2)}" />`).join('')}
+          </g>
+      `;
+
+      // Размерные линии и подписи панелей (только для предпросмотра)
+      if (state.showDims) {
+        const dimColor = '#38bdf8';
+        const labelColor = '#94a3b8';
+        const dimY = -12;
+        const dimX = g.totalW + 18;
+        const panelLabelY = g.yTopSide + g.H * 0.5;
+
+        svgContent += `
+          <g id="DIMENSIONS" font-family="JetBrains Mono, monospace" font-size="${f(fontSize)}" text-anchor="middle">
+            <!-- Подписи 4 панелей -->
+            <text x="${f((g.x1 + g.x2) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P1</text>
+            <text x="${f((g.x1 + g.x2) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p1W)} мм</text>
+
+            <text x="${f((g.x2 + g.x3) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P2</text>
+            <text x="${f((g.x2 + g.x3) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p2W)} мм</text>
+
+            <text x="${f((g.x3 + g.x4) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P3</text>
+            <text x="${f((g.x3 + g.x4) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p3W)} мм</text>
+
+            <text x="${f((g.x4 + g.x5) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#fbbf24" font-weight="600">P4</text>
+            <text x="${f((g.x4 + g.x5) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="#fbbf24" font-size="${f(fontSize * 0.85)}">${f(g.p4W)} мм</text>
+
+            <!-- Общая ширина развёртки (сверху) -->
+            <line x1="0" y1="${f(dimY)}" x2="${f(g.totalW)}" y2="${f(dimY)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="0" y1="${f(dimY - 3)}" x2="0" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="${f(g.totalW)}" y1="${f(dimY - 3)}" x2="${f(g.totalW)}" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <text x="${f(g.totalW / 2)}" y="${f(dimY - 4)}" fill="${dimColor}">Общая ширина: ${f(g.totalW)} мм</text>
+
+            <!-- Общая высота развёртки (справа) -->
+            <line x1="${f(dimX)}" y1="0" x2="${f(dimX)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="${f(dimX - 3)}" y1="0" x2="${f(dimX + 3)}" y2="0" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="${f(dimX - 3)}" y1="${f(g.totalH)}" x2="${f(dimX + 3)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <text x="${f(dimX + fontSize * 1.1)}" y="${f(g.totalH / 2)}" fill="${dimColor}" transform="rotate(90, ${f(dimX + fontSize * 1.1)}, ${f(g.totalH / 2)})">Общая высота: ${f(g.totalH)} мм</text>
+
+            <!-- Высота корпуса H (слева) -->
+            <line x1="-14" y1="${f(g.yTopSide)}" x2="-14" y2="${f(g.yBot)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="-17" y1="${f(g.yTopSide)}" x2="-11" y2="${f(g.yTopSide)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="-17" y1="${f(g.yBot)}" x2="-11" y2="${f(g.yBot)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
+            <text x="${f(-18)}" y="${f(g.yTopSide + g.H / 2)}" fill="#34d399" transform="rotate(-90, -18, ${f(g.yTopSide + g.H / 2)})">H = ${f(g.H)} мм</text>
+          </g>
+        `;
+      }
+
+      svgContent += `</g>`;
+
+      const svgEl = document.getElementById('previewSvg');
+      svgEl.setAttribute('viewBox', `0 0 ${f(vbW)} ${f(vbH)}`);
+      svgEl.setAttribute('width', `${Math.round(vbW * 1.15)}`);
+      svgEl.setAttribute('height', `${Math.round(vbH * 1.15)}`);
+      svgEl.innerHTML = svgContent;
+    }
+
+    // =========================================================================
+    // ЭКСПОРТ ЧИСТОГО ВЕКТОРА 1:1 В МИЛЛИМЕТРАХ ДЛЯ CORELDRAW
+    // =========================================================================
+    function buildCleanExportSvg() {
+      const g = calculateGeometry();
+      const w = f(g.totalW);
+      const h = f(g.totalH);
+      const typeLabel = g.isEcma020
+        ? 'ECMA-A20.20.03.01'
+        : (g.isEcma055 ? 'ECMA-A55.20.01.01' : 'ECMA-A60.20.01.01');
+
+      const creaseLines = g.creases
+        .map(c => `    <line x1="${f(c.x1)}" y1="${f(c.y1)}" x2="${f(c.x2)}" y2="${f(c.y2)}" />`)
+        .join('\n');
+
+      const innerPaths = g.innerCuts
+        .map(p => `    <path d="${p}" />`)
+        .join('\n');
+
+      const notchLines = g.glueNotchLines
+        .map(n => `    <line x1="${f(n.x1)}" y1="${f(n.y1)}" x2="${f(n.x2)}" y2="${f(n.y2)}" />`)
+        .join('\n');
+
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="0 0 ${w} ${h}">
+  <!-- ${typeLabel} Parametric Box Die-Line | L=${f(g.L)}mm W=${f(g.W)}mm H=${f(g.H)}mm d=${f(g.d)}mm -->
+  <g id="CREASE" stroke="#0000FF" stroke-width="0.2" fill="none">
+${creaseLines}
+  </g>
+  <g id="CUT" stroke="#FF0000" stroke-width="0.2" fill="none" stroke-linejoin="miter">
+    <path d="${g.outerPath}" />
+${innerPaths}${notchLines ? '\n' + notchLines : ''}
+  </g>
+</svg>
+`;
+    }
+
+    function downloadFile(content, filename, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    // =========================================================================
+    // МАСШТАБИРОВАНИЕ И ПЕРЕТАСКИВАНИЕ ЧЕРТЕЖА
+    // =========================================================================
+    function applyTransform() {
+      const wrap = document.getElementById('panZoomWrap');
+      wrap.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.zoom})`;
+      document.getElementById('zoomLabel').textContent = `${Math.round(state.zoom * 100)}%`;
+    }
+
+    function fitToViewport() {
+      const vp = document.getElementById('viewport');
+      const svg = document.getElementById('previewSvg');
+      const svgW = parseFloat(svg.getAttribute('width')) || 500;
+      const svgH = parseFloat(svg.getAttribute('height')) || 600;
+      const availW = Math.max(200, vp.clientWidth - 48);
+      const availH = Math.max(200, vp.clientHeight - 48);
+      state.zoom = Math.max(0.2, Math.min(2.5, Math.min(availW / svgW, availH / svgH)));
+      state.panX = 0;
+      state.panY = 0;
+      applyTransform();
+    }
+
+    // =========================================================================
+    // ПЕРЕКЛЮЧЕНИЕ ТИПА КОРОБКИ
+    // =========================================================================
+    function isDefaultPreset(type, l, w, h) {
+      if (type === 'autolock') return l === 90 && w === 90 && h === 297;
+      if (type === 'ecma055') return l === 65 && w === 70 && h === 290;
+      if (type === 'ecma020') return l === 60 && w === 80 && h === 180;
+      return false;
+    }
+
+    function setBoxType(newType) {
+      if (state.boxType === newType) return;
+      const prevType = state.boxType;
+      state.boxType = newType;
+
+      // Если текущие размеры совпадают с эталоном предыдущего типа, подставляем эталон нового
+      if (isDefaultPreset(prevType, state.L, state.W, state.H)) {
+        const firstPreset = (PRESETS_BY_TYPE[newType] || PRESETS_BY_TYPE.autolock)[0];
+        state.L = firstPreset.l;
+        state.W = firstPreset.w;
+        state.H = firstPreset.h;
+      }
+
+      document.getElementById('inputL').value = state.L;
+      document.getElementById('inputW').value = state.W;
+      document.getElementById('inputH').value = state.H;
+
+      syncTypeUI();
+      render();
+      fitToViewport();
+    }
+
+    // =========================================================================
+    // ОБРАБОТЧИКИ СОБЫТИЙ
+    // =========================================================================
+    function bindEvents() {
+      document.getElementById('btnTypeAutolock').addEventListener('click', () => setBoxType('autolock'));
+      document.getElementById('btnTypeEcma055').addEventListener('click', () => setBoxType('ecma055'));
+      document.getElementById('btnTypeEcma020').addEventListener('click', () => setBoxType('ecma020'));
+
+      const bindNum = (id, key) => {
+        const el = document.getElementById(id);
+        el.addEventListener('input', () => {
+          state[key] = parseFloat(el.value);
+          render();
+        });
+      };
+
+      bindNum('inputL', 'L');
+      bindNum('inputW', 'W');
+      bindNum('inputH', 'H');
+      bindNum('inputD', 'd');
+      bindNum('inputGlueW', 'glueW');
+      bindNum('inputTuckH', 'tuckH');
+
+      // Обмен L и W местами
+      document.getElementById('btnSwapLW').addEventListener('click', () => {
+        const tmp = state.L;
+        state.L = state.W;
+        state.W = tmp;
+        document.getElementById('inputL').value = state.L;
+        document.getElementById('inputW').value = state.W;
+        render();
+      });
+
+      // Быстрые пресеты припуска d
+      document.querySelectorAll('.d-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.d = parseFloat(btn.dataset.d);
+          document.getElementById('inputD').value = state.d;
+          render();
+        });
+      });
+
+      document.getElementById('chkGlueNotches').addEventListener('change', (e) => {
+        state.glueNotches = e.target.checked;
+        render();
+      });
+
+      document.getElementById('chkShowDims').addEventListener('change', (e) => {
+        state.showDims = e.target.checked;
+        render();
+      });
+
+      // Экспорт SVG 1:1
+      document.getElementById('btnDownloadSvg').addEventListener('click', () => {
+        const svgText = buildCleanExportSvg();
+        const tag = state.boxType === 'ecma020'
+          ? 'ECMA-A20.20'
+          : (state.boxType === 'ecma055' ? 'ECMA-A55.20' : 'ECMA-A60.20');
+        const fname = `BOX_${tag}_${f(state.W)}x${f(state.L)}x${f(state.H)}mm.svg`;
+        downloadFile(svgText, fname, 'image/svg+xml;charset=utf-8');
+        showToast(`Сохранён 1:1 макет: ${fname}`);
+      });
+
+      // Экспорт HTML-модуля
+      document.getElementById('btnDownloadHtml').addEventListener('click', () => {
+        const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        downloadFile(htmlContent, 'box-generator.html', 'text/html;charset=utf-8');
+        showToast('HTML-модуль сохранён: box-generator.html');
+      });
+
+      // Кнопки масштаба
+      document.getElementById('btnZoomIn').addEventListener('click', () => {
+        state.zoom = Math.min(5, state.zoom * 1.2);
+        applyTransform();
+      });
+      document.getElementById('btnZoomOut').addEventListener('click', () => {
+        state.zoom = Math.max(0.15, state.zoom / 1.2);
+        applyTransform();
+      });
+      document.getElementById('btnFit').addEventListener('click', fitToViewport);
+
+      // Зум колесом мыши и перетаскивание
+      const vp = document.getElementById('viewport');
+      vp.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+        state.zoom = Math.max(0.15, Math.min(6, state.zoom * factor));
+        applyTransform();
+      }, { passive: false });
+
+      let dragging = false;
+      let startX = 0, startY = 0;
+
+      vp.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        startX = e.clientX - state.panX;
+        startY = e.clientY - state.panY;
+        vp.setPointerCapture(e.pointerId);
+      });
+      vp.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        state.panX = e.clientX - startX;
+        state.panY = e.clientY - startY;
+        applyTransform();
+      });
+      vp.addEventListener('pointerup', (e) => {
+        dragging = false;
+        try { vp.releasePointerCapture(e.pointerId); } catch (_) {}
+      });
+
+      window.addEventListener('resize', fitToViewport);
+    }
+
+    // Инициализация
+    window.addEventListener('DOMContentLoaded', () => {
+      syncTypeUI();
+      bindEvents();
+      render();
+      requestAnimationFrame(fitToViewport);
+    });
+  </script>
+</body>
+</html>

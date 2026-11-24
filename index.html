@@ -79,7 +79,7 @@
       <div>
         <div class="flex items-center gap-2">
           <h1 class="text-sm sm:text-base font-bold text-white tracking-tight">Генератор развёртки коробок</h1>
-          <span id="headerTypeBadge" class="px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-[10px] font-mono font-semibold text-cyan-300">ECMA A60.20</span>
+          <span id="headerTypeBadge" class="px-2 py-0.5 rounded-md bg-purple-500/15 border border-purple-500/35 text-[10px] font-mono font-semibold text-purple-300">ECMA A55.20</span>
         </div>
         <p class="text-[11px] text-slate-400">Параметрический штамп 1:1 (Рез #FF0000 / Биговка #0000FF) для CorelDRAW</p>
       </div>
@@ -123,19 +123,19 @@
           </div>
 
           <div class="grid grid-cols-3 gap-1.5">
-            <button id="btnTypeAutolock" type="button" class="text-left p-2 rounded-xl border-2 border-cyan-500 bg-cyan-500/10 transition cursor-pointer">
+            <button id="btnTypeAutolock" type="button" class="text-left p-2 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-[11px] font-bold text-white leading-none">Автодно</span>
-                <span id="dotTypeAutolock" class="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] shrink-0"></span>
+                <span id="dotTypeAutolock" class="w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0"></span>
               </div>
               <div class="text-[9px] font-mono text-cyan-300/90 leading-tight">A60.20.01.01</div>
               <div class="text-[9px] text-slate-400 leading-tight mt-0.5">С окошком</div>
             </button>
 
-            <button id="btnTypeEcma055" type="button" class="text-left p-2 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer">
+            <button id="btnTypeEcma055" type="button" class="text-left p-2 rounded-xl border-2 border-purple-500 bg-purple-500/10 transition cursor-pointer">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-[11px] font-bold text-white leading-none">Замок</span>
-                <span id="dotTypeEcma055" class="w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0"></span>
+                <span id="dotTypeEcma055" class="w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)] shrink-0"></span>
               </div>
               <div class="text-[9px] font-mono text-purple-300/90 leading-tight">A55.20.01.01</div>
               <div class="text-[9px] text-slate-400 leading-tight mt-0.5">Крючки + паз</div>
@@ -165,7 +165,7 @@
           <div class="flex items-end gap-1.5">
             <div class="flex-1 min-w-0">
               <label for="inputL" class="block text-[10px] text-slate-400 mb-1 truncate" title="Глубина крышки и боковые панели P2, P4">Длина L (глубина)</label>
-              <input id="inputL" type="number" min="25" max="600" step="0.5" value="90" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+              <input id="inputL" type="number" min="25" max="600" step="0.5" value="65" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
             </div>
 
             <button id="btnSwapLW" type="button" title="Поменять длину L и ширину W местами" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-cyan-400 border border-slate-700 transition cursor-pointer shrink-0 mb-[1px]">
@@ -179,12 +179,12 @@
 
             <div class="flex-1 min-w-0">
               <label for="inputW" class="block text-[10px] text-slate-400 mb-1 truncate" title="Фасад P1 (с крышкой) и P3">Ширина W (фасад)</label>
-              <input id="inputW" type="number" min="25" max="600" step="0.5" value="90" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+              <input id="inputW" type="number" min="25" max="600" step="0.5" value="70" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
             </div>
 
             <div class="flex-1 min-w-0">
               <label for="inputH" class="block text-[10px] text-slate-400 mb-1 truncate">Высота H</label>
-              <input id="inputH" type="number" min="30" max="900" step="0.5" value="297" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+              <input id="inputH" type="number" min="30" max="900" step="0.5" value="290" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
             </div>
           </div>
 
@@ -223,6 +223,22 @@
               <label for="inputTuckH" class="block text-[11px] text-slate-400 mb-1">Язычок (мм)</label>
               <input id="inputTuckH" type="number" min="8" max="40" step="0.5" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
             </div>
+          </div>
+
+          <!-- Переключатель порядка нижних клапанов (для ECMA A55.20) -->
+          <div id="bottomSwapWrap" class="pt-2 border-t border-slate-800/80">
+            <button id="btnSwapBottom" type="button" class="w-full px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-purple-500/35 text-xs font-medium text-slate-200 flex items-center justify-between gap-2 transition cursor-pointer">
+              <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-purple-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <polyline points="17 1 21 5 17 9" />
+                  <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                  <polyline points="7 23 3 19 7 15" />
+                  <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                </svg>
+                <span>Поменять нижние клапаны</span>
+              </span>
+              <span id="swapBottomBadge" class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300">P1/P3 крючки</span>
+            </button>
           </div>
 
           <div class="pt-1 space-y-2 border-t border-slate-800/80">
@@ -353,10 +369,11 @@
     };
 
     const state = {
-      boxType: 'autolock', // 'autolock' (ECMA A60.20.01.01) | 'ecma055' (ECMA A55.20.01.01) | 'ecma020' (ECMA A20.20.03.01)
-      L: 90,               // Длина / глубина (Панели 2, 4 и глубина крышки)
-      W: 90,               // Ширина / фасад (Панели 1, 3)
-      H: 297,              // Номинальная высота боковых стенок (P2, P3, P4)
+      boxType: 'ecma055',  // 'autolock' (ECMA A60.20.01.01) | 'ecma055' (ECMA A55.20.01.01) | 'ecma020' (ECMA A20.20.03.01)
+      bottomSwapped: false,// Сдвиг нижних клапанов на 1 панель (для A55.20: P1 паз, P2/P4 крючки, P3 язычок)
+      L: 65,               // Длина / глубина (Панели 2, 4 и глубина крышки)
+      W: 70,               // Ширина / фасад (Панели 1, 3)
+      H: 290,              // Номинальная высота боковых стенок (P2, P3, P4)
       d: 0.5,              // Припуск на толщину материала (мм) — Бристоль 300–350 г/м²
       glueW: 15,           // Ширина бокового клеевого клапана (мм)
       tuckH: 15,           // Высота запорного язычка крышки (мм)
@@ -610,103 +627,129 @@
 
       } else if (isEcma055) {
         // ---------------------------------------------------------------------
-        // ВАРИАНТ 2: ECMA A55.20.01.01 (ПОСТРОЕНО С НУЛЯ ПО ФИНАЛЬНОМУ ВЕКТОРУ)
-        // Эталон 70 × 65 × 290 мм (d = 0.5 мм):
-        // - Уступы 3.0 × 3.0 мм под 45° на P1, P2, P3
-        // - P1: глубина L/2 - 2d (31.50 мм), горловина (W/2 = 35.00, 15.50), дуга 135° R = 6.50 мм
-        // - P3: глубина L/2 (32.50 мм), горловина (W/2 = 35.00, 15.50), дуга 135° R = 6.50 мм
-        // - P2: полка паза W/2 (35.00 мм), ножки +17.00 мм (всего 52.00 мм), ширина ножек 12.50 мм, паз 34.00 мм, внутренние дуги R = 4.00 мм
-        // - P4: плечи на W/2 (35.00 мм), язычок width = slotW - 1.0 мм (33.00 мм), глубина 52.00 мм, дуги R = 4.00 мм
+        // ВАРИАНТ 2: ECMA A55.20.01.01 (ПОСТРОЕНО ПО 70X65X290 bristol 300.txt)
+        // Поддерживает 2 режима порядка нижних клапанов:
+        // - Стандарт (!bottomSwapped): P1 крючок, P2 паз, P3 крючок, P4 язычок
+        // - Сдвиг 90° (bottomSwapped): P1 паз, P2 крючок, P3 язычок, P4 крючок
         // ---------------------------------------------------------------------
         const step = Math.min(3.0, W * 0.08, L * 0.08);
-        const clearanceP1 = Math.max(0.5, 2 * d);              // 1.00 мм при d=0.5
+        const clearance = Math.max(0.5, 2 * d);                  // 1.00 мм при d=0.5
+        const swapped = !!state.bottomSwapped;
 
-        // Ось W: опорный клапан P2 и запорный язычок P4
-        const slotTopDepth = W / 2;                            // 35.00 мм при W=70
-        const lockTabH = Math.min(17.0, Math.min(W, L) * 0.28);// 17.00 мм при 70×65
-        const hSlotFlap = slotTopDepth + lockTabH;             // 52.00 мм при W=70
-        const rSlot = Math.min(4.0, lockTabH * 0.35);          // 4.00 мм при 70×65
+        // Рабочие размеры осей:
+        // lockSpan — сторона, поперёк которой складываются паз и язычок (W в стандарте, L при сдвиге)
+        // hookSpan — сторона, поперёк которой складываются встречные крючки (L в стандарте, W при сдвиге)
+        const lockSpan = swapped ? L : W;
+        const hookSpan = swapped ? W : L;
+        const slotPanelW = swapped ? p1W : p2W;                  // Ширина панели с П-образным пазом
+        const hookPanelW = swapped ? p4W : p1W;                  // Мин. ширина панели с крючком
+
+        // Параметры клапана с пазом и запорного язычка
+        const slotTopDepth = lockSpan / 2;
+        const lockTabH = Math.min(17.0, Math.min(W, L) * 0.28);
+        const hSlotFlap = slotTopDepth + lockTabH;
+        const rSlot = Math.min(4.0, lockTabH * 0.35);
         const slotTopY = yBot + slotTopDepth;
+        const tongueShoulderY = yBot + Math.max(10.0, slotTopDepth - clearance);
         const yBotDeep = yBot + hSlotFlap;
 
-        const outerSpan2 = Math.max(14.0, p2W - 2 * step);     // 59.00 мм при L=65
-        const slotW = Math.max(8.0, Math.min(outerSpan2 - 2 * (rSlot + 2.0), outerSpan2 * (34.0 / 59.0))); // 34.00 мм
-        const tongueW = Math.max(6.0, slotW - 1.0);            // 33.00 мм (зазор по 0.5 мм на сторону)
+        const outerSpanSlot = Math.max(14.0, slotPanelW - 2 * step);
+        const slotW = Math.max(8.0, Math.min(outerSpanSlot - 2 * (rSlot + 2.0), outerSpanSlot * (34.0 / 59.0)));
+        const tongueW = Math.max(6.0, slotW - 1.0);
 
-        // Ось L: встречные крючковые клапаны P1 и P3
-        const hP3 = Math.max(14.0, L / 2);                     // 32.50 мм при L=65
-        const hP1 = Math.max(13.0, hP3 - clearanceP1);         // 31.50 мм при L=65, d=0.5
-        const throatX = W / 2;                                 // 35.00 мм при W=70
-        const throatY = hP1 * (15.5 / 31.5);                   // 15.50 мм при L=65
-        const rHook = Math.min(6.5, (hP1 - throatY) * 0.40625);// 6.50 мм при L=65
-        const arcH = rHook * (1 + Math.SQRT1_2);               // 11.096 мм
-        const arcDx = rHook * Math.SQRT1_2;                    // 4.596 мм
-        const diagDy1 = Math.max(0.5, (hP1 - throatY) - arcH); // 4.904 мм
-        const diagDy3 = Math.max(0.5, (hP3 - throatY) - arcH); // 5.904 мм
+        // Параметры встречных крючковых клапанов (горловина на hookPanelW/2 + 2d, поднутрение 40°)
+        const hHookDeep = Math.max(14.0, hookSpan / 2);          // Глубокий крючок (P3 в стандарте, P4 при сдвиге)
+        const hHookShallow = Math.max(13.0, hHookDeep - clearance); // Короткий крючок на -2d (P1 в стандарте, P2 при сдвиге)
+        const throatX = Math.min(hookPanelW - step - 6.0, (swapped ? L : W) / 2 + clearance);
+        const throatY = hHookShallow * (15.5 / 31.5);
+        const rHook = Math.min(6.5, (hHookShallow - throatY) * 0.40625);
+        const hookAlpha = 40.0 * Math.PI / 180;
+        const arcH = rHook * (1 + Math.cos(hookAlpha));
+        const arcDx = rHook * Math.sin(hookAlpha);
+        const diagDyShallow = Math.max(0.5, (hHookShallow - throatY) - arcH);
+        const diagDxShallow = diagDyShallow / Math.tan(hookAlpha);
+        const diagDyDeep = Math.max(0.5, (hHookDeep - throatY) - arcH);
+        const diagDxDeep = diagDyDeep / Math.tan(hookAlpha);
 
-        // 1. Клапан P4 (x5 -> x4): трапециевидный запорный язычок
-        const cx4 = (x4 + x5) / 2;
-        const t4Right = cx4 + tongueW / 2;
-        const t4Left = cx4 - tongueW / 2;
+        // Вспомогательные построители 4 типов клапанов при обходе по часовой стрелке (xRight -> xLeft)
+        const appendTongue = (xL, xR) => {
+          const cx = (xL + xR) / 2;
+          const tR = cx + tongueW / 2;
+          const tL = cx - tongueW / 2;
+          outer.push(`L ${f(tR)} ${f(tongueShoulderY)}`);
+          outer.push(`L ${f(tR)} ${f(yBotDeep - rSlot)}`);
+          outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(tR - rSlot)} ${f(yBotDeep)}`);
+          outer.push(`L ${f(tL + rSlot)} ${f(yBotDeep)}`);
+          outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(tL)} ${f(yBotDeep - rSlot)}`);
+          outer.push(`L ${f(tL)} ${f(tongueShoulderY)}`);
+          outer.push(`L ${f(xL)} ${f(yBot)}`);
+        };
 
-        outer.push(`L ${f(t4Right)} ${f(slotTopY)}`);
-        outer.push(`L ${f(t4Right)} ${f(yBotDeep - rSlot)}`);
-        outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(t4Right - rSlot)} ${f(yBotDeep)}`);
-        outer.push(`L ${f(t4Left + rSlot)} ${f(yBotDeep)}`);
-        outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(t4Left)} ${f(yBotDeep - rSlot)}`);
-        outer.push(`L ${f(t4Left)} ${f(slotTopY)}`);
-        outer.push(`L ${f(x4)} ${f(yBot)}`);
+        const appendSlot = (xL, xR) => {
+          const cx = (xL + xR) / 2;
+          const sR = cx + slotW / 2;
+          const sL = cx - slotW / 2;
+          outer.push(`L ${f(xR - step)} ${f(yBot + step)}`);
+          outer.push(`L ${f(xR - step)} ${f(yBotDeep)}`);
+          outer.push(`L ${f(sR + rSlot)} ${f(yBotDeep)}`);
+          outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(sR)} ${f(yBotDeep - rSlot)}`);
+          outer.push(`L ${f(sR)} ${f(slotTopY)}`);
+          outer.push(`L ${f(sL)} ${f(slotTopY)}`);
+          outer.push(`L ${f(sL)} ${f(yBotDeep - rSlot)}`);
+          outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(sL - rSlot)} ${f(yBotDeep)}`);
+          outer.push(`L ${f(xL + step)} ${f(yBotDeep)}`);
+          outer.push(`L ${f(xL + step)} ${f(yBot + step)}`);
+          outer.push(`L ${f(xL)} ${f(yBot)}`);
+        };
 
-        // 2. Клапан P3 (x4 -> x3): правый крючковый клапан (глубина L/2)
-        const p3ThroatX = x3 + throatX;
-        const p3ThroatY = yBot + throatY;
-        const p3ArcEndX = p3ThroatX - diagDy3;
-        const p3ArcEndY = p3ThroatY + diagDy3;
-        const p3ArcStartX = p3ArcEndX + arcDx;
-        const p3BotY = yBot + hP3;
+        const appendHookRight = (xL, xR) => {
+          const tX = xL + throatX;
+          const tY = yBot + throatY;
+          const arcEndX = tX - diagDxDeep;
+          const arcEndY = tY + diagDyDeep;
+          const arcStartX = arcEndX + arcDx;
+          const botY = yBot + hHookDeep;
+          outer.push(`L ${f(xR - step)} ${f(yBot + step)}`);
+          outer.push(`L ${f(xR - step)} ${f(botY)}`);
+          outer.push(`L ${f(arcStartX)} ${f(botY)}`);
+          outer.push(`A ${f(rHook)} ${f(rHook)} 0 0 1 ${f(arcEndX)} ${f(arcEndY)}`);
+          outer.push(`L ${f(tX)} ${f(tY)}`);
+          outer.push(`L ${f(xL)} ${f(yBot)}`);
+        };
 
-        outer.push(`L ${f(x4 - step)} ${f(yBot + step)}`);
-        outer.push(`L ${f(x4 - step)} ${f(p3BotY)}`);
-        outer.push(`L ${f(p3ArcStartX)} ${f(p3BotY)}`);
-        outer.push(`A ${f(rHook)} ${f(rHook)} 0 0 1 ${f(p3ArcEndX)} ${f(p3ArcEndY)}`);
-        outer.push(`L ${f(p3ThroatX)} ${f(p3ThroatY)}`);
-        outer.push(`L ${f(x3)} ${f(yBot)}`);
+        const appendHookLeft = (xL, xR) => {
+          const tX = xR - throatX;
+          const tY = yBot + throatY;
+          const arcEndX = tX + diagDxShallow;
+          const arcEndY = tY + diagDyShallow;
+          const arcStartX = arcEndX - arcDx;
+          const botY = yBot + hHookShallow;
+          outer.push(`L ${f(tX)} ${f(tY)}`);
+          outer.push(`L ${f(arcEndX)} ${f(arcEndY)}`);
+          outer.push(`A ${f(rHook)} ${f(rHook)} 0 0 1 ${f(arcStartX)} ${f(botY)}`);
+          outer.push(`L ${f(xL + step)} ${f(botY)}`);
+          outer.push(`L ${f(xL + step)} ${f(yBot + step)}`);
+          outer.push(`L ${f(xL)} ${f(yBot)}`);
+        };
 
-        // 3. Клапан P2 (x3 -> x2): опорный клапан с П-образным пазом (внешние углы острые 90°, внутренние R = 4.0 мм)
-        const cx2 = (x2 + x3) / 2;
-        const slotRight = cx2 + slotW / 2;
-        const slotLeft = cx2 - slotW / 2;
-
-        outer.push(`L ${f(x3 - step)} ${f(yBot + step)}`);
-        outer.push(`L ${f(x3 - step)} ${f(yBotDeep)}`);
-        outer.push(`L ${f(slotRight + rSlot)} ${f(yBotDeep)}`);
-        outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(slotRight)} ${f(yBotDeep - rSlot)}`);
-        outer.push(`L ${f(slotRight)} ${f(slotTopY)}`);
-        outer.push(`L ${f(slotLeft)} ${f(slotTopY)}`);
-        outer.push(`L ${f(slotLeft)} ${f(yBotDeep - rSlot)}`);
-        outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(slotLeft - rSlot)} ${f(yBotDeep)}`);
-        outer.push(`L ${f(x2 + step)} ${f(yBotDeep)}`);
-        outer.push(`L ${f(x2 + step)} ${f(yBot + step)}`);
-        outer.push(`L ${f(x2)} ${f(yBot)}`);
-
-        // 4. Клапан P1 (x2 -> x1): левый крючковый клапан (глубина L/2 - 2d)
-        const p1ThroatX = x2 - throatX;
-        const p1ThroatY = yBot + throatY;
-        const p1ArcEndX = p1ThroatX + diagDy1;
-        const p1ArcEndY = p1ThroatY + diagDy1;
-        const p1ArcStartX = p1ArcEndX - arcDx;
-        const p1BotY = yBot + hP1;
-
-        outer.push(`L ${f(p1ThroatX)} ${f(p1ThroatY)}`);
-        outer.push(`L ${f(p1ArcEndX)} ${f(p1ArcEndY)}`);
-        outer.push(`A ${f(rHook)} ${f(rHook)} 0 0 1 ${f(p1ArcStartX)} ${f(p1BotY)}`);
-        outer.push(`L ${f(x1 + step)} ${f(p1BotY)}`);
-        outer.push(`L ${f(x1 + step)} ${f(yBot + step)}`);
-        outer.push(`L ${f(x1)} ${f(yBot)}`);
+        if (!swapped) {
+          // Стандарт: P4 язычок -> P3 правый крючок -> P2 паз -> P1 левый крючок
+          appendTongue(x4, x5);
+          appendHookRight(x3, x4);
+          appendSlot(x2, x3);
+          appendHookLeft(x1, x2);
+          bottomInfoHtml = `A55.20.01.01: язычок P4 <span class="text-slate-200">${f(tongueW)} мм</span> / паз P2 <span class="text-emerald-300">${f(slotW)} мм</span>`;
+        } else {
+          // Сдвиг 90°: P4 правый крючок -> P3 язычок -> P2 левый крючок -> P1 паз
+          appendHookRight(x4, x5);
+          appendTongue(x3, x4);
+          appendHookLeft(x2, x3);
+          appendSlot(x1, x2);
+          bottomInfoHtml = `A55.20 (сдвиг): язычок P3 <span class="text-slate-200">${f(tongueW)} мм</span> / паз P1 <span class="text-emerald-300">${f(slotW)} мм</span>`;
+        }
 
         extraCreases.push({ x1: x1, y1: yBot, x2: x5, y2: yBot });
-        maxBottomDepth = Math.max(hP3, hSlotFlap);
-        bottomInfoHtml = `A55.20.01.01: язычок P4 <span class="text-slate-200">${f(tongueW)} мм</span> / паз P2 <span class="text-emerald-300">${f(slotW)} мм</span>`;
+        maxBottomDepth = Math.max(hHookDeep, hSlotFlap);
 
       } else {
         // ---------------------------------------------------------------------
@@ -922,8 +965,30 @@
     }
 
     // =========================================================================
-    // ОБНОВЛЕНИЕ КНОПОК ТИПА КОРОБКИ И ПРЕСЕТОВ
+    // ОБНОВЛЕНИЕ КНОПОК ТИПА КОРОБКИ, ПЕРЕКЛЮЧАТЕЛЯ КЛАПАНОВ И ПРЕСЕТОВ
     // =========================================================================
+    function syncBottomSwapUI() {
+      const wrap = document.getElementById('bottomSwapWrap');
+      const btn = document.getElementById('btnSwapBottom');
+      const badge = document.getElementById('swapBottomBadge');
+
+      if (state.boxType !== 'ecma055') {
+        wrap.classList.add('hidden');
+        return;
+      }
+      wrap.classList.remove('hidden');
+
+      if (state.bottomSwapped) {
+        btn.className = 'w-full px-3 py-2 rounded-xl bg-purple-500/15 hover:bg-purple-500/20 border border-purple-500/60 text-xs font-medium text-purple-100 flex items-center justify-between gap-2 transition cursor-pointer';
+        badge.textContent = 'P2/P4 крючки';
+        badge.className = 'px-1.5 py-0.5 rounded bg-purple-500/25 border border-purple-400/40 text-[10px] font-mono text-purple-200 font-semibold';
+      } else {
+        btn.className = 'w-full px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-medium text-slate-200 flex items-center justify-between gap-2 transition cursor-pointer';
+        badge.textContent = 'P1/P3 крючки';
+        badge.className = 'px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300';
+      }
+    }
+
     function syncTypeUI() {
       const t = state.boxType;
 
@@ -972,6 +1037,8 @@
         document.getElementById(c.id).className = c.active ? c.activeCls : inactiveBtn;
         document.getElementById(c.dot).className = c.active ? c.dotCls : inactiveDot;
       });
+
+      syncBottomSwapUI();
 
       // Пресеты
       const presets = PRESETS_BY_TYPE[t] || PRESETS_BY_TYPE.autolock;
@@ -1128,7 +1195,9 @@
       const h = f(g.totalH);
       const typeLabel = g.isEcma020
         ? 'ECMA-A20.20.03.01'
-        : (g.isEcma055 ? 'ECMA-A55.20.01.01' : 'ECMA-A60.20.01.01');
+        : (g.isEcma055
+            ? (state.bottomSwapped ? 'ECMA-A55.20.01.01-SWAP' : 'ECMA-A55.20.01.01')
+            : 'ECMA-A60.20.01.01');
 
       const creaseLines = g.creases
         .map(c => `    <line x1="${f(c.x1)}" y1="${f(c.y1)}" x2="${f(c.x2)}" y2="${f(c.y2)}" />`)
@@ -1230,6 +1299,12 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
       document.getElementById('btnTypeEcma055').addEventListener('click', () => setBoxType('ecma055'));
       document.getElementById('btnTypeEcma020').addEventListener('click', () => setBoxType('ecma020'));
 
+      document.getElementById('btnSwapBottom').addEventListener('click', () => {
+        state.bottomSwapped = !state.bottomSwapped;
+        syncBottomSwapUI();
+        render();
+      });
+
       const bindNum = (id, key) => {
         const el = document.getElementById(id);
         el.addEventListener('input', () => {
@@ -1279,7 +1354,9 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
         const svgText = buildCleanExportSvg();
         const tag = state.boxType === 'ecma020'
           ? 'ECMA-A20.20'
-          : (state.boxType === 'ecma055' ? 'ECMA-A55.20' : 'ECMA-A60.20');
+          : (state.boxType === 'ecma055'
+              ? (state.bottomSwapped ? 'ECMA-A55.20_SWAP' : 'ECMA-A55.20')
+              : 'ECMA-A60.20');
         const fname = `BOX_${tag}_${f(state.W)}x${f(state.L)}x${f(state.H)}mm.svg`;
         downloadFile(svgText, fname, 'image/svg+xml;charset=utf-8');
         showToast(`Сохранён 1:1 макет: ${fname}`);

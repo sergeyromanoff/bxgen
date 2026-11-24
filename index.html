@@ -636,19 +636,18 @@
         outer.push(`L ${f(p4TL.x)} ${f(p4TL.y)}`);
         outer.push(`L ${f(x4)} ${f(yBot)}`);
 
-        // 2. Клапан P3 (x4 -> x3): правый крючковый клапан
+        // 2. Клапан P3 (x4 -> x3): правый крючковый клапан (строгое зеркало P1 по часовой стрелке)
         const noseR = Math.min(6.0, hHook * 0.22, W * 0.09);
-        const p3Start = { x: x3, y: yBot };
-        const p3Throat = { x: x3 + W * 0.47, y: yBot + hHook * 0.56 };
-        const p3NoseCorner = { x: x3 + W * 0.34, y: yBot + hHook };
         const p3BotRight = { x: x4 - stepX, y: yBot + hHook };
-        const f3Nose = filletCorner(p3Throat, p3NoseCorner, p3BotRight, noseR);
+        const p3NoseCorner = { x: x3 + W * 0.34, y: yBot + hHook };
+        const p3Throat = { x: x3 + W * 0.47, y: yBot + hHook * 0.56 };
+        const f3Nose = filletCorner(p3BotRight, p3NoseCorner, p3Throat, noseR);
 
-        outer.push(`L ${f(p3Throat.x)} ${f(p3Throat.y)}`);
-        outer.push(f3Nose.svg);
-        outer.push(`L ${f(p3BotRight.x)} ${f(p3BotRight.y)}`);
         outer.push(`L ${f(x4 - stepX)} ${f(yBot + stepY)}`);
-        outer.push(`L ${f(x4)} ${f(yBot)}`);
+        outer.push(`L ${f(p3BotRight.x)} ${f(p3BotRight.y)}`);
+        outer.push(f3Nose.svg);
+        outer.push(`L ${f(p3Throat.x)} ${f(p3Throat.y)}`);
+        outer.push(`L ${f(x3)} ${f(yBot)}`);
 
         // 3. Клапан P2 (x3 -> x2): опорный клапан с центральным П-образным пазом
         const slotW = tongueW4 + 1.0;                           // Паз на 1 мм шире язычка P4
@@ -685,7 +684,7 @@
         outer.push(`L ${f(p2TopL.x)} ${f(p2TopL.y)}`);
         outer.push(`L ${f(x2)} ${f(yBot)}`);
 
-        // 4. Клапан P1 (x2 -> x1): левый крючковый клапан (точное зеркало P3)
+        // 4. Клапан P1 (x2 -> x1): левый крючковый клапан
         const p1Throat = { x: x2 - W * 0.47, y: yBot + hHook * 0.56 };
         const p1NoseCorner = { x: x2 - W * 0.34, y: yBot + hHook };
         const p1BotLeft = { x: x1 + stepX, y: yBot + hHook };
@@ -788,7 +787,7 @@
       // 2. Укладка «валетом» (переворот 180° / 270°, крышка одной входит мимо крышки другой)
       const flapProtrusion = (g.yTopSide - g.yTuckTop) + g.maxBottomDepth;
       const bodyOnlyH = g.H + g.d;
-      const pairSpanH = bodyOnlyH + flapProtrusion + gap; // Шаг пары по высоте при чередовании 0°/180°
+      const pairSpanH = bodyOnlyH + flapProtrusion + gap;
 
       let nValet0 = 0;
       if (bw <= workW && pairSpanH <= workH) {

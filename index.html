@@ -221,7 +221,7 @@
             </div>
             <div>
               <label for="inputTuckH" class="block text-[11px] text-slate-400 mb-1">Язычок (мм)</label>
-              <input id="inputTuckH" type="number" min="8" max="40" step="0.5" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+              <input id="inputTuckH" type="number" min="8" max="40" step="0.5" value="15.5" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
             </div>
           </div>
 
@@ -376,7 +376,7 @@
       H: 297,              // Номинальная высота боковых стенок (P2, P3, P4)
       d: 0.5,              // Припуск на толщину материала (мм) — Бристоль 300–350 г/м²
       glueW: 15,           // Ширина бокового клеевого клапана (мм)
-      tuckH: 15,           // Высота запорного язычка крышки (мм)
+      tuckH: 15.5,         // Высота запорного язычка крышки от биговки (мм)
       glueNotches: true,
       showDims: true,
       zoom: 1,
@@ -457,6 +457,7 @@
     // РАСЧЁТ ПАРАМЕТРИЧЕСКОЙ ГЕОМЕТРИИ РАЗВЁРТКИ (ECMA A60 / A55 / A20)
     // =========================================================================
     function calculateGeometry() {
+      const isAutolock = state.boxType === 'autolock';
       const isEcma055 = state.boxType === 'ecma055';
       const isEcma020 = state.boxType === 'ecma020';
 
@@ -469,7 +470,7 @@
       const H = Math.max(30, Math.min(900, Number(state.H) || defaultH));
       const d = Math.max(0, Math.min(5, Number(state.d) || 0));
       const glueW = Math.max(8, Math.min(40, Number(state.glueW) || 15));
-      const tuckH = Math.max(8, Math.min(40, Number(state.tuckH) || 15));
+      const tuckH = Math.max(8, Math.min(40, Number(state.tuckH) || 15.5));
 
       // 1. КООРДИНАТЫ ЧЕТЫРЁХ ОСНОВНЫХ ПАНЕЛЕЙ ПО X
       // Правая крайняя стенка P4 укорочена на d (компенсация на склейке)
@@ -486,26 +487,42 @@
       const x5 = x4 + p4W;
 
       // 2. ВЕРТИКАЛЬНЫЕ УРОВНИ ПО Y (Y = 0 — верхний край язычка крышки)
+      // Для автодна (HANSARAY 90×90×297): глубина крышки L + 0.66 мм (90.66 мм)
+      const lidDepth = isAutolock ? (L + 0.66) : L;
       const yTuckTop = 0;
       const yLidCrease = tuckH;             // Синяя биговка запорного язычка
       const earUp = 1.0;                    // Выступ ушка выше биговки язычка
       const yEarTop = yLidCrease - earUp;
-      const yTop1 = yLidCrease + L;         // Верхняя биговка крышки на P1 (глубина крышки = L)
+      const yTop1 = yLidCrease + lidDepth;  // Верхняя биговка крышки на P1
       const yTopSide = yTop1 + d;           // Верхний уровень боковин P2, P3, P4 и клеевого клапана (P1 выше на d)
       const yBot = yTopSide + H;            // Линия биговки дна (высота P2..P4 = H, высота P1 = H + d)
 
-      // 3. ПАРАМЕТРЫ ВЕРХНЕЙ КРЫШКИ И ПЫЛЕЗАЩИТНЫХ КЛАПАНОВ (ОБЩИЕ ДЛЯ ВСЕХ ТРЁХ КОРОБОК)
-      const tuckOffset = 0.5;                                 // Отступ язычка от краёв крышки (0.5 мм)
-      const earW = Math.min(Math.max(4, W * 0.055), 8);       // Ширина бокового замочка-ушка
-      const tuckInset = Math.min(tuckH * 0.65, W * 0.14);     // Плавный заход дуги язычка
+      // 3. ПАРАМЕТРЫ ВЕРХНЕЙ КРЫШКИ, ЯЗЫЧКА И ПЫЛЕЗАЩИТНЫХ КЛАПАНОВ
+      const tuckOffset = 0.5;
+      const earW = isAutolock
+        ? Math.min(Math.max(4.0, W * (6.0 / 90)), 8.0)       // 6.00 мм при W=90 (точно по HANSARAY)
+        : Math.min(Math.max(4.0, W * 0.055), 8.0);
+      const tuckInset = Math.min(tuckH * 0.65, W * 0.14);
 
-      // Верхние пылезащитные клапаны (короче на 3 мм от полуширины, отступ 0.5 мм от биговок x3/x4)
-      const dustH = Math.max(10, W / 2 - d - 3);
-      const yDustTop = yTopSide - dustH;
+      // Истинная круговая дуга язычка крышки для автодна (R = 20.00 мм при tuckH = 15.5 мм -> dx = 6.225 мм)
+      const tuckArcDy = Math.max(4.0, tuckH - earUp);
+      const maxTuckArcDx = Math.max(2.0, (W - 2 * tuckOffset - 10.0) / 2);
+      const baseTuckR = Math.max(tuckArcDy + 0.5, tuckArcDy * (20.0 / 14.5));
+      const rawTuckDx = baseTuckR - Math.sqrt(Math.max(0, baseTuckR * baseTuckR - tuckArcDy * tuckArcDy));
+      const tuckArcDx = Math.min(rawTuckDx, maxTuckArcDx);
+      const tuckArcR = (tuckArcDx * tuckArcDx + tuckArcDy * tuckArcDy) / (2 * tuckArcDx);
+
+      // Верхние пылезащитные клапаны
       const dustInnerOffset = 0.5;
+      const dustH = isAutolock
+        ? Math.max(10, W / 2 - d - 2.7909)                   // 41.709 мм при W=90, d=0.5 (точно по HANSARAY)
+        : Math.max(10, W / 2 - d - 3.0);
+      const yDustTop = yTopSide - dustH;
 
-      // Клеевой клапан слева
-      const glueChamfer = Math.min(glueW * 0.35, 6.0);
+      // Клеевой клапан слева (скос ровно 20° -> 5.460 мм при glueW = 15 мм)
+      const glueChamfer = isAutolock
+        ? Math.min(H * 0.25, glueW * Math.tan(20.0 * Math.PI / 180))
+        : Math.min(glueW * 0.35, 6.0);
 
       // =======================================================================
       // ПОСТРОЕНИЕ ВЕРХНЕЙ И ПРАВОЙ ЧАСТИ ВНЕШНЕГО КОНТУРА РЕЗА
@@ -517,31 +534,69 @@
       outer.push(`L ${f(x1)} ${f(yEarTop)}`);
       outer.push(`L ${f(x1 + tuckOffset)} ${f(yEarTop)}`);
 
-      // Запорный язычок крышки (плавные дуги Q)
-      outer.push(`Q ${f(x1 + tuckOffset)} ${f(yTuckTop)} ${f(x1 + tuckOffset + tuckInset)} ${f(yTuckTop)}`);
-      outer.push(`L ${f(x2 - tuckOffset - tuckInset)} ${f(yTuckTop)}`);
-      outer.push(`Q ${f(x2 - tuckOffset)} ${f(yTuckTop)} ${f(x2 - tuckOffset)} ${f(yEarTop)}`);
+      // Запорный язычок крышки
+      if (isAutolock) {
+        // Истинные круговые дуги R = 20.00 мм (точно по HANSARAY 90×90×297)
+        outer.push(`A ${f(tuckArcR)} ${f(tuckArcR)} 0 0 1 ${f(x1 + tuckOffset + tuckArcDx)} ${f(yTuckTop)}`);
+        outer.push(`L ${f(x2 - tuckOffset - tuckArcDx)} ${f(yTuckTop)}`);
+        outer.push(`A ${f(tuckArcR)} ${f(tuckArcR)} 0 0 1 ${f(x2 - tuckOffset)} ${f(yEarTop)}`);
+      } else {
+        outer.push(`Q ${f(x1 + tuckOffset)} ${f(yTuckTop)} ${f(x1 + tuckOffset + tuckInset)} ${f(yTuckTop)}`);
+        outer.push(`L ${f(x2 - tuckOffset - tuckInset)} ${f(yTuckTop)}`);
+        outer.push(`Q ${f(x2 - tuckOffset)} ${f(yTuckTop)} ${f(x2 - tuckOffset)} ${f(yEarTop)}`);
+      }
       outer.push(`L ${f(x2)} ${f(yEarTop)}`);
       outer.push(`L ${f(x2)} ${f(yTopSide)}`);
 
-      // Верхний пылезащитный клапан Панели 2 (x2..x3, отступ 0.5 мм от биговки x3)
-      outer.push(`L ${f(x2 + 3.5)} ${f(yTopSide - 2.8)}`);
-      outer.push(`L ${f(x2 + 3.5 + (dustH - 2.8) * 0.08)} ${f(yDustTop)}`);
-      outer.push(`L ${f(x3 - 3.0 - (dustH - 5.0) * 0.25)} ${f(yDustTop)}`);
-      outer.push(`L ${f(x3 - 3.0)} ${f(yTopSide - 5.0)}`);
-      outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yTopSide - 2.5)}`);
-      outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yTopSide)}`);
+      // Верхние пылезащитные клапаны Панелей 2 и 4
+      if (isAutolock) {
+        // Точная геометрия верхних клапанов по HANSARAY 90×90×297
+        const outDx1 = Math.min(3.0, p4W * 0.08);
+        const outDy1 = dustH * (2.2748 / 41.7091);           // 2.275 мм
+        const outDx2 = Math.min(3.5, p4W * 0.08);            // Суммарный внешний скос 6.50 мм
+        const inRiserY = dustH * (2.6539 / 41.7091);         // 2.654 мм
+        const inChamfX = Math.min(2.0, p4W * 0.05);
+        const inChamfY = dustH * (1.5165 / 41.7091);         // 1.517 мм
+        const inSlantX = Math.min(9.3782, p4W * (9.3782 / 89.5)); // Суммарный внутренний скос 11.878 мм
 
-      // Верхний горизонтальный рез Панели 3 (с заходом по 0.5 мм к клапанам P2 и P4)
-      outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yTopSide)}`);
+        // Пылезащитный клапан Панели 2 (x2..x3)
+        outer.push(`L ${f(x2 + outDx1)} ${f(yTopSide - outDy1)}`);
+        outer.push(`L ${f(x2 + outDx1 + outDx2)} ${f(yDustTop)}`);
+        outer.push(`L ${f(x3 - dustInnerOffset - inChamfX - inSlantX)} ${f(yDustTop)}`);
+        outer.push(`L ${f(x3 - dustInnerOffset - inChamfX)} ${f(yTopSide - inRiserY - inChamfY)}`);
+        outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yTopSide - inRiserY)}`);
+        outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yTopSide)}`);
 
-      // Верхний пылезащитный клапан Панели 4 (x4..x5, точное горизонтальное зеркало P2)
-      outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yTopSide - 2.5)}`);
-      outer.push(`L ${f(x4 + 3.0)} ${f(yTopSide - 5.0)}`);
-      outer.push(`L ${f(x4 + 3.0 + (dustH - 5.0) * 0.25)} ${f(yDustTop)}`);
-      outer.push(`L ${f(x5 - 3.5 - (dustH - 2.8) * 0.08)} ${f(yDustTop)}`);
-      outer.push(`L ${f(x5 - 3.5)} ${f(yTopSide - 2.8)}`);
-      outer.push(`L ${f(x5)} ${f(yTopSide)}`);
+        // Верхний горизонтальный рез Панели 3
+        outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yTopSide)}`);
+
+        // Пылезащитный клапан Панели 4 (x4..x5, точное зеркало P2)
+        outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yTopSide - inRiserY)}`);
+        outer.push(`L ${f(x4 + dustInnerOffset + inChamfX)} ${f(yTopSide - inRiserY - inChamfY)}`);
+        outer.push(`L ${f(x4 + dustInnerOffset + inChamfX + inSlantX)} ${f(yDustTop)}`);
+        outer.push(`L ${f(x5 - outDx1 - outDx2)} ${f(yDustTop)}`);
+        outer.push(`L ${f(x5 - outDx1)} ${f(yTopSide - outDy1)}`);
+        outer.push(`L ${f(x5)} ${f(yTopSide)}`);
+      } else {
+        // Пылезащитный клапан Панели 2
+        outer.push(`L ${f(x2 + 3.5)} ${f(yTopSide - 2.8)}`);
+        outer.push(`L ${f(x2 + 3.5 + (dustH - 2.8) * 0.08)} ${f(yDustTop)}`);
+        outer.push(`L ${f(x3 - 3.0 - (dustH - 5.0) * 0.25)} ${f(yDustTop)}`);
+        outer.push(`L ${f(x3 - 3.0)} ${f(yTopSide - 5.0)}`);
+        outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yTopSide - 2.5)}`);
+        outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yTopSide)}`);
+
+        // Верхний горизонтальный рез Панели 3
+        outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yTopSide)}`);
+
+        // Пылезащитный клапан Панели 4
+        outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yTopSide - 2.5)}`);
+        outer.push(`L ${f(x4 + 3.0)} ${f(yTopSide - 5.0)}`);
+        outer.push(`L ${f(x4 + 3.0 + (dustH - 5.0) * 0.25)} ${f(yDustTop)}`);
+        outer.push(`L ${f(x5 - 3.5 - (dustH - 2.8) * 0.08)} ${f(yDustTop)}`);
+        outer.push(`L ${f(x5 - 3.5)} ${f(yTopSide - 2.8)}`);
+        outer.push(`L ${f(x5)} ${f(yTopSide)}`);
+      }
 
       // Правый вертикальный рез Панели 4
       outer.push(`L ${f(x5)} ${f(yBot)}`);
@@ -562,16 +617,15 @@
         // ВАРИАНТ 3: ECMA A20.20.03.01 (ВСТРЕЧНЫЙ КЛАПАН / REVERSE TUCK END)
         // Верхняя крышка на P1 (01), нижняя крышка на P3 (03), пыльники на P2 и P4
         // ---------------------------------------------------------------------
-        const yBot3 = yBot + d;                     // Нижняя биговка крышки на P3 (P3 ниже боковин на d)
-        const yBotLidCrease = yBot3 + L;            // Синяя биговка нижнего запорного язычка
-        const yBotEar = yBotLidCrease + earUp;      // Выступ ушка ниже биговки язычка
-        const yBotTuck = yBotLidCrease + tuckH;     // Нижний край нижнего язычка
-        const yDustBot = yBot + dustH;              // Нижний край нижних пылезащитных клапанов
+        const yBot3 = yBot + d;
+        const yBotLidCrease = yBot3 + L;
+        const yBotEar = yBotLidCrease + earUp;
+        const yBotTuck = yBotLidCrease + tuckH;
+        const yDustBot = yBot + dustH;
 
         vCrease3End = yBot3;
         vCrease4End = yBot3;
 
-        // 1. Нижний пылезащитный клапан Панели 4 (x5 -> x4 + dustInnerOffset)
         outer.push(`L ${f(x5 - 3.5)} ${f(yBot + 2.8)}`);
         outer.push(`L ${f(x5 - 3.5 - (dustH - 2.8) * 0.08)} ${f(yDustBot)}`);
         outer.push(`L ${f(x4 + 3.0 + (dustH - 5.0) * 0.25)} ${f(yDustBot)}`);
@@ -580,7 +634,6 @@
         outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yBot)}`);
         outer.push(`L ${f(x4)} ${f(yBot)}`);
 
-        // 2. Нижняя откидная крышка и запорный язычок Панели 3 (x4 -> x3)
         outer.push(`L ${f(x4)} ${f(yBotEar)}`);
         outer.push(`L ${f(x4 - tuckOffset)} ${f(yBotEar)}`);
         outer.push(`Q ${f(x4 - tuckOffset)} ${f(yBotTuck)} ${f(x4 - tuckOffset - tuckInset)} ${f(yBotTuck)}`);
@@ -589,7 +642,6 @@
         outer.push(`L ${f(x3)} ${f(yBotEar)}`);
         outer.push(`L ${f(x3)} ${f(yBot)}`);
 
-        // 3. Нижний пылезащитный клапан Панели 2 (x3 - dustInnerOffset -> x2)
         outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yBot)}`);
         outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yBot + 2.5)}`);
         outer.push(`L ${f(x3 - 3.0)} ${f(yBot + 5.0)}`);
@@ -598,10 +650,8 @@
         outer.push(`L ${f(x2 + 3.5)} ${f(yBot + 2.8)}`);
         outer.push(`L ${f(x2)} ${f(yBot)}`);
 
-        // 4. Нижний горизонтальный рез Панели 1 (x2 -> x1)
         outer.push(`L ${f(x1)} ${f(yBot)}`);
 
-        // Прорези нижних замочков-ушек на крышке P3 (с заходом 1.0 мм выше биговки)
         innerCuts.push(
           `M ${f(x3 + tuckOffset)} ${f(yBotEar)} ` +
           `L ${f(x3 + earW)} ${f(yBotEar)} ` +
@@ -613,7 +663,6 @@
           `L ${f(x4 - earW)} ${f(yBotLidCrease - 1.0)}`
         );
 
-        // Горизонтальные биговки нижних клапанов и нижней крышки P3
         extraCreases.push(
           { x1: x2, y1: yBot, x2: x3 - dustInnerOffset, y2: yBot },
           { x1: x3, y1: yBot3, x2: x4, y2: yBot3 },
@@ -632,8 +681,8 @@
         // - Сдвиг (bottomSwapped):     P1 крючок, P2 паз, P3 крючок, P4 язычок
         // ---------------------------------------------------------------------
         const step = Math.min(3.0, W * 0.08, L * 0.08);
-        const clearance = Math.max(0.5, 2 * d);                  // 1.00 мм при d=0.5
-        const hooksOnP2P4 = !state.bottomSwapped;                // По стандарту крючки на P2 и P4
+        const clearance = Math.max(0.5, 2 * d);
+        const hooksOnP2P4 = !state.bottomSwapped;
 
         const lockSpan = hooksOnP2P4 ? L : W;
         const hookSpan = hooksOnP2P4 ? W : L;
@@ -744,17 +793,11 @@
 
       } else {
         // ---------------------------------------------------------------------
-        // ВАРИАНТ 1: ECMA A60.20.01.01 (АВТОДНО — ПОСТРОЕНО ПО HANSARAY 90×90×297)
-        // Эталон 90 × 90 × 297 мм (d = 0.5 мм):
-        // - P1: уступ 2.04×3.04, вертикали до 44.81, глубина 74.25, скосы 5.50
-        // - Окошко P1: верх на 44.81, ширина 43.86 -> 38.86, высота 17.87
-        // - P2/P4: внутренний уступ 3.39×3.39, глубина 41.22, внешний скос 10.00×9.81,
-        //          перегиб 44.79 от внутренней биговки на глубине 23.99, дуга R = 5.00 мм
-        // - P3: плечи 43.39, вертикали 14.50, ширина 43.09, дуги R = 4.00, глубина 61.89
+        // ВАРИАНТ 1: ECMA A60.20.01.01 (АВТОДНО — ПОЛНОСТЬЮ ПО HANSARAY 90×90×297)
         // ---------------------------------------------------------------------
         const innerGap = Math.min(3.39, L * 0.05, W * 0.05);       // 3.390 мм при 90×90
 
-        // 1. Основная створка P1 и вырез-окошко (складывается поперёк L)
+        // 1. Основная створка P1 и вырез-окошко
         const chamfer1X = Math.min(2.0382, W * 0.035);             // 2.038 мм
         const chamfer1Y = Math.min(3.0382, L * 0.045);             // 3.038 мм
         const taperDepth1 = L * (44.8115 / 90);                    // 44.812 мм при L=90
@@ -762,7 +805,7 @@
         const taperIn1 = Math.min(5.50, W * 0.08);                 // 5.500 мм при W=90
         const taperY = yBot + taperDepth1;
 
-        // 2. Центральный замок P3 (складывается поперёк L)
+        // 2. Центральный замок P3
         const tongueW = Math.max(12, W * (43.0902 / 90));          // 43.090 мм при W=90
         const cx3 = (x3 + x4) / 2;
         const tLeft = cx3 - tongueW / 2;
@@ -782,15 +825,15 @@
         const winSideTaper = Math.min(2.50, winTopW * 0.08);       // 2.500 мм
         const winBotW = Math.max(8, winTopW - 2 * winSideTaper);   // 38.858 мм при W=90
 
-        // 4. Боковые крылья P2 и P4 (складываются поперёк W)
+        // 4. Боковые крылья P2 и P4
         const bot2H = Math.max(16, W * (41.2240 / 90));            // 41.224 мм при W=90
         const wingDiagX = Math.min(10.0, L * (10.0 / 90));         // 10.000 мм
         const wingDiagY = Math.min(9.8054, W * (9.8054 / 90));     // 9.805 мм
         const notchFromInner = L * (44.7855 / 90);                 // 44.786 мм от x3 / x4
         const notchDepthY = W * (23.9883 / 90);                    // 23.988 мм от yBot
         const rWing = Math.min(5.0, (bot2H - notchDepthY) * 0.29); // 5.000 мм при 90×90
-        const hookSlope = 4.6626 / 10.1482;                        // Точный наклон поднутрения крыла
-        const cornerDx = (bot2H - notchDepthY) * hookSlope;        // Смещение виртуального угла
+        const hookSlope = 4.6626 / 10.1482;
+        const cornerDx = (bot2H - notchDepthY) * hookSlope;
 
         // Панель 4 (x5 -> x4): правое крыло автодна
         const notchP4 = { x: x4 + notchFromInner, y: yBot + notchDepthY };
@@ -814,7 +857,7 @@
         outer.push(`L ${f(tLeft)} ${f(shoulderY)}`);
         outer.push(`L ${f(x3)} ${f(yBot)}`);
 
-        // Панель 2 (x3 -> x2): левое крыло автодна (точное зеркало P4)
+        // Панель 2 (x3 -> x2): левое крыло автодна
         const startBotP2 = { x: x3 - innerGap, y: yBot + bot2H };
         const notchP2 = { x: x3 - notchFromInner, y: yBot + notchDepthY };
         const cornerP2 = { x: notchP2.x - cornerDx, y: yBot + bot2H };
@@ -870,13 +913,26 @@
 
       const glueNotchLines = [];
       if (state.glueNotches) {
-        const notchStep = 8.0;
-        const nStart = yTopSide + glueChamfer + 5;
-        const nEnd = yBot - glueChamfer - 5;
-        const nx1 = x1 - Math.min(glueW * 0.25, 4.0);
-        const nx2 = x1 - Math.min(glueW * 0.65, 9.5);
-        for (let ny = nStart; ny <= nEnd; ny += notchStep) {
-          glueNotchLines.push({ x1: nx1, y1: ny, x2: nx2, y2: ny + 2.2 });
+        if (isAutolock) {
+          // Насечки под клей под углом 20° с шагом 7.182 мм (точно по HANSARAY)
+          const notchStep = 7.1823;
+          const nStart = yTopSide + glueChamfer + 2.065;
+          const nEnd = yBot - glueChamfer - 3.9;
+          const nx1 = x1 - Math.min(glueW * 0.2204, 4.0);
+          const nx2 = x1 - Math.min(glueW * 0.50, 9.0);
+          const nDy = (nx1 - nx2) * Math.tan(20.0 * Math.PI / 180);
+          for (let ny = nStart; ny <= nEnd + 0.05; ny += notchStep) {
+            glueNotchLines.push({ x1: nx1, y1: ny, x2: nx2, y2: ny + nDy });
+          }
+        } else {
+          const notchStep = 8.0;
+          const nStart = yTopSide + glueChamfer + 5;
+          const nEnd = yBot - glueChamfer - 5;
+          const nx1 = x1 - Math.min(glueW * 0.25, 4.0);
+          const nx2 = x1 - Math.min(glueW * 0.65, 9.5);
+          for (let ny = nStart; ny <= nEnd; ny += notchStep) {
+            glueNotchLines.push({ x1: nx1, y1: ny, x2: nx2, y2: ny + 2.2 });
+          }
         }
       }
 
@@ -884,16 +940,16 @@
       // ЛИНИИ БИГОВКИ (#0000FF)
       // =======================================================================
       const creases = [
-        // Вертикальные
-        { x1: x1, y1: yTopSide, x2: x1, y2: yBot },
+        // Вертикальные (для автодна биговка x1 идёт от yTop1, точно по HANSARAY)
+        { x1: x1, y1: isAutolock ? yTop1 : yTopSide, x2: x1, y2: yBot },
         { x1: x2, y1: yTop1, x2: x2, y2: yBot },
         { x1: x3, y1: yTopSide, x2: x3, y2: vCrease3End },
         { x1: x4, y1: yTopSide, x2: x4, y2: vCrease4End },
         // Горизонтальные (верхние)
         { x1: x1 + earW, y1: yLidCrease, x2: x2 - earW, y2: yLidCrease },
         { x1: x1, y1: yTop1, x2: x2, y2: yTop1 },
-        { x1: x2, y1: yTopSide, x2: x3 - dustInnerOffset, y2: yTopSide },
-        { x1: x4 + dustInnerOffset, y1: yTopSide, x2: x5, y2: yTopSide },
+        { x1: x2, y1: yTopSide, x2: isAutolock ? x3 : (x3 - dustInnerOffset), y2: yTopSide },
+        { x1: isAutolock ? x4 : (x4 + dustInnerOffset), y1: yTopSide, x2: x5, y2: yTopSide },
         // Горизонтальные (нижние, зависят от конструкции)
         ...extraCreases
       ];
@@ -903,6 +959,7 @@
 
       return {
         boxType: state.boxType,
+        isAutolock,
         isEcma055,
         isEcma020,
         L, W, H, d, glueW, tuckH,

@@ -608,20 +608,32 @@
         // ---------------------------------------------------------------------
         // ВАРИАНТ 2: FEFCO-0215 (САМОСБОРНОЕ ДНО С КРЮЧКАМИ И ЯЗЫЧКОМ В ПАЗ)
         // Эталон: 70 × 65 × 290 мм (W = 70, L = 65, H = 290, d = 0.5)
+        // P1 и P3 (ширина W) перекрывают глубину L: hHook = L/2 + 5 мм (37.5 мм)
+        // P2 и P4 (ширина L) перекрывают ширину W: hSlotFlap = W/2 + 11.5 мм (46.5 мм)
         // ---------------------------------------------------------------------
-        const hHook = Math.max(20, L * 0.54);                   // Глубина крючковых клапанов P1 и P3 (~35.1 мм при L=65)
-        const hSlotFlap = Math.max(24, L * 0.76);               // Глубина клапанов P2 (с пазом) и P4 (язычок) (~49.4 мм при L=65)
-        const stepX = Math.min(3.5, W * 0.06, L * 0.06);        // Разгрузочный уступ 45° у биговок (3.5 мм)
+        const hookOverlap = Math.max(4.0, Math.min(8.0, L * 0.077));
+        const hHook = Math.max(20, L / 2 + hookOverlap);          // 37.5 мм при L=65
+        const lockEngage = Math.max(8.0, W * 0.164);
+        const hSlotFlap = Math.max(24, W / 2 + lockEngage);       // 46.5 мм при W=70
+        const stepX = Math.min(4.0, W * 0.06, L * 0.062);         // Разгрузочный уступ 4.0 × 4.0 мм
         const stepY = stepX;
+        const yBotDeep = yBot + hSlotFlap;
 
-        // 1. Клапан P4 (x5 -> x4): трапециевидный запорный язычок
-        const shoulderY4 = yBot + hSlotFlap * 0.74;
-        const tongueW4 = Math.max(12, L * 0.42);
+        // 1. Клапан P2 (геометрия паза): расчёт ширины паза (32.0 мм при L=65) и ножек (12.5 мм)
+        const outerSpan2 = Math.max(18, (x3 - stepX) - (x2 + stepX));
+        const legW = Math.max(5.0, outerSpan2 * 0.22);
+        const slotW = Math.max(8.0, outerSpan2 - 2 * legW);
+        const legH = Math.max(4.0, hSlotFlap * 0.172);            // 8.0 мм при hSlotFlap=46.5
+        const slotTopY = yBotDeep - legH;                         // 38.5 мм от yBot
+        const legR = Math.min(2.5, legW * 0.22, legH * 0.32);
+
+        // 2. Клапан P4 (x5 -> x4): трапециевидный запорный язычок (23.0 мм при slotW=32.0)
+        const shoulderY4 = yBot + hSlotFlap * 0.763;              // 35.5 мм от yBot
+        const tongueW4 = Math.max(10.0, slotW * 0.72);
         const cx4 = (x4 + x5) / 2;
         const t4Right = cx4 + tongueW4 / 2;
         const t4Left = cx4 - tongueW4 / 2;
-        const yBotDeep = yBot + hSlotFlap;
-        const r4 = Math.min(4.0, tongueW4 * 0.2, Math.max(1, (yBotDeep - shoulderY4) * 0.42));
+        const r4 = Math.min(3.5, tongueW4 * 0.18, Math.max(1, (yBotDeep - shoulderY4) * 0.35));
 
         const p4TR = { x: t4Right, y: shoulderY4 };
         const p4BR = { x: t4Right, y: yBotDeep };
@@ -636,11 +648,11 @@
         outer.push(`L ${f(p4TL.x)} ${f(p4TL.y)}`);
         outer.push(`L ${f(x4)} ${f(yBot)}`);
 
-        // 2. Клапан P3 (x4 -> x3): правый крючковый клапан (строгое зеркало P1 по часовой стрелке)
-        const noseR = Math.min(6.0, hHook * 0.22, W * 0.09);
+        // 3. Клапан P3 (x4 -> x3): правый крючковый клапан (строгое зеркало P1)
+        const noseR = Math.min(4.8, hHook * 0.14, W * 0.07);
         const p3BotRight = { x: x4 - stepX, y: yBot + hHook };
-        const p3NoseCorner = { x: x3 + W * 0.34, y: yBot + hHook };
-        const p3Throat = { x: x3 + W * 0.47, y: yBot + hHook * 0.56 };
+        const p3NoseCorner = { x: x3 + W * 0.307, y: yBot + hHook };
+        const p3Throat = { x: x3 + W * 0.49, y: yBot + hHook * 0.60 };
         const f3Nose = filletCorner(p3BotRight, p3NoseCorner, p3Throat, noseR);
 
         outer.push(`L ${f(x4 - stepX)} ${f(yBot + stepY)}`);
@@ -649,15 +661,10 @@
         outer.push(`L ${f(p3Throat.x)} ${f(p3Throat.y)}`);
         outer.push(`L ${f(x3)} ${f(yBot)}`);
 
-        // 3. Клапан P2 (x3 -> x2): опорный клапан с центральным П-образным пазом
-        const slotW = tongueW4 + 1.0;                           // Паз на 1 мм шире язычка P4
+        // 4. Клапан P2 (x3 -> x2): опорный клапан с центральным П-образным пазом
         const cx2 = (x2 + x3) / 2;
         const slotRight = cx2 + slotW / 2;
         const slotLeft = cx2 - slotW / 2;
-        const slotTopY = yBot + hSlotFlap * 0.75;
-        const legW = Math.max(4, (x3 - stepX) - slotRight);
-        const legH = Math.max(4, yBotDeep - slotTopY);
-        const legR = Math.min(2.8, legW * 0.24, legH * 0.24);
 
         const p2TopR = { x: x3 - stepX, y: yBot + stepY };
         const p2BotRR = { x: x3 - stepX, y: yBotDeep };
@@ -684,9 +691,9 @@
         outer.push(`L ${f(p2TopL.x)} ${f(p2TopL.y)}`);
         outer.push(`L ${f(x2)} ${f(yBot)}`);
 
-        // 4. Клапан P1 (x2 -> x1): левый крючковый клапан
-        const p1Throat = { x: x2 - W * 0.47, y: yBot + hHook * 0.56 };
-        const p1NoseCorner = { x: x2 - W * 0.34, y: yBot + hHook };
+        // 5. Клапан P1 (x2 -> x1): левый крючковый клапан
+        const p1Throat = { x: x2 - W * 0.49, y: yBot + hHook * 0.60 };
+        const p1NoseCorner = { x: x2 - W * 0.307, y: yBot + hHook };
         const p1BotLeft = { x: x1 + stepX, y: yBot + hHook };
         const f1Nose = filletCorner(p1Throat, p1NoseCorner, p1BotLeft, noseR);
 

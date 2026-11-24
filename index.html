@@ -608,34 +608,35 @@
         // ---------------------------------------------------------------------
         // ВАРИАНТ 2: FEFCO-0215 (САМОСБОРНОЕ ДНО С КРЮЧКАМИ И ЯЗЫЧКОМ В ПАЗ)
         // Эталон: 70 × 65 × 290 мм (W = 70, L = 65, H = 290, d = 0.5)
-        // P1 и P3 (ширина W) перекрывают глубину L: hHook = L/2 + 4.0 мм (36.5 мм)
-        // P2 и P4 (ширина L) перекрывают ширину W: slotTop = W/2 + 1.5 мм (36.5 мм), полная глубина = 43.0 мм
+        // P1 и P3 (ширина W) перекрывают глубину L: hHook = L/2 + 6.5 мм (39.0 мм при L=65)
+        // P2 и P4 (ширина L) перекрывают ширину W: slotTop = W/2 + 2.5 мм (37.5 мм), полная глубина = 41.0 мм
         // ---------------------------------------------------------------------
-        const stepX = Math.min(2.5, W * 0.04, L * 0.04);         // Разгрузочный уступ 2.5 × 2.5 мм у биговок
+        const stepX = Math.min(3.5, W * 0.05, L * 0.054);        // Разгрузочный уступ 3.5 × 3.5 мм у биговок
         const stepY = stepX;
 
-        const hookOverlap = Math.max(3.0, Math.min(6.0, L * 0.0615));
-        const hHook = Math.max(18, L / 2 + hookOverlap);          // 36.5 мм при L=65
+        const hookOverlap = Math.max(3.5, L * 0.10);
+        const hHook = Math.max(18, L / 2 + hookOverlap);          // 39.0 мм при L=65
 
-        const slotTopDepth = Math.max(18, W / 2 + 1.5);           // 36.5 мм при W=70
-        const legH = Math.max(4.0, Math.min(9.0, W * 0.0929));    // 6.5 мм при W=70
-        const hSlotFlap = slotTopDepth + legH;                    // 43.0 мм при W=70
+        const slotTopDepth = Math.max(18, W / 2 + 2.5);           // 37.5 мм при W=70
+        const legH = Math.max(3.0, Math.min(6.0, W * 0.05));      // 3.5 мм при W=70
+        const hSlotFlap = slotTopDepth + legH;                    // 41.0 мм при W=70
         const slotTopY = yBot + slotTopDepth;
         const yBotDeep = yBot + hSlotFlap;
 
-        // 1. Геометрия опорного клапана P2 с П-образным пазом (ширина паза 38.0 мм, ножки по 11.0 мм при L=65)
+        // 1. Геометрия опорного клапана P2 с П-образным пазом (ширина паза 41.0 мм, ножки по 8.5 мм при L=65)
         const outerSpan2 = Math.max(16, (x3 - stepX) - (x2 + stepX));
-        const legW = Math.max(4.5, Math.min(16.0, outerSpan2 * 0.1833));
+        const legW = Math.max(4.5, Math.min(16.0, outerSpan2 * 0.1466));
         const slotW = Math.max(8.0, outerSpan2 - 2 * legW);
-        const legR = Math.min(2.5, legW * 0.23, legH * 0.38);
+        const legR = Math.min(2.0, legW * 0.24, legH * 0.45);
 
-        // 2. Клапан P4 (x5 -> x4): трапециевидный запорный язычок (ширина 20.0 мм, уровень плеч 34.0 мм при W=70, L=65)
-        const shoulderY4 = yBot + slotTopDepth - Math.max(2.0, legH * 0.385);
-        const tongueW4 = Math.max(9.0, slotW * 0.5263);
+        // 2. Клапан P4 (x5 -> x4): трапециевидный запорный язычок (ширина 27.0 мм, уровень плеч 33.0 мм при W=70, L=65)
+        const shoulderOffset = Math.max(3.5, Math.min(8.0, W * 0.0643));
+        const shoulderY4 = yBot + slotTopDepth - shoulderOffset;  // 33.0 мм при W=70
+        const tongueW4 = Math.max(10.0, slotW * 0.6585);          // 27.0 мм при slotW=41.0
         const cx4 = (x4 + x5) / 2;
         const t4Right = cx4 + tongueW4 / 2;
         const t4Left = cx4 - tongueW4 / 2;
-        const r4 = Math.min(3.5, tongueW4 * 0.18, Math.max(1, (yBotDeep - shoulderY4) * 0.38));
+        const r4 = Math.min(3.5, tongueW4 * 0.16, Math.max(1, (yBotDeep - shoulderY4) * 0.38));
 
         const p4TR = { x: t4Right, y: shoulderY4 };
         const p4BR = { x: t4Right, y: yBotDeep };
@@ -651,9 +652,9 @@
         outer.push(`L ${f(x4)} ${f(yBot)}`);
 
         // 3. Клапан P3 (x4 -> x3): правый крючковый клапан (угол скоса горловины 23.89°)
-        const throatInsetX = W * 0.45;                            // 31.5 мм при W=70
-        const throatDropY = Math.min(hHook * 0.52, throatInsetX * Math.tan(23.89 * Math.PI / 180)); // 13.95 мм
-        const noseCornerX = W * 0.32;                             // 22.4 мм при W=70
+        const throatInsetX = W * 0.55;                            // 38.5 мм при W=70
+        const throatDropY = Math.min(hHook * 0.48, throatInsetX * Math.tan(23.89 * Math.PI / 180)); // 17.05 мм
+        const noseCornerX = W * 0.37;                             // 25.9 мм при W=70
         const noseR = Math.min(5.5, hHook * 0.16, W * 0.08);
 
         const p3BotRight = { x: x4 - stepX, y: yBot + hHook };

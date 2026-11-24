@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="googlebot" content="noindex, nofollow" />
+  <title>Параметрический генератор коробок — Автодно и FEFCO-0215</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            slate: {
+              850: '#151e2e',
+              950: '#0a0f1a'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #0a0f1a;
+      color: #e2e8f0;
+    }
+    .blueprint-grid {
+      background-color: #0b1220;
+      background-image:
+        linear-gradient(to right, rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+        linear-gradient(to right, rgba(56, 189, 248, 0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.12) 1px, transparent 1px);
+      background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      opacity: 0.6;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- ШАПКА МОДУЛЯ -->
+  <header class="bg-slate-900/95 border-b border-slate-800 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 shrink-0 z-20">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-inner">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+          <line x1="12" y1="22.08" x2="12" y2="12" />
+        </svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-sm sm:text-base font-bold text-white tracking-tight">Генератор развёртки коробок</h1>
+          <span id="headerTypeBadge" class="px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-[10px] font-mono font-semibold text-cyan-300">АВТОДНО</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Параметрический штамп 1:1 (Рез #FF0000 / Биговка #0000FF) для CorelDRAW</p>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2">
+      <button id="btnDownloadSvg" type="button" class="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-slate-950 font-semibold text-xs flex items-center gap-2 transition shadow-lg shadow-cyan-500/20 cursor-pointer">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        <span>Скачать SVG (1:1 мм)</span>
+      </button>
+
+      <button id="btnDownloadHtml" type="button" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs flex items-center gap-1.5 transition cursor-pointer" title="Сохранить этот генератор как автономный HTML-файл">
+        <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </svg>
+        <span class="hidden sm:inline">Скачать HTML-модуль</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ОСНОВНАЯ РАБОЧАЯ ОБЛАСТЬ -->
+  <div class="flex-1 flex flex-col lg:flex-row min-h-0">
+
+    <!-- ЛЕВАЯ ПАНЕЛЬ ПАРАМЕТРОВ -->
+    <aside class="w-full lg:w-[380px] xl:w-[405px] bg-slate-900/95 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col shrink-0 lg:h-[calc(100vh-58px)]">
+      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+
+        <!-- 0. ТИП КОНСТРУКЦИИ КОРОБКИ -->
+        <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <span class="w-1.5 h-4 rounded-full bg-purple-500"></span>
+              Тип конструкции дна
+            </h2>
+            <span class="text-[10px] font-mono text-slate-400">2 вида</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btnTypeAutolock" type="button" class="text-left p-2.5 rounded-xl border-2 border-cyan-500 bg-cyan-500/10 transition cursor-pointer">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold text-white">Автодно</span>
+                <span id="dotTypeAutolock" class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
+              </div>
+              <div class="text-[10px] text-slate-300 leading-tight">Ласточкин хвост с окошком</div>
+            </button>
+
+            <button id="btnTypeFefco0215" type="button" class="text-left p-2.5 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold text-white font-mono">FEFCO-0215</span>
+                <span id="dotTypeFefco0215" class="w-2 h-2 rounded-full bg-slate-700"></span>
+              </div>
+              <div class="text-[10px] text-slate-400 leading-tight">Крючки + язычок в паз</div>
+            </button>
+          </div>
+        </section>
+
+        <!-- 1. ГАБАРИТЫ КОРОБКИ -->
+        <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <span class="w-1.5 h-4 rounded-full bg-cyan-500"></span>
+              1. Габариты коробки (мм)
+            </h2>
+            <span class="text-[11px] font-mono text-slate-400">L × W × H</span>
+          </div>
+
+          <div class="flex items-end gap-1.5">
+            <div class="flex-1 min-w-0">
+              <label for="inputL" class="block text-[10px] text-slate-400 mb-1 truncate" title="Глубина крышки и боковые панели P2, P4">Длина L (глубина)</label>
+              <input id="inputL" type="number" min="25" max="600" step="0.5" value="90" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+            </div>
+
+            <button id="btnSwapLW" type="button" title="Поменять длину L и ширину W местами" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-cyan-400 border border-slate-700 transition cursor-pointer shrink-0 mb-[1px]">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polyline points="17 1 21 5 17 9" />
+                <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                <polyline points="7 23 3 19 7 15" />
+                <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+              </svg>
+            </button>
+
+            <div class="flex-1 min-w-0">
+              <label for="inputW" class="block text-[10px] text-slate-400 mb-1 truncate" title="Фасад P1 (с крышкой) и P3">Ширина W (фасад)</label>
+              <input id="inputW" type="number" min="25" max="600" step="0.5" value="90" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <label for="inputH" class="block text-[10px] text-slate-400 mb-1 truncate">Высота H</label>
+              <input id="inputH" type="number" min="30" max="900" step="0.5" value="297" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+            </div>
+          </div>
+
+          <!-- Быстрые пресеты -->
+          <div>
+            <span class="block text-[11px] text-slate-400 mb-1.5">Быстрые тестовые размеры:</span>
+            <div id="presetsContainer" class="flex flex-wrap gap-1.5"></div>
+          </div>
+        </section>
+
+        <!-- 2. ПРИПУСК И КЛАПАНЫ -->
+        <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <span class="w-1.5 h-4 rounded-full bg-emerald-500"></span>
+              2. Припуск и клапаны
+            </h2>
+            <span class="text-[11px] font-mono text-emerald-400">Бристоль 300–350 г</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label for="inputD" class="block text-[11px] text-slate-400 mb-1">Припуск d (мм)</label>
+              <input id="inputD" type="number" min="0" max="5" step="0.1" value="0.5" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+              <div class="flex gap-1 mt-1">
+                <button type="button" data-d="0.4" class="d-preset flex-1 py-0.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[9px] font-mono text-slate-400 cursor-pointer">0.4</button>
+                <button type="button" data-d="0.5" class="d-preset flex-1 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/40 text-[9px] font-mono text-emerald-300 cursor-pointer">0.5</button>
+                <button type="button" data-d="1.2" class="d-preset flex-1 py-0.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[9px] font-mono text-slate-400 cursor-pointer">1.2</button>
+              </div>
+            </div>
+            <div>
+              <label for="inputGlueW" class="block text-[11px] text-slate-400 mb-1">Клеевой (мм)</label>
+              <input id="inputGlueW" type="number" min="8" max="40" step="0.5" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+            </div>
+            <div>
+              <label for="inputTuckH" class="block text-[11px] text-slate-400 mb-1">Язычок (мм)</label>
+              <input id="inputTuckH" type="number" min="8" max="40" step="0.5" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+            </div>
+          </div>
+
+          <div class="pt-1 space-y-2 border-t border-slate-800/80">
+            <label class="flex items-center justify-between gap-2 text-xs text-slate-300 cursor-pointer select-none">
+              <span>Насечки под клей на боковом клапане</span>
+              <input id="chkGlueNotches" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
+            </label>
+            <label class="flex items-center justify-between gap-2 text-xs text-slate-300 cursor-pointer select-none">
+              <span>Показывать габаритные размеры на чертеже</span>
+              <input id="chkShowDims" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
+            </label>
+          </div>
+        </section>
+
+        <!-- 3. ГАБАРИТЫ РАЗВЁРТКИ И ОФСЕТНЫЕ ФОРМАТЫ -->
+        <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+            <span class="w-1.5 h-4 rounded-full bg-amber-400"></span>
+            3. Параметры заготовки и форматы
+          </h2>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5">
+              <div class="text-[10px] uppercase tracking-wider text-slate-400">Размер развёртки</div>
+              <div id="statBlankSize" class="text-sm font-bold font-mono text-white mt-0.5">—</div>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5">
+              <div class="text-[10px] uppercase tracking-wider text-slate-400">Площадь габарита</div>
+              <div id="statBlankArea" class="text-sm font-bold font-mono text-cyan-400 mt-0.5">—</div>
+            </div>
+          </div>
+
+          <!-- Проверка входимости в 35x50 и 50x70 -->
+          <div class="space-y-1.5 text-xs">
+            <div id="fitCard35" class="flex items-center justify-between px-2.5 py-2 rounded-lg bg-slate-900/80 border border-slate-800">
+              <div>
+                <div class="font-mono font-semibold text-slate-200">Лист 35×50 см</div>
+                <div class="text-[10px] font-mono text-slate-400">Зона: 330 × 480 мм</div>
+              </div>
+              <span id="fitBadge35" class="px-2 py-0.5 rounded font-mono text-[11px] font-semibold">—</span>
+            </div>
+            <div id="fitCard50" class="flex items-center justify-between px-2.5 py-2 rounded-lg bg-slate-900/80 border border-slate-800">
+              <div>
+                <div class="font-mono font-semibold text-slate-200">Лист 50×70 см</div>
+                <div class="text-[10px] font-mono text-slate-400">Зона: 480 × 680 мм</div>
+              </div>
+              <span id="fitBadge50" class="px-2 py-0.5 rounded font-mono text-[11px] font-semibold">—</span>
+            </div>
+          </div>
+
+          <div id="panelSummaryText" class="text-[11px] font-mono text-slate-400 bg-slate-900/60 border border-slate-800/80 rounded-lg p-2.5 leading-relaxed">
+            —
+          </div>
+        </section>
+
+      </div>
+    </aside>
+
+    <!-- ПРАВАЯ ОБЛАСТЬ: ИНТЕРАКТИВНЫЙ ЧЕРТЁЖ -->
+    <main class="flex-1 flex flex-col min-w-0 lg:h-[calc(100vh-58px)] overflow-hidden">
+
+      <!-- ПАНЕЛЬ ИНСТРУМЕНТОВ ЧЕРТЕЖА -->
+      <div class="px-4 py-2 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0">
+        <div class="flex flex-wrap items-center gap-4 text-[11px] text-slate-300">
+          <span class="flex items-center gap-1.5">
+            <span class="w-4 h-0.5 bg-red-500 inline-block"></span>
+            Рез (<span class="font-mono text-red-400">#FF0000</span>)
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="w-4 h-0.5 border-t-2 border-dashed border-blue-500 inline-block"></span>
+            Биговка (<span class="font-mono text-blue-400">#0000FF</span>)
+          </span>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <button id="btnZoomOut" type="button" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 cursor-pointer" title="Уменьшить">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12" /></svg>
+          </button>
+          <span id="zoomLabel" class="font-mono text-xs text-slate-300 w-12 text-center">100%</span>
+          <button id="btnZoomIn" type="button" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 cursor-pointer" title="Увеличить">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+          </button>
+          <button id="btnFit" type="button" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium cursor-pointer">
+            Вписать
+          </button>
+        </div>
+      </div>
+
+      <!-- ИНТЕРАКТИВНЫЙ ХОЛСТ -->
+      <div id="viewport" class="flex-1 blueprint-grid relative overflow-hidden flex items-center justify-center cursor-grab active:cursor-grabbing select-none min-h-[420px]">
+        <div id="panZoomWrap" class="origin-center will-change-transform">
+          <svg id="previewSvg" xmlns="http://www.w3.org/2000/svg" class="block"></svg>
+        </div>
+
+        <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-slate-900/85 border border-slate-800 text-[10px] font-mono text-slate-400 pointer-events-none">
+          Колесо мыши: масштаб • Перетаскивание: сдвиг чертежа
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ -->
+  <div id="toast" class="fixed bottom-4 right-4 z-50 px-4 py-2.5 rounded-xl bg-slate-900 border border-cyan-500/50 text-cyan-200 text-xs font-medium shadow-2xl opacity-0 pointer-events-none transition-opacity duration-200"></div>
+
+  <script>
+    // =========================================================================
+    // СОСТОЯНИЕ ПАРАМЕТРОВ ГЕНЕРАТОРА КОРОБОК (АВТОДНО И FEFCO-0215)
+    // =========================================================================
+    const PRESETS_BY_TYPE = {
+      autolock: [
+        { label: '90×90×297 (Эталон)', l: 90, w: 90, h: 297, primary: true },
+        { label: '80×80×200', l: 80, w: 80, h: 200 },
+        { label: '100×70×250', l: 100, w: 70, h: 250 },
+        { label: '120×80×180', l: 120, w: 80, h: 180 }
+      ],
+      fefco0215: [
+        { label: '70×65×290 (Эталон)', l: 65, w: 70, h: 290, primary: true },
+        { label: '80×80×200', l: 80, w: 80, h: 200 },
+        { label: '100×70×250', l: 100, w: 70, h: 250 },
+        { label: '60×60×150', l: 60, w: 60, h: 150 }
+      ]
+    };
+
+    const state = {
+      boxType: 'autolock', // 'autolock' | 'fefco0215'
+      L: 90,               // Длина / глубина (Панели 2, 4 и глубина крышки)
+      W: 90,               // Ширина / фасад (Панели 1, 3)
+      H: 297,              // Номинальная высота боковых стенок (P2, P3, P4)
+      d: 0.5,              // Припуск на толщину материала (мм) — Бристоль 300–350 г/м²
+      glueW: 15,           // Ширина бокового клеевого клапана (мм)
+      tuckH: 15,           // Высота запорного язычка крышки (мм)
+      glueNotches: true,
+      showDims: true,
+      zoom: 1,
+      panX: 0,
+      panY: 0
+    };
+
+    // Форматирование числа до 3 знаков без лишних нулей для чистого SVG
+    function f(num) {
+      return Number(num.toFixed(3));
+    }
+
+    // Показ всплывающего уведомления
+    let toastTimer = null;
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.remove('opacity-0');
+      el.classList.add('opacity-100');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.classList.remove('opacity-100');
+        el.classList.add('opacity-0');
+      }, 2400);
+    }
+
+    /**
+     * Вычисление точного скругления угла по касательной (истинная дуга окружности SVG).
+     * Возвращает точки касания T1, T2 и готовую команду SVG-пути `L T1 A r r 0 0 sweep T2`.
+     */
+    function filletCorner(pPrev, pCorner, pNext, radius) {
+      const v1x = pPrev.x - pCorner.x;
+      const v1y = pPrev.y - pCorner.y;
+      const len1 = Math.hypot(v1x, v1y);
+
+      const v2x = pNext.x - pCorner.x;
+      const v2y = pNext.y - pCorner.y;
+      const len2 = Math.hypot(v2x, v2y);
+
+      if (len1 < 1e-6 || len2 < 1e-6 || radius <= 1e-6) {
+        return { svg: `L ${f(pCorner.x)} ${f(pCorner.y)}` };
+      }
+
+      const u1x = v1x / len1;
+      const u1y = v1y / len1;
+      const u2x = v2x / len2;
+      const u2y = v2y / len2;
+
+      const dot = Math.max(-1, Math.min(1, u1x * u2x + u1y * u2y));
+      const theta = Math.acos(dot);
+
+      if (theta < 1e-4 || Math.abs(Math.PI - theta) < 1e-4) {
+        return { svg: `L ${f(pCorner.x)} ${f(pCorner.y)}` };
+      }
+
+      const tanHalf = Math.tan(theta / 2);
+      const maxT = Math.min(len1 * 0.48, len2 * 0.48);
+      const tDist = Math.min(radius / tanHalf, maxT);
+      const actualR = tDist * tanHalf;
+
+      const t1 = { x: pCorner.x + u1x * tDist, y: pCorner.y + u1y * tDist };
+      const t2 = { x: pCorner.x + u2x * tDist, y: pCorner.y + u2y * tDist };
+
+      // Направление поворота (в SVG ось Y направлена вниз: cross > 0 => по часовой, sweep = 1)
+      const cross = (-u1x) * u2y - (-u1y) * u2x;
+      const sweep = cross > 0 ? 1 : 0;
+
+      return {
+        t1,
+        t2,
+        r: actualR,
+        sweep,
+        svg: `L ${f(t1.x)} ${f(t1.y)} A ${f(actualR)} ${f(actualR)} 0 0 ${sweep} ${f(t2.x)} ${f(t2.y)}`
+      };
+    }
+
+    // =========================================================================
+    // РАСЧЁТ ПАРАМЕТРИЧЕСКОЙ ГЕОМЕТРИИ РАЗВЁРТКИ (АВТОДНО И FEFCO-0215)
+    // =========================================================================
+    function calculateGeometry() {
+      const isFefco0215 = state.boxType === 'fefco0215';
+      const L = Math.max(25, Math.min(600, Number(state.L) || (isFefco0215 ? 65 : 90)));
+      const W = Math.max(25, Math.min(600, Number(state.W) || (isFefco0215 ? 70 : 90)));
+      const H = Math.max(30, Math.min(900, Number(state.H) || (isFefco0215 ? 290 : 297)));
+      const d = Math.max(0, Math.min(5, Number(state.d) || 0));
+      const glueW = Math.max(8, Math.min(40, Number(state.glueW) || 15));
+      const tuckH = Math.max(8, Math.min(40, Number(state.tuckH) || 15));
+
+      // 1. КООРДИНАТЫ ЧЕТЫРЁХ ОСНОВНЫХ ПАНЕЛЕЙ ПО X
+      // Правая крайняя стенка P4 укорочена на d (компенсация на склейке)
+      const p1W = W;
+      const p2W = L;
+      const p3W = W;
+      const p4W = Math.max(10, L - d);
+
+      const x0 = 0;
+      const x1 = glueW;
+      const x2 = x1 + p1W;
+      const x3 = x2 + p2W;
+      const x4 = x3 + p3W;
+      const x5 = x4 + p4W;
+
+      // 2. ВЕРТИКАЛЬНЫЕ УРОВНИ ПО Y (Y = 0 — верхний край язычка крышки)
+      const yTuckTop = 0;
+      const yLidCrease = tuckH;             // Синяя биговка запорного язычка
+      const earUp = 1.0;                    // Выступ ушка выше биговки язычка
+      const yEarTop = yLidCrease - earUp;
+      const yTop1 = yLidCrease + L;         // Верхняя биговка крышки на P1 (глубина крышки = L)
+      const yTopSide = yTop1 + d;           // Верхний уровень боковин P2, P3, P4 и клеевого клапана (P1 выше на d)
+      const yBot = yTopSide + H;            // Линия биговки дна (высота P2..P4 = H, высота P1 = H + d)
+
+      // 3. ПАРАМЕТРЫ ВЕРХНЕЙ КРЫШКИ И ПЫЛЕЗАЩИТНЫХ КЛАПАНОВ (ОБЩИЕ ДЛЯ ОБЕИХ КОРОБОК)
+      const tuckOffset = 0.5;                                 // Отступ язычка от краёв крышки (0.5 мм)
+      const earW = Math.min(Math.max(4, W * 0.055), 8);       // Ширина бокового замочка-ушка
+      const tuckInset = Math.min(tuckH * 0.65, W * 0.14);     // Плавный заход дуги язычка
+
+      // Верхние пылезащитные клапаны (короче на 3 мм от полуширины, отступ 0.5 мм от биговок x3/x4)
+      const dustH = Math.max(10, W / 2 - d - 3);
+      const yDustTop = yTopSide - dustH;
+      const dustInnerOffset = 0.5;
+
+      // Клеевой клапан слева
+      const glueChamfer = Math.min(glueW * 0.35, 6.0);
+
+      // =======================================================================
+      // ПОСТРОЕНИЕ ВЕРХНЕЙ И ПРАВОЙ ЧАСТИ ВНЕШНЕГО КОНТУРА РЕЗА
+      // =======================================================================
+      const outer = [];
+
+      // Старт: левый стык клеевого клапана и крышки
+      outer.push(`M ${f(x1)} ${f(yTopSide)}`);
+      outer.push(`L ${f(x1)} ${f(yEarTop)}`);
+      outer.push(`L ${f(x1 + tuckOffset)} ${f(yEarTop)}`);
+
+      // Запорный язычок крышки (плавные дуги Q)
+      outer.push(`Q ${f(x1 + tuckOffset)} ${f(yTuckTop)} ${f(x1 + tuckOffset + tuckInset)} ${f(yTuckTop)}`);
+      outer.push(`L ${f(x2 - tuckOffset - tuckInset)} ${f(yTuckTop)}`);
+      outer.push(`Q ${f(x2 - tuckOffset)} ${f(yTuckTop)} ${f(x2 - tuckOffset)} ${f(yEarTop)}`);
+      outer.push(`L ${f(x2)} ${f(yEarTop)}`);
+      outer.push(`L ${f(x2)} ${f(yTopSide)}`);
+
+      // Верхний пылезащитный клапан Панели 2 (x2..x3, отступ 0.5 мм от биговки x3)
+      outer.push(`L ${f(x2 + 3.5)} ${f(yTopSide - 2.8)}`);
+      outer.push(`L ${f(x2 + 3.5 + (dustH - 2.8) * 0.08)} ${f(yDustTop)}`);
+      outer.push(`L ${f(x3 - 3.0 - (dustH - 5.0) * 0.25)} ${f(yDustTop)}`);
+      outer.push(`L ${f(x3 - 3.0)} ${f(yTopSide - 5.0)}`);
+      outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yTopSide - 2.5)}`);
+      outer.push(`L ${f(x3 - dustInnerOffset)} ${f(yTopSide)}`);
+
+      // Верхний горизонтальный рез Панели 3 (с заходом по 0.5 мм к клапанам P2 и P4)
+      outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yTopSide)}`);
+
+      // Верхний пылезащитный клапан Панели 4 (x4..x5, точное горизонтальное зеркало P2)
+      outer.push(`L ${f(x4 + dustInnerOffset)} ${f(yTopSide - 2.5)}`);
+      outer.push(`L ${f(x4 + 3.0)} ${f(yTopSide - 5.0)}`);
+      outer.push(`L ${f(x4 + 3.0 + (dustH - 5.0) * 0.25)} ${f(yDustTop)}`);
+      outer.push(`L ${f(x5 - 3.5 - (dustH - 2.8) * 0.08)} ${f(yDustTop)}`);
+      outer.push(`L ${f(x5 - 3.5)} ${f(yTopSide - 2.8)}`);
+      outer.push(`L ${f(x5)} ${f(yTopSide)}`);
+
+      // Правый вертикальный рез Панели 4
+      outer.push(`L ${f(x5)} ${f(yBot)}`);
+
+      // =======================================================================
+      // НИЖНИЕ КЛАПАНЫ ДНА (ЗАВИСЯТ ОТ ТИПА КОРОБКИ: АВТОДНО ИЛИ FEFCO-0215)
+      // =======================================================================
+      const innerCuts = [];
+      let maxBottomDepth = 0;
+      let bottomInfoHtml = '';
+
+      if (!isFefco0215) {
+        // ---------------------------------------------------------------------
+        // ВАРИАНТ 1: АВТОДНО (ЛАСТОЧКИН ХВОСТ)
+        // ---------------------------------------------------------------------
+        const bot1H = Math.max(25, L * 0.83);                   // Основная створка P1 с окошком
+        const bot2H = Math.max(18, W * 0.46);                   // Боковые крылья P2 и P4
+        const bot3H = Math.max(22, L * 0.68);                   // Центральный клиновидный замок P3
+        const innerGap = 3.0;                                   // Технологический отступ 45° на стыках с P3
+
+        // Центральный замок P3
+        const tongueW = Math.max(12, W * 0.48);
+        const cx3 = (x3 + x4) / 2;
+        const tLeft = cx3 - tongueW / 2;
+        const tRight = cx3 + tongueW / 2;
+        const shoulderY = yBot + L * 0.48;
+        const tBotY = yBot + bot3H;
+        const r3 = Math.min(5.0, tongueW * 0.25, Math.max(1, (tBotY - shoulderY) * 0.45));
+
+        // Окошко в основной створке P1 (верхняя ширина строго tongueW + 1 мм)
+        const cx1 = (x1 + x2) / 2;
+        const winTopY = yBot + bot1H * 0.60;
+        const winBotY = yBot + bot1H * 0.85;
+        const winH = winBotY - winTopY;
+        const winTopW = tongueW + 1.0;
+        const winBotW = Math.max(8, winTopW - winH * 0.24);
+
+        const chamfer1 = 1.5;
+        const taperY = yBot + bot1H * 0.56;
+        const taperIn = Math.min(W * 0.08, 9);
+
+        // Нижний боковой клапан автодна Панели 4 (x5 -> x4)
+        const wingDiag4 = Math.min(p4W * 0.14, bot2H * 0.35);
+        const notchP4 = { x: x5 - p4W * 0.50, y: yBot + bot2H * 0.58 };
+        const cornerP4 = { x: x5 - p4W * 0.42, y: yBot + bot2H };
+        const endBotP4 = { x: x4 + innerGap, y: yBot + bot2H };
+        const f4 = filletCorner(notchP4, cornerP4, endBotP4, 6.0);
+
+        outer.push(`L ${f(x5 - wingDiag4)} ${f(yBot + wingDiag4)}`);
+        outer.push(`L ${f(notchP4.x)} ${f(notchP4.y)}`);
+        outer.push(f4.svg);
+        outer.push(`L ${f(endBotP4.x)} ${f(endBotP4.y)}`);
+        outer.push(`L ${f(x4 + innerGap)} ${f(yBot + innerGap)}`);
+        outer.push(`L ${f(x4)} ${f(yBot)}`);
+
+        // Центральный клиновидный замок автодна Панели 3 (x4 -> x3)
+        const p3TR = { x: tRight, y: shoulderY };
+        const p3BR = { x: tRight, y: tBotY };
+        const p3BL = { x: tLeft, y: tBotY };
+        const p3TL = { x: tLeft, y: shoulderY };
+        const f3R = filletCorner(p3TR, p3BR, p3BL, r3);
+        const f3L = filletCorner(p3BR, p3BL, p3TL, r3);
+
+        outer.push(`L ${f(p3TR.x)} ${f(p3TR.y)}`);
+        outer.push(f3R.svg);
+        outer.push(f3L.svg);
+        outer.push(`L ${f(p3TL.x)} ${f(p3TL.y)}`);
+        outer.push(`L ${f(x3)} ${f(yBot)}`);
+
+        // Нижний боковой клапан автодна Панели 2 (x3 -> x2, точное зеркало P4)
+        const wingDiag2 = Math.min(p2W * 0.14, bot2H * 0.35);
+        const startBotP2 = { x: x3 - innerGap, y: yBot + bot2H };
+        const cornerP2 = { x: x2 + p2W * 0.42, y: yBot + bot2H };
+        const notchP2 = { x: x2 + p2W * 0.50, y: yBot + bot2H * 0.58 };
+        const f2 = filletCorner(startBotP2, cornerP2, notchP2, 6.0);
+
+        outer.push(`L ${f(x3 - innerGap)} ${f(yBot + innerGap)}`);
+        outer.push(`L ${f(startBotP2.x)} ${f(startBotP2.y)}`);
+        outer.push(f2.svg);
+        outer.push(`L ${f(notchP2.x)} ${f(notchP2.y)}`);
+        outer.push(`L ${f(x2 + wingDiag2)} ${f(yBot + wingDiag2)}`);
+        outer.push(`L ${f(x2)} ${f(yBot)}`);
+
+        // Основная створка автодна Панели 1 (x2 -> x1)
+        outer.push(`L ${f(x2 - chamfer1)} ${f(yBot + chamfer1)}`);
+        outer.push(`L ${f(x2 - chamfer1)} ${f(taperY)}`);
+        outer.push(`L ${f(x2 - taperIn)} ${f(yBot + bot1H)}`);
+        outer.push(`L ${f(x1 + taperIn)} ${f(yBot + bot1H)}`);
+        outer.push(`L ${f(x1 + chamfer1)} ${f(taperY)}`);
+        outer.push(`L ${f(x1 + chamfer1)} ${f(yBot + chamfer1)}`);
+        outer.push(`L ${f(x1)} ${f(yBot)}`);
+
+        // Вырез-окошко в Панели 1
+        innerCuts.push(
+          `M ${f(cx1 - winTopW / 2)} ${f(winTopY)} ` +
+          `L ${f(cx1 + winTopW / 2)} ${f(winTopY)} ` +
+          `L ${f(cx1 + winBotW / 2)} ${f(winBotY)} ` +
+          `L ${f(cx1 - winBotW / 2)} ${f(winBotY)} Z`
+        );
+
+        maxBottomDepth = Math.max(bot1H, bot2H, bot3H);
+        bottomInfoHtml = `Автодно: язычок <span class="text-slate-200">${f(tongueW)} мм</span> / окошко <span class="text-emerald-300">${f(winTopW)} мм</span>`;
+      } else {
+        // ---------------------------------------------------------------------
+        // ВАРИАНТ 2: FEFCO-0215 (САМОСБОРНОЕ ДНО С КРЮЧКАМИ И ЯЗЫЧКОМ В ПАЗ)
+        // Эталон: 70 × 65 × 290 мм (W = 70, L = 65, H = 290, d = 0.5)
+        // ---------------------------------------------------------------------
+        const hHook = Math.max(20, L * 0.54);                   // Глубина крючковых клапанов P1 и P3 (~35.1 мм при L=65)
+        const hSlotFlap = Math.max(24, L * 0.76);               // Глубина клапанов P2 (с пазом) и P4 (язычок) (~49.4 мм при L=65)
+        const stepX = Math.min(3.5, W * 0.06, L * 0.06);        // Разгрузочный уступ 45° у биговок (3.5 мм)
+        const stepY = stepX;
+
+        // 1. Клапан P4 (x5 -> x4): трапециевидный запорный язычок
+        const shoulderY4 = yBot + hSlotFlap * 0.74;
+        const tongueW4 = Math.max(12, L * 0.42);
+        const cx4 = (x4 + x5) / 2;
+        const t4Right = cx4 + tongueW4 / 2;
+        const t4Left = cx4 - tongueW4 / 2;
+        const yBotDeep = yBot + hSlotFlap;
+        const r4 = Math.min(4.0, tongueW4 * 0.2, Math.max(1, (yBotDeep - shoulderY4) * 0.42));
+
+        const p4TR = { x: t4Right, y: shoulderY4 };
+        const p4BR = { x: t4Right, y: yBotDeep };
+        const p4BL = { x: t4Left, y: yBotDeep };
+        const p4TL = { x: t4Left, y: shoulderY4 };
+        const f4R = filletCorner(p4TR, p4BR, p4BL, r4);
+        const f4L = filletCorner(p4BR, p4BL, p4TL, r4);
+
+        outer.push(`L ${f(p4TR.x)} ${f(p4TR.y)}`);
+        outer.push(f4R.svg);
+        outer.push(f4L.svg);
+        outer.push(`L ${f(p4TL.x)} ${f(p4TL.y)}`);
+        outer.push(`L ${f(x4)} ${f(yBot)}`);
+
+        // 2. Клапан P3 (x4 -> x3): правый крючковый клапан
+        const noseR = Math.min(6.0, hHook * 0.22, W * 0.09);
+        const p3Start = { x: x3, y: yBot };
+        const p3Throat = { x: x3 + W * 0.47, y: yBot + hHook * 0.56 };
+        const p3NoseCorner = { x: x3 + W * 0.34, y: yBot + hHook };
+        const p3BotRight = { x: x4 - stepX, y: yBot + hHook };
+        const f3Nose = filletCorner(p3Throat, p3NoseCorner, p3BotRight, noseR);
+
+        outer.push(`L ${f(p3Throat.x)} ${f(p3Throat.y)}`);
+        outer.push(f3Nose.svg);
+        outer.push(`L ${f(p3BotRight.x)} ${f(p3BotRight.y)}`);
+        outer.push(`L ${f(x4 - stepX)} ${f(yBot + stepY)}`);
+        outer.push(`L ${f(x4)} ${f(yBot)}`);
+
+        // 3. Клапан P2 (x3 -> x2): опорный клапан с центральным П-образным пазом
+        const slotW = tongueW4 + 1.0;                           // Паз на 1 мм шире язычка P4
+        const cx2 = (x2 + x3) / 2;
+        const slotRight = cx2 + slotW / 2;
+        const slotLeft = cx2 - slotW / 2;
+        const slotTopY = yBot + hSlotFlap * 0.75;
+        const legW = Math.max(4, (x3 - stepX) - slotRight);
+        const legH = Math.max(4, yBotDeep - slotTopY);
+        const legR = Math.min(2.8, legW * 0.24, legH * 0.24);
+
+        const p2TopR = { x: x3 - stepX, y: yBot + stepY };
+        const p2BotRR = { x: x3 - stepX, y: yBotDeep };
+        const p2BotRL = { x: slotRight, y: yBotDeep };
+        const p2SlotTR = { x: slotRight, y: slotTopY };
+
+        const p2SlotTL = { x: slotLeft, y: slotTopY };
+        const p2BotLR = { x: slotLeft, y: yBotDeep };
+        const p2BotLL = { x: x2 + stepX, y: yBotDeep };
+        const p2TopL = { x: x2 + stepX, y: yBot + stepY };
+
+        const f2RR = filletCorner(p2TopR, p2BotRR, p2BotRL, legR);
+        const f2RL = filletCorner(p2BotRR, p2BotRL, p2SlotTR, legR);
+        const f2LR = filletCorner(p2SlotTL, p2BotLR, p2BotLL, legR);
+        const f2LL = filletCorner(p2BotLR, p2BotLL, p2TopL, legR);
+
+        outer.push(`L ${f(p2TopR.x)} ${f(p2TopR.y)}`);
+        outer.push(f2RR.svg);
+        outer.push(f2RL.svg);
+        outer.push(`L ${f(p2SlotTR.x)} ${f(p2SlotTR.y)}`);
+        outer.push(`L ${f(p2SlotTL.x)} ${f(p2SlotTL.y)}`);
+        outer.push(f2LR.svg);
+        outer.push(f2LL.svg);
+        outer.push(`L ${f(p2TopL.x)} ${f(p2TopL.y)}`);
+        outer.push(`L ${f(x2)} ${f(yBot)}`);
+
+        // 4. Клапан P1 (x2 -> x1): левый крючковый клапан (точное зеркало P3)
+        const p1Throat = { x: x2 - W * 0.47, y: yBot + hHook * 0.56 };
+        const p1NoseCorner = { x: x2 - W * 0.34, y: yBot + hHook };
+        const p1BotLeft = { x: x1 + stepX, y: yBot + hHook };
+        const f1Nose = filletCorner(p1Throat, p1NoseCorner, p1BotLeft, noseR);
+
+        outer.push(`L ${f(p1Throat.x)} ${f(p1Throat.y)}`);
+        outer.push(f1Nose.svg);
+        outer.push(`L ${f(p1BotLeft.x)} ${f(p1BotLeft.y)}`);
+        outer.push(`L ${f(x1 + stepX)} ${f(yBot + stepY)}`);
+        outer.push(`L ${f(x1)} ${f(yBot)}`);
+
+        maxBottomDepth = hSlotFlap;
+        bottomInfoHtml = `FEFCO-0215: язычок P4 <span class="text-slate-200">${f(tongueW4)} мм</span> / паз P2 <span class="text-emerald-300">${f(slotW)} мм</span>`;
+      }
+
+      // Боковой клеевой клапан слева (x1 -> x0 -> yTopSide)
+      outer.push(`L ${f(x0)} ${f(yBot - glueChamfer)}`);
+      outer.push(`L ${f(x0)} ${f(yTopSide + glueChamfer)}`);
+      outer.push(`Z`);
+
+      // =======================================================================
+      // ОБЩИЕ ВНУТРЕННИЕ ЛИНИИ РЕЗА (ПРОРЕЗИ УШЕК КРЫШКИ И НАСЕЧКИ ПОД КЛЕЙ)
+      // =======================================================================
+      innerCuts.push(
+        `M ${f(x1 + tuckOffset)} ${f(yEarTop)} ` +
+        `L ${f(x1 + earW)} ${f(yEarTop)} ` +
+        `L ${f(x1 + earW)} ${f(yLidCrease + 1.0)}`
+      );
+      innerCuts.push(
+        `M ${f(x2 - tuckOffset)} ${f(yEarTop)} ` +
+        `L ${f(x2 - earW)} ${f(yEarTop)} ` +
+        `L ${f(x2 - earW)} ${f(yLidCrease + 1.0)}`
+      );
+
+      const glueNotchLines = [];
+      if (state.glueNotches) {
+        const notchStep = 8.0;
+        const nStart = yTopSide + glueChamfer + 5;
+        const nEnd = yBot - glueChamfer - 5;
+        const nx1 = x1 - Math.min(glueW * 0.25, 4.0);
+        const nx2 = x1 - Math.min(glueW * 0.65, 9.5);
+        for (let ny = nStart; ny <= nEnd; ny += notchStep) {
+          glueNotchLines.push({ x1: nx1, y1: ny, x2: nx2, y2: ny + 2.2 });
+        }
+      }
+
+      // =======================================================================
+      // ЛИНИИ БИГОВКИ (#0000FF)
+      // =======================================================================
+      const creases = [
+        // Вертикальные
+        { x1: x1, y1: yTopSide, x2: x1, y2: yBot },
+        { x1: x2, y1: yTop1, x2: x2, y2: yBot },
+        { x1: x3, y1: yTopSide, x2: x3, y2: yBot },
+        { x1: x4, y1: yTopSide, x2: x4, y2: yBot },
+        // Горизонтальные
+        { x1: x1 + earW, y1: yLidCrease, x2: x2 - earW, y2: yLidCrease },
+        { x1: x1, y1: yTop1, x2: x2, y2: yTop1 },
+        { x1: x2, y1: yTopSide, x2: x3 - dustInnerOffset, y2: yTopSide },
+        { x1: x4 + dustInnerOffset, y1: yTopSide, x2: x5, y2: yTopSide },
+        { x1: x1, y1: yBot, x2: x5, y2: yBot }
+      ];
+
+      const totalW = x5;
+      const totalH = yBot + maxBottomDepth;
+
+      return {
+        boxType: state.boxType,
+        isFefco0215,
+        L, W, H, d, glueW, tuckH,
+        p1W, p2W, p3W, p4W,
+        x0, x1, x2, x3, x4, x5,
+        yTuckTop, yLidCrease, yTop1, yTopSide, yBot, yDustTop,
+        dustH, maxBottomDepth,
+        totalW, totalH,
+        outerPath: outer.join(' '),
+        innerCuts,
+        glueNotchLines,
+        creases,
+        bottomInfoHtml
+      };
+    }
+
+    // =========================================================================
+    // ПРОВЕРКА ВХОДИМОСТИ НА ОФСЕТНЫЕ ФОРМАТЫ (35×50 и 50×70, ВКЛЮЧАЯ ВАЛЕТ)
+    // =========================================================================
+    function checkSheetFit(g, workW, workH) {
+      const bw = g.totalW;
+      const bh = g.totalH;
+      const gap = 3.0; // Технологический зазор между ножами
+
+      // 1. Обычная сетка (0° и 90°)
+      const n0 = (bw <= workW && bh <= workH)
+        ? Math.floor((workW + gap) / (bw + gap)) * Math.floor((workH + gap) / (bh + gap))
+        : 0;
+      const n90 = (bh <= workW && bw <= workH)
+        ? Math.floor((workW + gap) / (bh + gap)) * Math.floor((workH + gap) / (bw + gap))
+        : 0;
+
+      // 2. Укладка «валетом» (переворот 180° / 270°, крышка одной входит мимо крышки другой)
+      const flapProtrusion = (g.yTopSide - g.yTuckTop) + g.maxBottomDepth;
+      const bodyOnlyH = g.H + g.d;
+      const pairSpanH = bodyOnlyH + flapProtrusion + gap; // Шаг пары по высоте при чередовании 0°/180°
+
+      let nValet0 = 0;
+      if (bw <= workW && pairSpanH <= workH) {
+        const cols = Math.floor((workW + gap) / (bw + gap));
+        const pairs = Math.floor((workH + gap) / (pairSpanH + gap));
+        const remH = workH - pairs * (pairSpanH + gap);
+        const extraRow = remH >= bh ? 1 : 0;
+        nValet0 = cols * (pairs * 2 + extraRow);
+      }
+
+      let nValet90 = 0;
+      if (bw <= workH && pairSpanH <= workW) {
+        const cols = Math.floor((workH + gap) / (bw + gap));
+        const pairs = Math.floor((workW + gap) / (pairSpanH + gap));
+        const remW = workW - pairs * (pairSpanH + gap);
+        const extraRow = remW >= bh ? 1 : 0;
+        nValet90 = cols * (pairs * 2 + extraRow);
+      }
+
+      const best = Math.max(n0, n90, nValet0, nValet90);
+      if (best <= 0) {
+        return { fits: false, text: 'Не помещается' };
+      }
+      if (best === 1) {
+        return { fits: true, text: n0 >= 1 ? 'Входит (1 шт, 0°)' : 'Входит (1 шт, 90°)' };
+      }
+      const isValetWin = Math.max(nValet0, nValet90) > Math.max(n0, n90);
+      return {
+        fits: true,
+        text: isValetWin ? `${best} шт/л (валет)` : `${best} шт/л`
+      };
+    }
+
+    // =========================================================================
+    // ОБНОВЛЕНИЕ КНОПОК ТИПА КОРОБКИ И ПРЕСЕТОВ
+    // =========================================================================
+    function syncTypeUI() {
+      const isFefco = state.boxType === 'fefco0215';
+
+      // Шапка
+      const badge = document.getElementById('headerTypeBadge');
+      badge.textContent = isFefco ? 'FEFCO-0215' : 'АВТОДНО';
+      badge.className = isFefco
+        ? 'px-2 py-0.5 rounded-md bg-purple-500/15 border border-purple-500/35 text-[10px] font-mono font-semibold text-purple-300'
+        : 'px-2 py-0.5 rounded-md bg-cyan-500/15 border border-cyan-500/30 text-[10px] font-mono font-semibold text-cyan-300';
+
+      // Карточки выбора типа
+      const btnAuto = document.getElementById('btnTypeAutolock');
+      const dotAuto = document.getElementById('dotTypeAutolock');
+      const btnFefco = document.getElementById('btnTypeFefco0215');
+      const dotFefco = document.getElementById('dotTypeFefco0215');
+
+      if (!isFefco) {
+        btnAuto.className = 'text-left p-2.5 rounded-xl border-2 border-cyan-500 bg-cyan-500/10 transition cursor-pointer';
+        dotAuto.className = 'w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]';
+        btnFefco.className = 'text-left p-2.5 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer';
+        dotFefco.className = 'w-2 h-2 rounded-full bg-slate-700';
+      } else {
+        btnFefco.className = 'text-left p-2.5 rounded-xl border-2 border-purple-500 bg-purple-500/10 transition cursor-pointer';
+        dotFefco.className = 'w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)]';
+        btnAuto.className = 'text-left p-2.5 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer';
+        dotAuto.className = 'w-2 h-2 rounded-full bg-slate-700';
+      }
+
+      // Пресеты
+      const presets = PRESETS_BY_TYPE[state.boxType] || PRESETS_BY_TYPE.autolock;
+      const container = document.getElementById('presetsContainer');
+      container.innerHTML = presets.map(p => {
+        const cls = p.primary
+          ? (isFefco
+              ? 'preset-btn px-2.5 py-1 rounded-md bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/40 text-[11px] font-mono text-purple-200 font-semibold transition cursor-pointer'
+              : 'preset-btn px-2.5 py-1 rounded-md bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-[11px] font-mono text-cyan-200 font-semibold transition cursor-pointer')
+          : 'preset-btn px-2.5 py-1 rounded-md bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-mono text-slate-300 transition cursor-pointer';
+        return `<button type="button" data-l="${p.l}" data-w="${p.w}" data-h="${p.h}" class="${cls}">${p.label}</button>`;
+      }).join('');
+
+      container.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.L = parseFloat(btn.dataset.l);
+          state.W = parseFloat(btn.dataset.w);
+          state.H = parseFloat(btn.dataset.h);
+          document.getElementById('inputL').value = state.L;
+          document.getElementById('inputW').value = state.W;
+          document.getElementById('inputH').value = state.H;
+          render();
+          fitToViewport();
+        });
+      });
+    }
+
+    // =========================================================================
+    // ОТРИСОВКА ИНТЕРАКТИВНОГО ПРЕДПРОСМОТРА SVG
+    // =========================================================================
+    function render() {
+      const g = calculateGeometry();
+
+      // Обновляем статистику в левой панели
+      document.getElementById('statBlankSize').textContent = `${f(g.totalW)} × ${f(g.totalH)} мм`;
+      const areaM2 = (g.totalW * g.totalH) / 1e6;
+      document.getElementById('statBlankArea').textContent = `${areaM2.toFixed(4)} м²`;
+
+      const fit35 = checkSheetFit(g, 330, 480);
+      const badge35 = document.getElementById('fitBadge35');
+      badge35.textContent = fit35.text;
+      badge35.className = fit35.fits
+        ? 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+        : 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30';
+
+      const fit50 = checkSheetFit(g, 480, 680);
+      const badge50 = document.getElementById('fitBadge50');
+      badge50.textContent = fit50.text;
+      badge50.className = fit50.fits
+        ? 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+        : 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30';
+
+      document.getElementById('panelSummaryText').innerHTML =
+        `Панели: Клей <span class="text-slate-200">${f(g.glueW)}</span> + ` +
+        `P1(<span class="text-cyan-300">${f(g.p1W)}</span>) + ` +
+        `P2(<span class="text-cyan-300">${f(g.p2W)}</span>) + ` +
+        `P3(<span class="text-cyan-300">${f(g.p3W)}</span>) + ` +
+        `P4(<span class="text-amber-300">${f(g.p4W)}</span>) = <span class="text-white font-semibold">${f(g.totalW)} мм</span><br/>` +
+        `Высота: P1 = <span class="text-cyan-300">${f(g.H + g.d)} мм</span>, P2–P4 = <span class="text-slate-200">${f(g.H)} мм</span><br/>` +
+        g.bottomInfoHtml;
+
+      // Генерируем SVG для превью (с отступами под размерные выноски)
+      const padLeft = state.showDims ? 36 : 16;
+      const padTop = state.showDims ? 30 : 16;
+      const padRight = state.showDims ? 44 : 16;
+      const padBottom = state.showDims ? 34 : 16;
+
+      const vbW = g.totalW + padLeft + padRight;
+      const vbH = g.totalH + padTop + padBottom;
+      const strokeW = Math.max(0.55, Math.min(1.4, Math.max(g.totalW, g.totalH) / 520));
+      const fontSize = Math.max(7, Math.min(13, Math.max(g.totalW, g.totalH) / 48));
+
+      let svgContent = `
+        <g transform="translate(${f(padLeft)}, ${f(padTop)})">
+          <!-- Полупрозрачная заливка картона -->
+          <path d="${g.outerPath}" fill="rgba(56, 189, 248, 0.05)" stroke="none" />
+
+          <!-- Слой БИГОВКИ (синий пунктир) -->
+          <g id="CREASE" stroke="#3b82f6" stroke-width="${f(strokeW)}" stroke-dasharray="${f(strokeW * 4)} ${f(strokeW * 3)}" fill="none" stroke-linecap="round">
+            ${g.creases.map(c => `<line x1="${f(c.x1)}" y1="${f(c.y1)}" x2="${f(c.x2)}" y2="${f(c.y2)}" />`).join('')}
+          </g>
+
+          <!-- Слой РЕЗА (красный сплошной) -->
+          <g id="CUT" stroke="#ef4444" stroke-width="${f(strokeW * 1.15)}" fill="none" stroke-linejoin="round" stroke-linecap="round">
+            <path d="${g.outerPath}" />
+            ${g.innerCuts.map(p => `<path d="${p}" />`).join('')}
+            ${g.glueNotchLines.map(n => `<line x1="${f(n.x1)}" y1="${f(n.y1)}" x2="${f(n.x2)}" y2="${f(n.y2)}" />`).join('')}
+          </g>
+      `;
+
+      // Размерные линии и подписи панелей (только для предпросмотра)
+      if (state.showDims) {
+        const dimColor = '#38bdf8';
+        const labelColor = '#94a3b8';
+        const dimY = -12;
+        const dimX = g.totalW + 18;
+        const panelLabelY = g.yTopSide + g.H * 0.5;
+
+        svgContent += `
+          <g id="DIMENSIONS" font-family="JetBrains Mono, monospace" font-size="${f(fontSize)}" text-anchor="middle">
+            <!-- Подписи 4 панелей -->
+            <text x="${f((g.x1 + g.x2) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P1</text>
+            <text x="${f((g.x1 + g.x2) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p1W)} мм</text>
+
+            <text x="${f((g.x2 + g.x3) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P2</text>
+            <text x="${f((g.x2 + g.x3) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p2W)} мм</text>
+
+            <text x="${f((g.x3 + g.x4) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P3</text>
+            <text x="${f((g.x3 + g.x4) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p3W)} мм</text>
+
+            <text x="${f((g.x4 + g.x5) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#fbbf24" font-weight="600">P4</text>
+            <text x="${f((g.x4 + g.x5) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="#fbbf24" font-size="${f(fontSize * 0.85)}">${f(g.p4W)} мм</text>
+
+            <!-- Общая ширина развёртки (сверху) -->
+            <line x1="0" y1="${f(dimY)}" x2="${f(g.totalW)}" y2="${f(dimY)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="0" y1="${f(dimY - 3)}" x2="0" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="${f(g.totalW)}" y1="${f(dimY - 3)}" x2="${f(g.totalW)}" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <text x="${f(g.totalW / 2)}" y="${f(dimY - 4)}" fill="${dimColor}">Общая ширина: ${f(g.totalW)} мм</text>
+
+            <!-- Общая высота развёртки (справа) -->
+            <line x1="${f(dimX)}" y1="0" x2="${f(dimX)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="${f(dimX - 3)}" y1="0" x2="${f(dimX + 3)}" y2="0" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="${f(dimX - 3)}" y1="${f(g.totalH)}" x2="${f(dimX + 3)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+            <text x="${f(dimX + fontSize * 1.1)}" y="${f(g.totalH / 2)}" fill="${dimColor}" transform="rotate(90, ${f(dimX + fontSize * 1.1)}, ${f(g.totalH / 2)})">Общая высота: ${f(g.totalH)} мм</text>
+
+            <!-- Высота корпуса H (слева) -->
+            <line x1="-14" y1="${f(g.yTopSide)}" x2="-14" y2="${f(g.yBot)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="-17" y1="${f(g.yTopSide)}" x2="-11" y2="${f(g.yTopSide)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
+            <line x1="-17" y1="${f(g.yBot)}" x2="-11" y2="${f(g.yBot)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
+            <text x="${f(-18)}" y="${f(g.yTopSide + g.H / 2)}" fill="#34d399" transform="rotate(-90, -18, ${f(g.yTopSide + g.H / 2)})">H = ${f(g.H)} мм</text>
+          </g>
+        `;
+      }
+
+      svgContent += `</g>`;
+
+      const svgEl = document.getElementById('previewSvg');
+      svgEl.setAttribute('viewBox', `0 0 ${f(vbW)} ${f(vbH)}`);
+      svgEl.setAttribute('width', `${Math.round(vbW * 1.15)}`);
+      svgEl.setAttribute('height', `${Math.round(vbH * 1.15)}`);
+      svgEl.innerHTML = svgContent;
+    }
+
+    // =========================================================================
+    // ЭКСПОРТ ЧИСТОГО ВЕКТОРА 1:1 В МИЛЛИМЕТРАХ ДЛЯ CORELDRAW
+    // =========================================================================
+    function buildCleanExportSvg() {
+      const g = calculateGeometry();
+      const w = f(g.totalW);
+      const h = f(g.totalH);
+      const typeLabel = g.isFefco0215 ? 'FEFCO-0215' : 'AUTOLOCK';
+
+      const creaseLines = g.creases
+        .map(c => `    <line x1="${f(c.x1)}" y1="${f(c.y1)}" x2="${f(c.x2)}" y2="${f(c.y2)}" />`)
+        .join('\n');
+
+      const innerPaths = g.innerCuts
+        .map(p => `    <path d="${p}" />`)
+        .join('\n');
+
+      const notchLines = g.glueNotchLines
+        .map(n => `    <line x1="${f(n.x1)}" y1="${f(n.y1)}" x2="${f(n.x2)}" y2="${f(n.y2)}" />`)
+        .join('\n');
+
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="0 0 ${w} ${h}">
+  <!-- ${typeLabel} Parametric Box Die-Line | L=${f(g.L)}mm W=${f(g.W)}mm H=${f(g.H)}mm d=${f(g.d)}mm -->
+  <g id="CREASE" stroke="#0000FF" stroke-width="0.2" fill="none">
+${creaseLines}
+  </g>
+  <g id="CUT" stroke="#FF0000" stroke-width="0.2" fill="none" stroke-linejoin="miter">
+    <path d="${g.outerPath}" />
+${innerPaths}${notchLines ? '\n' + notchLines : ''}
+  </g>
+</svg>
+`;
+    }
+
+    function downloadFile(content, filename, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    // =========================================================================
+    // МАСШТАБИРОВАНИЕ И ПЕРЕТАСКИВАНИЕ ЧЕРТЕЖА
+    // =========================================================================
+    function applyTransform() {
+      const wrap = document.getElementById('panZoomWrap');
+      wrap.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.zoom})`;
+      document.getElementById('zoomLabel').textContent = `${Math.round(state.zoom * 100)}%`;
+    }
+
+    function fitToViewport() {
+      const vp = document.getElementById('viewport');
+      const svg = document.getElementById('previewSvg');
+      const svgW = parseFloat(svg.getAttribute('width')) || 500;
+      const svgH = parseFloat(svg.getAttribute('height')) || 600;
+      const availW = Math.max(200, vp.clientWidth - 48);
+      const availH = Math.max(200, vp.clientHeight - 48);
+      state.zoom = Math.max(0.2, Math.min(2.5, Math.min(availW / svgW, availH / svgH)));
+      state.panX = 0;
+      state.panY = 0;
+      applyTransform();
+    }
+
+    // =========================================================================
+    // ПЕРЕКЛЮЧЕНИЕ ТИПА КОРОБКИ
+    // =========================================================================
+    function setBoxType(newType) {
+      if (state.boxType === newType) return;
+      const prevType = state.boxType;
+      state.boxType = newType;
+
+      // Если текущие размеры совпадают с эталоном предыдущего типа, подставляем эталон нового
+      if (newType === 'fefco0215' && prevType === 'autolock' && state.L === 90 && state.W === 90 && state.H === 297) {
+        state.L = 65;
+        state.W = 70;
+        state.H = 290;
+      } else if (newType === 'autolock' && prevType === 'fefco0215' && state.L === 65 && state.W === 70 && state.H === 290) {
+        state.L = 90;
+        state.W = 90;
+        state.H = 297;
+      }
+
+      document.getElementById('inputL').value = state.L;
+      document.getElementById('inputW').value = state.W;
+      document.getElementById('inputH').value = state.H;
+
+      syncTypeUI();
+      render();
+      fitToViewport();
+    }
+
+    // =========================================================================
+    // ОБРАБОТЧИКИ СОБЫТИЙ
+    // =========================================================================
+    function bindEvents() {
+      document.getElementById('btnTypeAutolock').addEventListener('click', () => setBoxType('autolock'));
+      document.getElementById('btnTypeFefco0215').addEventListener('click', () => setBoxType('fefco0215'));
+
+      const bindNum = (id, key) => {
+        const el = document.getElementById(id);
+        el.addEventListener('input', () => {
+          state[key] = parseFloat(el.value);
+          render();
+        });
+      };
+
+      bindNum('inputL', 'L');
+      bindNum('inputW', 'W');
+      bindNum('inputH', 'H');
+      bindNum('inputD', 'd');
+      bindNum('inputGlueW', 'glueW');
+      bindNum('inputTuckH', 'tuckH');
+
+      // Обмен L и W местами
+      document.getElementById('btnSwapLW').addEventListener('click', () => {
+        const tmp = state.L;
+        state.L = state.W;
+        state.W = tmp;
+        document.getElementById('inputL').value = state.L;
+        document.getElementById('inputW').value = state.W;
+        render();
+      });
+
+      // Быстрые пресеты припуска d
+      document.querySelectorAll('.d-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.d = parseFloat(btn.dataset.d);
+          document.getElementById('inputD').value = state.d;
+          render();
+        });
+      });
+
+      document.getElementById('chkGlueNotches').addEventListener('change', (e) => {
+        state.glueNotches = e.target.checked;
+        render();
+      });
+
+      document.getElementById('chkShowDims').addEventListener('change', (e) => {
+        state.showDims = e.target.checked;
+        render();
+      });
+
+      // Экспорт SVG 1:1
+      document.getElementById('btnDownloadSvg').addEventListener('click', () => {
+        const svgText = buildCleanExportSvg();
+        const tag = state.boxType === 'fefco0215' ? 'FEFCO-0215' : 'AUTOLOCK';
+        const fname = `BOX_${tag}_${f(state.W)}x${f(state.L)}x${f(state.H)}mm.svg`;
+        downloadFile(svgText, fname, 'image/svg+xml;charset=utf-8');
+        showToast(`Сохранён 1:1 макет: ${fname}`);
+      });
+
+      // Экспорт HTML-модуля
+      document.getElementById('btnDownloadHtml').addEventListener('click', () => {
+        const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        downloadFile(htmlContent, 'box-generator.html', 'text/html;charset=utf-8');
+        showToast('HTML-модуль сохранён: box-generator.html');
+      });
+
+      // Кнопки масштаба
+      document.getElementById('btnZoomIn').addEventListener('click', () => {
+        state.zoom = Math.min(5, state.zoom * 1.2);
+        applyTransform();
+      });
+      document.getElementById('btnZoomOut').addEventListener('click', () => {
+        state.zoom = Math.max(0.15, state.zoom / 1.2);
+        applyTransform();
+      });
+      document.getElementById('btnFit').addEventListener('click', fitToViewport);
+
+      // Зум колесом мыши и перетаскивание
+      const vp = document.getElementById('viewport');
+      vp.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+        state.zoom = Math.max(0.15, Math.min(6, state.zoom * factor));
+        applyTransform();
+      }, { passive: false });
+
+      let dragging = false;
+      let startX = 0, startY = 0;
+
+      vp.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        startX = e.clientX - state.panX;
+        startY = e.clientY - state.panY;
+        vp.setPointerCapture(e.pointerId);
+      });
+      vp.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        state.panX = e.clientX - startX;
+        state.panY = e.clientY - startY;
+        applyTransform();
+      });
+      vp.addEventListener('pointerup', (e) => {
+        dragging = false;
+        try { vp.releasePointerCapture(e.pointerId); } catch (_) {}
+      });
+
+      window.addEventListener('resize', fitToViewport);
+    }
+
+    // Инициализация
+    window.addEventListener('DOMContentLoaded', () => {
+      syncTypeUI();
+      bindEvents();
+      render();
+      requestAnimationFrame(fitToViewport);
+    });
+  </script>
+</body>
+</html>

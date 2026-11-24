@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="googlebot" content="noindex, nofollow" />
-  <title>Параметрический генератор коробок ECMA 1</title>
+  <title>Параметрический генератор коробок ECMA2</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -610,29 +610,40 @@
 
       } else if (isEcma055) {
         // ---------------------------------------------------------------------
-        // ВАРИАНТ 2: ECMA A55.20.01.01 (САМОСБОРНОЕ ДНО С КРЮЧКАМИ И ЯЗЫЧКОМ В ПАЗ)
+        // ВАРИАНТ 2: ECMA A55.20.01.01 (САМОСБОРНОЕ КОНВЕРТНОЕ ДНО)
         // Эталон: 70 × 65 × 290 мм (W = 70, L = 65, H = 290, d = 0.5)
+        // P1 и P3 (ширина W) складываются навстречу по оси L -> горловина строго на L/2 (32.5 мм)
+        // P2 и P4 (ширина L) складываются навстречу по оси W -> полка паза строго на W/2 (35.0 мм)
         // ---------------------------------------------------------------------
-        const stepX = Math.min(3.5, W * 0.05, L * 0.054);
+        const stepX = Math.min(4.0, W * 0.058, L * 0.062);        // Разгрузочный уступ 4.0 × 4.0 мм у биговок
         const stepY = stepX;
 
-        const hookOverlap = Math.max(3.5, L * 0.10);
-        const hHook = Math.max(18, L / 2 + hookOverlap);
-
-        const slotTopDepth = Math.max(18, W / 2 + 2.5);
-        const legH = Math.max(3.0, Math.min(6.0, W * 0.05));
-        const hSlotFlap = slotTopDepth + legH;
+        // Ось W (клапаны P2 и P4)
+        const slotTopDepth = Math.max(18, W / 2);                 // 35.0 мм при W=70 (ось W/2)
+        const legH = Math.max(3.0, Math.min(6.0, W * 0.0571));    // 4.0 мм при W=70
+        const hSlotFlap = slotTopDepth + legH;                    // 39.0 мм при W=70
         const slotTopY = yBot + slotTopDepth;
         const yBotDeep = yBot + hSlotFlap;
 
-        const outerSpan2 = Math.max(16, (x3 - stepX) - (x2 + stepX));
-        const legW = Math.max(4.5, Math.min(16.0, outerSpan2 * 0.1466));
-        const slotW = Math.max(8.0, outerSpan2 - 2 * legW);
-        const legR = Math.min(2.0, legW * 0.24, legH * 0.45);
+        // Ось L (крючковые клапаны P1 и P3)
+        const hookCatchDepth = Math.max(4.5, Math.min(8.0, W * 0.0857)); // 6.0 мм захода за полку W/2
+        const hHook = slotTopDepth + hookCatchDepth;              // 41.0 мм при W=70
+        const throatInsetX = L / 2;                               // 32.5 мм при L=65 (горловины сходятся строго по L/2)
+        const throatDropY = hHook * 0.3512;                       // 14.40 мм -> угол скоса 23.89° при L=65, W=70
+        const hookCatchW = Math.min(11.0, L * 0.16, W * 0.22);    // 10.4 мм зацеп за ось L/2
+        const noseCornerX = Math.max(stepX + 5.0, throatInsetX - hookCatchW); // 22.1 мм при L=65
+        const noseR = Math.min(5.5, hHook * 0.15, L * 0.085);
 
-        const shoulderOffset = Math.max(3.5, Math.min(8.0, W * 0.0643));
-        const shoulderY4 = yBot + slotTopDepth - shoulderOffset;
-        const tongueW4 = Math.max(10.0, slotW * 0.6585);
+        // 1. Геометрия опорного клапана P2 с П-образным пазом (ширина паза 36.0 мм, ножки по 10.5 мм при L=65)
+        const outerSpan2 = Math.max(16, (x3 - stepX) - (x2 + stepX));
+        const legW = Math.max(5.0, outerSpan2 * 0.1842);
+        const slotW = Math.max(8.0, outerSpan2 - 2 * legW);
+        const legR = Math.min(2.2, legW * 0.22, legH * 0.45);
+
+        // 2. Клапан P4 (x5 -> x4): трапециевидный запорный язычок (ширина 21.0 мм, плечи на 31.5 мм)
+        const shoulderOffset = Math.max(3.0, Math.min(6.0, W * 0.05));
+        const shoulderY4 = yBot + slotTopDepth - shoulderOffset;  // 31.5 мм при W=70
+        const tongueW4 = Math.max(10.0, slotW * 0.5833);          // 21.0 мм при slotW=36.0
         const cx4 = (x4 + x5) / 2;
         const t4Right = cx4 + tongueW4 / 2;
         const t4Left = cx4 - tongueW4 / 2;
@@ -651,11 +662,7 @@
         outer.push(`L ${f(p4TL.x)} ${f(p4TL.y)}`);
         outer.push(`L ${f(x4)} ${f(yBot)}`);
 
-        const throatInsetX = W * 0.55;
-        const throatDropY = Math.min(hHook * 0.48, throatInsetX * Math.tan(23.89 * Math.PI / 180));
-        const noseCornerX = W * 0.37;
-        const noseR = Math.min(5.5, hHook * 0.16, W * 0.08);
-
+        // 3. Клапан P3 (x4 -> x3): правый крючковый клапан
         const p3BotRight = { x: x4 - stepX, y: yBot + hHook };
         const p3NoseCorner = { x: x3 + noseCornerX, y: yBot + hHook };
         const p3Throat = { x: x3 + throatInsetX, y: yBot + throatDropY };
@@ -667,6 +674,7 @@
         outer.push(`L ${f(p3Throat.x)} ${f(p3Throat.y)}`);
         outer.push(`L ${f(x3)} ${f(yBot)}`);
 
+        // 4. Клапан P2 (x3 -> x2): опорный клапан с центральным П-образным пазом
         const cx2 = (x2 + x3) / 2;
         const slotRight = cx2 + slotW / 2;
         const slotLeft = cx2 - slotW / 2;
@@ -696,6 +704,7 @@
         outer.push(`L ${f(p2TopL.x)} ${f(p2TopL.y)}`);
         outer.push(`L ${f(x2)} ${f(yBot)}`);
 
+        // 5. Клапан P1 (x2 -> x1): левый крючковый клапан (точное зеркало P3)
         const p1Throat = { x: x2 - throatInsetX, y: yBot + throatDropY };
         const p1NoseCorner = { x: x2 - noseCornerX, y: yBot + hHook };
         const p1BotLeft = { x: x1 + stepX, y: yBot + hHook };
@@ -708,8 +717,8 @@
         outer.push(`L ${f(x1)} ${f(yBot)}`);
 
         extraCreases.push({ x1: x1, y1: yBot, x2: x5, y2: yBot });
-        maxBottomDepth = hSlotFlap;
-        bottomInfoHtml = `A55.20.01.01: язычок P4 <span class="text-slate-200">${f(tongueW4)} мм</span> / паз P2 <span class="text-emerald-300">${f(slotW)} мм</span>`;
+        maxBottomDepth = Math.max(hHook, hSlotFlap);
+        bottomInfoHtml = `A55.20.01.01: ось крючков <span class="text-slate-200">${f(throatInsetX)} мм</span> / паз P2 <span class="text-emerald-300">${f(slotW)} мм</span>`;
 
       } else {
         // ---------------------------------------------------------------------
@@ -888,7 +897,6 @@
       // 2. Укладка «валетом» (переворот 180° / 270°)
       const topFlapH = g.yTopSide - g.yTuckTop;
       const bodyOnlyH = g.H + g.d;
-      // Для A20.20.03.01 при 180° крышка P1 входит напротив пылезащитного клапана P4 (высота dustH)
       const pairSpanH = g.isEcma020
         ? (2 * g.H + topFlapH + g.dustH + gap)
         : (bodyOnlyH + topFlapH + g.maxBottomDepth + gap);

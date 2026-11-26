@@ -63,6 +63,24 @@
       background: #475569;
     }
   </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+  <style>
+    #studio3dCanvasContainer {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+    .studio3d-bg {
+      background: radial-gradient(circle at 50% 40%, #262b36 0%, #13161c 100%);
+    }
+  </style>
 </head>
 <body class="min-h-screen flex flex-col overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
 
@@ -86,6 +104,26 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-2">
+      <!-- Переключатель 2D Чертёж / 3D Студия -->
+      <div class="inline-flex items-center p-1 rounded-xl bg-slate-950 border border-slate-800">
+        <button id="btnMode2D" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <line x1="3" y1="9" x2="21" y2="9" />
+            <line x1="9" y1="21" x2="9" y2="9" />
+          </svg>
+          <span>2D Чертёж</span>
+        </button>
+        <button id="btnMode3D" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-slate-400 hover:text-white border border-transparent flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+            <line x1="12" y1="22.08" x2="12" y2="12" />
+          </svg>
+          <span>3D Студия</span>
+        </button>
+      </div>
+
       <button id="btnDownloadSvg" type="button" class="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-slate-950 font-semibold text-xs flex items-center gap-2 transition shadow-lg shadow-cyan-500/20 cursor-pointer">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -482,52 +520,221 @@
           </section>
         </div>
 
-        <!-- 3. ГАБАРИТЫ РАЗВЁРТКИ И ОФСЕТНЫЕ ФОРМАТЫ -->
-        <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
-          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-            <span class="w-1.5 h-4 rounded-full bg-amber-400"></span>
-            3. Параметры заготовки и форматы
-          </h2>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5">
-              <div class="text-[10px] uppercase tracking-wider text-slate-400">Размер развёртки</div>
-              <div id="statBlankSize" class="text-sm font-bold font-mono text-white mt-0.5">—</div>
-            </div>
-            <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5">
-              <div class="text-[10px] uppercase tracking-wider text-slate-400">Площадь габарита</div>
-              <div id="statBlankArea" class="text-sm font-bold font-mono text-cyan-400 mt-0.5">—</div>
-            </div>
+        <!-- ==================== ПАНЕЛЬ НАСТРОЕК 3D СТУДИИ ==================== -->
+        <div id="studio3dSidebarWrap" class="hidden space-y-4">
+          <div id="studio3dConeNotice" class="hidden bg-amber-500/10 border border-amber-500/40 rounded-xl p-3 text-xs text-amber-200 leading-relaxed">
+            Сейчас выбран режим <strong>Конусы</strong>. 3D Студия рендерит прямоугольную коробку по текущим габаритам L × W × H.
           </div>
 
-          <div class="space-y-1.5 text-xs">
-            <div id="fitCard35" class="flex items-center justify-between px-2.5 py-2 rounded-lg bg-slate-900/80 border border-slate-800">
-              <div>
-                <div class="font-mono font-semibold text-slate-200">Лист 35×50 см</div>
-                <div class="text-[10px] font-mono text-slate-400">Зона: 330 × 480 мм</div>
+          <!-- 3D-1. Сборка и контур -->
+          <section class="bg-slate-850 border border-violet-500/30 rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-violet-300 flex items-center gap-2">
+                <span class="w-1.5 h-4 rounded-full bg-violet-400"></span>
+                1. Сборка и основа
+              </h2>
+              <span id="studio3dDimBadge" class="text-[10px] font-mono text-slate-400">W×L×H</span>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs text-slate-300">Складывание развёртки</span>
+                <strong id="foldVal3d" class="text-xs font-mono text-cyan-400">100%</strong>
               </div>
-              <span id="fitBadge35" class="px-2 py-0.5 rounded font-mono text-[11px] font-semibold">—</span>
+              <input type="range" id="foldSlider3d" min="0" max="100" value="100" class="w-full accent-cyan-500 cursor-pointer" />
             </div>
-            <div id="fitCard50" class="flex items-center justify-between px-2.5 py-2 rounded-lg bg-slate-900/80 border border-slate-800">
-              <div>
-                <div class="font-mono font-semibold text-slate-200">Лист 50×70 см</div>
-                <div class="text-[10px] font-mono text-slate-400">Зона: 480 × 680 мм</div>
-              </div>
-              <span id="fitBadge50" class="px-2 py-0.5 rounded font-mono text-[11px] font-semibold">—</span>
-            </div>
-          </div>
 
-          <div id="panelSummaryText" class="text-[11px] font-mono text-slate-400 bg-slate-900/60 border border-slate-800/80 rounded-lg p-2.5 leading-relaxed">
-            —
-          </div>
-        </section>
+            <label class="flex items-center justify-between gap-2 text-xs text-slate-300 cursor-pointer select-none">
+              <span>Показать контур реза и биговки поверх дизайна</span>
+              <input id="showLines3d" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
+            </label>
+
+            <div>
+              <label for="baseMaterial3d" class="block text-[11px] text-slate-400 mb-1">Материал основы</label>
+              <select id="baseMaterial3d" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-violet-500">
+                <option value="bristol">Бристоль (матовый мелованный картон)</option>
+                <option value="bristol_matte_lam">Бристоль + Матовая ламинация</option>
+                <option value="bristol_gloss_lam">Бристоль + Глянцевая ламинация</option>
+              </select>
+            </div>
+          </section>
+
+          <!-- 3D-2. Дизайн (общая развёртка) -->
+          <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                <span class="w-1.5 h-4 rounded-full bg-cyan-500"></span>
+                2. Дизайн (развёртка)
+              </h2>
+              <button id="btnDemoDesign3d" type="button" class="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] font-medium text-slate-200 cursor-pointer">
+                Демо-макет
+              </button>
+            </div>
+
+            <div class="border border-dashed border-slate-700 rounded-lg p-2.5 bg-slate-900/70 space-y-2">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <label for="designFile3d" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[11px] font-semibold text-slate-200 cursor-pointer">
+                  Загрузить PNG / JPG
+                </label>
+                <input type="file" id="designFile3d" accept="image/*" class="hidden" />
+                <span id="designFileName3d" class="text-[11px] text-slate-400 truncate max-w-[130px]">Встроенный демо-макет</span>
+                <button id="btnDownloadTemplate3d" type="button" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[11px] font-semibold text-cyan-300 cursor-pointer" title="Скачать PNG-шаблон развёртки под текущие размеры">
+                  Шаблон
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-lg p-2 flex flex-col items-center gap-1.5">
+              <canvas id="uvPreviewCanvas3d" width="600" height="420" class="w-full max-h-[150px] object-contain bg-white rounded"></canvas>
+              <span class="text-[10px] text-slate-400">Превью общей текстуры развёртки (U/V)</span>
+            </div>
+          </section>
+
+          <!-- 3D-3. Послепечатная отделка (Ч/Б маски) -->
+          <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                <span class="w-1.5 h-4 rounded-full bg-amber-400"></span>
+                3. Отделка (чёрное = эффект)
+              </h2>
+            </div>
+
+            <!-- Фольга -->
+            <div class="border border-slate-800 rounded-lg p-2.5 bg-slate-900/70 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <label class="flex items-center gap-2 text-xs font-semibold text-slate-200 cursor-pointer">
+                  <input type="checkbox" id="foilEnabled3d" checked class="w-4 h-4 rounded bg-slate-950 border-slate-600 text-amber-500 focus:ring-0 cursor-pointer" />
+                  <span>Тиснение фольгой</span>
+                </label>
+                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-amber-300 font-mono">фольга</span>
+              </div>
+              <div id="foilColorGroup3d" class="grid grid-cols-2 gap-1.5">
+                <button type="button" data-foil="gold" class="foil-color-btn py-1 rounded-lg border text-[11px] font-semibold cursor-pointer bg-amber-500/20 border-amber-500/60 text-amber-200">Золото</button>
+                <button type="button" data-foil="silver" class="foil-color-btn py-1 rounded-lg border text-[11px] font-semibold cursor-pointer bg-slate-900 border-slate-700 text-slate-400 hover:text-white">Серебро</button>
+              </div>
+              <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                <label for="foilMaskFile3d" class="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] font-semibold text-slate-200 cursor-pointer">Ч/Б маска</label>
+                <input type="file" id="foilMaskFile3d" accept="image/*" class="hidden" />
+                <span id="foilFileName3d" class="text-[10px] text-slate-400 truncate max-w-[120px]">Демо-маска</span>
+                <button id="clearFoil3d" type="button" class="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] text-slate-300 cursor-pointer">× Сброс</button>
+              </div>
+              <div>
+                <div class="flex justify-between text-[10px] text-slate-400 mb-0.5">
+                  <span>Глубина вдавливания</span>
+                  <span id="foilDepthLabel3d" class="font-mono text-slate-200">0.45</span>
+                </div>
+                <input type="range" id="foilDepth3d" min="0" max="1" step="0.05" value="0.45" class="w-full accent-amber-400 cursor-pointer" />
+              </div>
+            </div>
+
+            <!-- Конгрев -->
+            <div class="border border-slate-800 rounded-lg p-2.5 bg-slate-900/70 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <label class="flex items-center gap-2 text-xs font-semibold text-slate-200 cursor-pointer">
+                  <input type="checkbox" id="embossEnabled3d" checked class="w-4 h-4 rounded bg-slate-950 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
+                  <span>Конгрев (рельеф)</span>
+                </label>
+                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-cyan-300 font-mono">выпукло</span>
+              </div>
+              <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                <label for="embossMaskFile3d" class="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] font-semibold text-slate-200 cursor-pointer">Ч/Б маска</label>
+                <input type="file" id="embossMaskFile3d" accept="image/*" class="hidden" />
+                <span id="embossFileName3d" class="text-[10px] text-slate-400 truncate max-w-[120px]">Демо-маска</span>
+                <button id="clearEmboss3d" type="button" class="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] text-slate-300 cursor-pointer">× Сброс</button>
+              </div>
+              <div>
+                <div class="flex justify-between text-[10px] text-slate-400 mb-0.5">
+                  <span>Высота выбивки</span>
+                  <span id="embossHeightLabel3d" class="font-mono text-slate-200">0.75</span>
+                </div>
+                <input type="range" id="embossHeight3d" min="0" max="1.5" step="0.05" value="0.75" class="w-full accent-cyan-400 cursor-pointer" />
+              </div>
+            </div>
+
+            <!-- УФ-лак -->
+            <div class="border border-slate-800 rounded-lg p-2.5 bg-slate-900/70 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <label class="flex items-center gap-2 text-xs font-semibold text-slate-200 cursor-pointer">
+                  <input type="checkbox" id="varnishEnabled3d" checked class="w-4 h-4 rounded bg-slate-950 border-slate-600 text-emerald-500 focus:ring-0 cursor-pointer" />
+                  <span>УФ-лак (Clearcoat)</span>
+                </label>
+                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-emerald-300 font-mono">лак</span>
+              </div>
+              <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                <label for="varnishMaskFile3d" class="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] font-semibold text-slate-200 cursor-pointer">Ч/Б маска</label>
+                <input type="file" id="varnishMaskFile3d" accept="image/*" class="hidden" />
+                <span id="varnishFileName3d" class="text-[10px] text-slate-400 truncate max-w-[120px]">Демо-маска</span>
+                <button id="clearVarnish3d" type="button" class="px-2 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] text-slate-300 cursor-pointer">× Сброс</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3D-4. Студийный свет, софтбоксы и экспорт PNG -->
+          <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+              <span class="w-1.5 h-4 rounded-full bg-emerald-400"></span>
+              4. Студийный свет и рендер
+            </h2>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label for="studioEnvPreset3d" class="block text-[10px] text-slate-400 mb-1">Софтбоксы</label>
+                <select id="studioEnvPreset3d" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-[11px] text-white">
+                  <option value="softboxes" selected>Мини-софтбоксы</option>
+                  <option value="multilevel">Многоуровневая</option>
+                  <option value="strips">Микро-стрипы</option>
+                  <option value="showroom">Тёплый шоурум</option>
+                </select>
+              </div>
+              <div>
+                <label for="bgPreset3d" class="block text-[10px] text-slate-400 mb-1">Фон сцены</label>
+                <select id="bgPreset3d" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-[11px] text-white">
+                  <option value="dark">Тёмный графит</option>
+                  <option value="light">Светлая циклорама</option>
+                  <option value="warm">Тёплый беж</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <label for="hdrFile3d" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[11px] font-semibold text-slate-200 cursor-pointer">
+                Загрузить свой .HDR
+              </label>
+              <input type="file" id="hdrFile3d" accept=".hdr" class="hidden" />
+              <span id="hdrFileName3d" class="text-[10px] text-slate-400 truncate max-w-[160px]">Встроенный 32-bit HDRI</span>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[11px] text-slate-300 mb-1">
+                <span>Поворот HDRI-света</span>
+                <span id="lightAngleLabel3d" class="font-mono text-cyan-300">42°</span>
+              </div>
+              <input type="range" id="lightAngle3d" min="0" max="360" value="42" class="w-full accent-cyan-500 cursor-pointer" />
+            </div>
+
+            <div>
+              <label for="renderRes3d" class="block text-[10px] text-slate-400 mb-1">Разрешение PNG</label>
+              <select id="renderRes3d" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                <option value="1600x1200">1600 × 1200 (4:3)</option>
+                <option value="2400x1800" selected>2400 × 1800 (HD 4:3)</option>
+                <option value="2160x2160">2160 × 2160 (Квадрат)</option>
+                <option value="3200x2400">3200 × 2400 (4K 4:3)</option>
+              </select>
+            </div>
+
+            <button id="btnRenderPNG3d" type="button" class="w-full py-2.5 px-3 rounded-xl bg-violet-600 hover:bg-violet-500 active:bg-violet-700 text-white font-semibold text-xs transition shadow-lg shadow-violet-600/25 cursor-pointer">
+              Снять реалистичный рендер (PNG)
+            </button>
+          </section>
+        </div>
 
       </div>
     </aside>
 
-    <!-- ПРАВАЯ ОБЛАСТЬ: ИНТЕРАКТИВНЫЙ ЧЕРТЁЖ -->
+    <!-- ПРАВАЯ ОБЛАСТЬ: ИНТЕРАКТИВНЫЙ ЧЕРТЁЖ / 3D СТУДИЯ -->
     <main class="flex-1 flex flex-col min-w-0 lg:h-[calc(100vh-58px)] overflow-hidden">
-
+      <!-- 2D ЧЕРТЁЖ -->
+      <div id="view2dWrap" class="flex-1 flex flex-col min-h-0 overflow-hidden">
       <!-- ПАНЕЛЬ ИНСТРУМЕНТОВ ЧЕРТЕЖА -->
       <div class="px-4 py-2 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0">
         <div class="flex flex-wrap items-center gap-4 text-[11px] text-slate-300">
@@ -563,6 +770,38 @@
 
         <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-slate-900/85 border border-slate-800 text-[10px] font-mono text-slate-400 pointer-events-none">
           Колесо мыши: масштаб • Перетаскивание: сдвиг чертежа
+        </div>
+      </div>
+      </div>
+
+      <!-- 3D СТУДИЯ -->
+      <div id="view3dWrap" class="hidden flex-1 relative flex flex-col min-h-[460px] studio3d-bg overflow-hidden">
+        <div class="absolute top-3 left-3 right-3 flex flex-wrap items-start justify-between gap-2 pointer-events-none z-10">
+          <div class="pointer-events-auto bg-slate-900/90 backdrop-blur-md border border-slate-700/80 rounded-xl px-2.5 py-1.5 flex items-center gap-1.5 text-[11px]">
+            <span class="text-slate-400 mr-1">Ракурс:</span>
+            <button type="button" data-cam3d="front34" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium cursor-pointer">3/4</button>
+            <button type="button" data-cam3d="front" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium cursor-pointer">Лицо</button>
+            <button type="button" data-cam3d="top34" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium cursor-pointer">Крышка</button>
+            <button type="button" data-cam3d="bottom" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium cursor-pointer">Дно</button>
+            <button type="button" data-cam3d="flat" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium cursor-pointer">Лист</button>
+          </div>
+          <div class="hidden sm:flex pointer-events-auto bg-slate-900/85 backdrop-blur-md border border-slate-800 rounded-xl px-3 py-1.5 text-[11px] text-slate-400">
+            ЛКМ — вращение • ПКМ — сдвиг • Колесо — зум
+          </div>
+        </div>
+
+        <div id="engineError3d" class="hidden absolute inset-12 bg-slate-900/95 border border-rose-500 rounded-xl p-5 z-20 flex-col justify-center gap-2 text-sm text-slate-200">
+          <strong class="text-rose-400 text-base">3D-движок не загрузился в этом режиме просмотра</strong>
+          <div>Браузер может блокировать ES-модули (Three.js), если открывать HTML напрямую по протоколу <code>file://</code> или <code>content://</code>.</div>
+          <div class="text-slate-400">Откройте файл через локальный сервер (<code>http://localhost</code>) или GitHub Pages (<code>https://</code>).</div>
+        </div>
+
+        <div id="studio3dCanvasContainer" class="flex-1 w-full h-full"></div>
+
+        <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none z-10">
+          <div class="pointer-events-auto bg-slate-900/85 backdrop-blur-md border border-slate-800 rounded-lg px-3 py-1.5 text-[11px] text-slate-300">
+            <span id="statusText3d">Студийные софтбоксы настроены — покрутите коробку или угол HDRI-света.</span>
+          </div>
         </div>
       </div>
     </main>
@@ -1673,59 +1912,6 @@
     }
 
     // =========================================================================
-    // ПРОВЕРКА ВХОДИМОСТИ НА ОФСЕТНЫЕ ФОРМАТЫ (35×50 и 50×70)
-    // =========================================================================
-    function checkSheetFit(g, workW, workH) {
-      const bw = g.totalW;
-      const bh = g.totalH;
-      const gap = 3.0;
-
-      const n0 = (bw <= workW && bh <= workH)
-        ? Math.floor((workW + gap) / (bw + gap)) * Math.floor((workH + gap) / (bh + gap))
-        : 0;
-      const n90 = (bh <= workW && bw <= workH)
-        ? Math.floor((workW + gap) / (bh + gap)) * Math.floor((workH + gap) / (bw + gap))
-        : 0;
-
-      if (g.isCone) {
-        const best = Math.max(n0, n90);
-        if (best <= 0) return { fits: false, text: 'Не помещается' };
-        if (best === 1) return { fits: true, text: n0 >= 1 ? 'Входит (1 шт, 0°)' : 'Входит (1 шт, 90°)' };
-        return { fits: true, text: `${best} шт/л (габарит)` };
-      }
-
-      const topFlapH = g.yTopSide - g.yTuckTop;
-      const bodyOnlyH = g.H + g.d;
-      const pairSpanH = g.isEcma020
-        ? (2 * g.H + topFlapH + g.dustH + gap)
-        : (bodyOnlyH + topFlapH + g.maxBottomDepth + gap);
-
-      let nValet0 = 0;
-      if (bw <= workW && pairSpanH <= workH) {
-        const cols = Math.floor((workW + gap) / (bw + gap));
-        const pairs = Math.floor((workH + gap) / (pairSpanH + gap));
-        const remH = workH - pairs * (pairSpanH + gap);
-        const extraRow = remH >= bh ? 1 : 0;
-        nValet0 = cols * (pairs * 2 + extraRow);
-      }
-
-      let nValet90 = 0;
-      if (bw <= workH && pairSpanH <= workW) {
-        const cols = Math.floor((workH + gap) / (bw + gap));
-        const pairs = Math.floor((workW + gap) / (pairSpanH + gap));
-        const remW = workW - pairs * (pairSpanH + gap);
-        const extraRow = remW >= bh ? 1 : 0;
-        nValet90 = cols * (pairs * 2 + extraRow);
-      }
-
-      const best = Math.max(n0, n90, nValet0, nValet90);
-      if (best <= 0) return { fits: false, text: 'Не помещается' };
-      if (best === 1) return { fits: true, text: n0 >= 1 ? 'Входит (1 шт, 0°)' : 'Входит (1 шт, 90°)' };
-      const isValetWin = Math.max(nValet0, nValet90) > Math.max(n0, n90);
-      return { fits: true, text: isValetWin ? `${best} шт/л (валет)` : `${best} шт/л` };
-    }
-
-    // =========================================================================
     // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ПРИ ПЕРЕКЛЮЧЕНИИ РЕЖИМОВ
     // =========================================================================
     function syncBottomSwapUI() {
@@ -1956,37 +2142,9 @@
     function render() {
       const g = calculateGeometry();
 
-      document.getElementById('statBlankSize').textContent = `${f(g.totalW)} × ${f(g.totalH)} мм`;
-      const areaM2 = (g.totalW * g.totalH) / 1e6;
-      document.getElementById('statBlankArea').textContent = `${areaM2.toFixed(4)} м²`;
-
-      const fit35 = checkSheetFit(g, 330, 480);
-      const badge35 = document.getElementById('fitBadge35');
-      badge35.textContent = fit35.text;
-      badge35.className = fit35.fits
-        ? 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
-        : 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30';
-
-      const fit50 = checkSheetFit(g, 480, 680);
-      const badge50 = document.getElementById('fitBadge50');
-      badge50.textContent = fit50.text;
-      badge50.className = fit50.fits
-        ? 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
-        : 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30';
-
       if (g.isCone) {
         document.getElementById('coneFullCircHint').textContent = `Полная: ${f(g.fullMidCirc)} мм`;
         document.getElementById('coneWrapBadge').textContent = g.isPartial ? `${f(g.labelLen)} мм` : '360°';
-        document.getElementById('panelSummaryText').innerHTML = g.summaryHtml;
-      } else {
-        document.getElementById('panelSummaryText').innerHTML =
-          `Панели: Клей <span class="text-slate-200">${f(g.glueW)}</span> + ` +
-          `P1(<span class="text-cyan-300">${f(g.p1W)}</span>) + ` +
-          `P2(<span class="text-cyan-300">${f(g.p2W)}</span>) + ` +
-          `P3(<span class="text-cyan-300">${f(g.p3W)}</span>) + ` +
-          `P4(<span class="text-amber-300">${f(g.p4W)}</span>) = <span class="text-white font-semibold">${f(g.totalW)} мм</span><br/>` +
-          g.heightSummaryHtml +
-          g.bottomInfoHtml;
       }
 
       const maxDim = Math.max(g.totalW, g.totalH, 40);
@@ -2089,6 +2247,9 @@
       svgEl.setAttribute('width', `${Math.round(vbW * 1.15)}`);
       svgEl.setAttribute('height', `${Math.round(vbH * 1.15)}`);
       svgEl.innerHTML = svgContent;
+      if (typeof window.__sync3dStudioDims === 'function') {
+        window.__sync3dStudioDims(state);
+      }
     }
 
     // =========================================================================
@@ -2441,6 +2602,1269 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
       bindEvents();
       render();
       requestAnimationFrame(fitToViewport);
+    });
+  </script>
+
+  <script>
+    window.__viewMode = '2d';
+    window.__threeLoaded = false;
+
+    function setViewMode(mode) {
+      window.__viewMode = mode;
+      const is3d = mode === '3d';
+
+      document.getElementById('view2dWrap').classList.toggle('hidden', is3d);
+      document.getElementById('view3dWrap').classList.toggle('hidden', !is3d);
+      document.getElementById('studio3dSidebarWrap').classList.toggle('hidden', !is3d);
+
+      const btn2d = document.getElementById('btnMode2D');
+      const btn3d = document.getElementById('btnMode3D');
+
+      const act2d = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5';
+      const act3d = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-violet-500/25 text-violet-200 border border-violet-500/50 flex items-center gap-1.5';
+      const inact = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer text-slate-400 hover:text-white border border-transparent flex items-center gap-1.5';
+
+      btn2d.className = !is3d ? act2d : inact;
+      btn3d.className = is3d ? act3d : inact;
+
+      if (is3d) {
+        if (!window.__threeLoaded) {
+          setTimeout(() => {
+            if (!window.__threeLoaded) {
+              const err = document.getElementById('engineError3d');
+              if (err) {
+                err.classList.remove('hidden');
+                err.classList.add('flex');
+              }
+            }
+          }, 1800);
+        }
+        if (typeof window.__activate3dStudio === 'function') {
+          window.__activate3dStudio(state);
+        }
+      } else {
+        requestAnimationFrame(fitToViewport);
+      }
+    }
+
+    document.getElementById('btnMode2D').addEventListener('click', () => setViewMode('2d'));
+    document.getElementById('btnMode3D').addEventListener('click', () => setViewMode('3d'));
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+
+    window.__threeLoaded = true;
+    const errBox = document.getElementById('engineError3d');
+    if (errBox) {
+      errBox.classList.add('hidden');
+      errBox.classList.remove('flex');
+    }
+
+    const s3d = {
+      geomKey: '',
+      fold: 1.0,
+      showLines: true,
+      baseMaterial: 'bristol',
+      foilEnabled: true,
+      foilColor: 'gold',
+      foilDepth: 0.45,
+      embossEnabled: true,
+      embossHeight: 0.75,
+      varnishEnabled: true,
+      studioEnvPreset: 'softboxes',
+      lightAngle: 42,
+      bgPreset: 'dark',
+      designImg: null,
+      foilMaskImg: null,
+      embossMaskImg: null,
+      varnishMaskImg: null,
+      useDemoMasks: true,
+      inited: false,
+      dirtyGeom: true
+    };
+
+    let renderer, scene, camera, controls, pmremGenerator, currentEnvRT = null;
+    let keyLight, floorMat, boxRoot, pivots = {};
+    let outerMaterial, innerCardboardMat;
+    let albedoCanvas, roughnessCanvas, metalnessCanvas, bumpCanvas, clearcoatCanvas;
+    let albedoTex, roughnessTex, metalnessTex, bumpTex, clearcoatTex;
+    let paperNoiseCanvas;
+    const TEX_W = 1536;
+    let TEX_H = 1100;
+
+    // Получаем актуальную 2D-геометрию напрямую из генератора коробок
+    function getBoxGeom() {
+      const g = calculateGeometry();
+      if (g.isCone) {
+        // Если выбран конус, строим 3D по текущим параметрам A55 (L × W × H)
+        return calculateA55Geometry();
+      }
+      return g;
+    }
+
+    function createPaperNoiseCanvas(size = 512) {
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const ctx = c.getContext('2d');
+      const imgData = ctx.createImageData(size, size);
+      for (let i = 0; i < imgData.data.length; i += 4) {
+        const v = 122 + Math.floor((Math.random() - 0.5) * 24);
+        imgData.data[i] = imgData.data[i + 1] = imgData.data[i + 2] = v;
+        imgData.data[i + 3] = 255;
+      }
+      ctx.putImageData(imgData, 0, 0);
+      return c;
+    }
+
+    function generateProceduralHDRTexture(preset) {
+      const width = 2048;
+      const height = 1024;
+      const data = new Float32Array(width * height * 4);
+      let lights = [];
+      let skyTop = [0.05, 0.06, 0.08];
+      let horizon = [0.02, 0.025, 0.035];
+      let ground = [0.01, 0.012, 0.018];
+
+      function seededRand(seed) {
+        let s = seed % 2147483647;
+        if (s <= 0) s += 2147483646;
+        return () => {
+          s = (s * 16807) % 2147483647;
+          return (s - 1) / 2147483646;
+        };
+      }
+
+      if (preset === 'softboxes') {
+        skyTop = [0.05, 0.065, 0.09];
+        horizon = [0.018, 0.022, 0.032];
+        ground = [0.008, 0.010, 0.014];
+        const rnd = seededRand(1042);
+        for (let i = 0; i < 48; i++) {
+          const u = 0.46 + rnd() * 0.34, v = 0.12 + rnd() * 0.54;
+          const du = 0.0045 + rnd() * 0.0055, dv = 0.0070 + rnd() * 0.0090;
+          const rot = (rnd() - 0.5) * 1.1;
+          const warm = 0.85 + rnd() * 0.3, cool = 0.85 + rnd() * 0.3, lum = 15.5 + rnd() * 5.5;
+          lights.push({ type: 'rect', u, v, du, dv, rot, feather: 0.0022, color: [lum * warm, lum * 0.96, lum * cool] });
+        }
+        for (let i = 0; i < 24; i++) {
+          const u = 0.47 + rnd() * 0.32, v = 0.14 + rnd() * 0.50, r = 0.0042 + rnd() * 0.0035, lum = 22.0 + rnd() * 7.0;
+          lights.push({ type: 'spot', u, v, r, color: [lum * 1.05, lum * 0.96, lum * 0.82] });
+        }
+        lights.push({ type: 'rect', u: 0.16, v: 0.38, du: 0.005, dv: 0.14, rot: 0.08, feather: 0.003, color: [9.5, 10.2, 11.5] });
+        lights.push({ type: 'rect', u: 0.62, v: 0.84, du: 0.12, dv: 0.025, rot: 0.0, feather: 0.012, color: [1.8, 2.0, 2.4] });
+      } else if (preset === 'strips') {
+        skyTop = [0.022, 0.028, 0.038];
+        horizon = [0.007, 0.009, 0.014];
+        ground = [0.003, 0.004, 0.006];
+        const rnd = seededRand(2089);
+        for (let i = 0; i < 56; i++) {
+          const u = 0.47 + rnd() * 0.32, v = 0.12 + rnd() * 0.54;
+          const du = 0.0028 + rnd() * 0.0030, dv = 0.014 + rnd() * 0.022;
+          const rot = (rnd() - 0.5) * 1.25, lum = 19.0 + rnd() * 7.0;
+          const warm = 0.88 + rnd() * 0.25, cool = 0.88 + rnd() * 0.25;
+          lights.push({ type: 'rect', u, v, du, dv, rot, feather: 0.0014, color: [lum * warm, lum * 0.97, lum * cool] });
+        }
+        for (let i = 0; i < 20; i++) {
+          const u = 0.48 + rnd() * 0.30, v = 0.15 + rnd() * 0.48, r = 0.0038 + rnd() * 0.0030, lum = 25.0 + rnd() * 7.0;
+          lights.push({ type: 'spot', u, v, r, color: [lum * 1.06, lum * 0.96, lum * 0.82] });
+        }
+        lights.push({ type: 'rect', u: 0.14, v: 0.40, du: 0.004, dv: 0.15, rot: 0.05, feather: 0.0025, color: [11.0, 11.8, 13.0] });
+      } else if (preset === 'multilevel') {
+        skyTop = [0.04, 0.052, 0.072];
+        horizon = [0.014, 0.018, 0.026];
+        ground = [0.006, 0.008, 0.012];
+        const rnd = seededRand(4099);
+        for (let i = 0; i < 42; i++) {
+          const u = 0.44 + rnd() * 0.38, v = 0.11 + rnd() * 0.56;
+          const du = 0.0040 + rnd() * 0.0065, dv = 0.0060 + rnd() * 0.010;
+          const rot = (rnd() - 0.5) * 1.3, lum = 3.8 + rnd() * 4.0, tint = 0.90 + rnd() * 0.20;
+          lights.push({ type: 'rect', u, v, du, dv, rot, feather: 0.0032, color: [lum * tint, lum * 0.98, lum * (2.0 - tint)] });
+        }
+        for (let i = 0; i < 16; i++) {
+          const u = 0.47 + rnd() * 0.32, v = 0.14 + rnd() * 0.50;
+          const du = 0.0035 + rnd() * 0.0045, dv = 0.0055 + rnd() * 0.0080;
+          const rot = (rnd() - 0.5) * 1.1, lum = 11.0 + rnd() * 5.5, warm = 0.92 + rnd() * 0.18;
+          lights.push({ type: 'rect', u, v, du, dv, rot, feather: 0.0020, color: [lum * warm, lum * 0.96, lum * (1.92 - warm)] });
+        }
+        for (let i = 0; i < 14; i++) {
+          const u = 0.48 + rnd() * 0.30, v = 0.15 + rnd() * 0.48, r = 0.0028 + rnd() * 0.0024, lum = 24.0 + rnd() * 10.0;
+          lights.push({ type: 'spot', u, v, r, color: [lum * 1.06, lum * 0.96, lum * 0.82] });
+        }
+        lights.push({ type: 'rect', u: 0.16, v: 0.38, du: 0.0045, dv: 0.14, rot: 0.08, feather: 0.003, color: [8.5, 9.2, 10.5] });
+        lights.push({ type: 'rect', u: 0.62, v: 0.84, du: 0.11, dv: 0.022, rot: 0.0, feather: 0.012, color: [1.5, 1.7, 2.0] });
+      } else {
+        skyTop = [0.09, 0.078, 0.066];
+        horizon = [0.028, 0.024, 0.022];
+        ground = [0.012, 0.010, 0.009];
+        const rnd = seededRand(3077);
+        for (let i = 0; i < 44; i++) {
+          const u = 0.46 + rnd() * 0.34, v = 0.13 + rnd() * 0.52;
+          const du = 0.0055 + rnd() * 0.0065, dv = 0.0080 + rnd() * 0.010;
+          const rot = (rnd() - 0.5) * 0.95, lum = 15.0 + rnd() * 5.0;
+          lights.push({ type: 'rect', u, v, du, dv, rot, feather: 0.0028, color: [lum * 1.08, lum * 0.95, lum * 0.78] });
+        }
+        for (let i = 0; i < 22; i++) {
+          const u = 0.47 + rnd() * 0.32, v = 0.14 + rnd() * 0.50, r = 0.0045 + rnd() * 0.0035, lum = 21.0 + rnd() * 6.0;
+          lights.push({ type: 'spot', u, v, r, color: [lum * 1.1, lum * 0.96, lum * 0.80] });
+        }
+        lights.push({ type: 'rect', u: 0.15, v: 0.38, du: 0.006, dv: 0.13, rot: 0.0, feather: 0.004, color: [8.5, 8.8, 9.4] });
+      }
+
+      const wrapDeltaU = (u1, u2) => {
+        let d = u1 - u2;
+        if (d > 0.5) d -= 1.0;
+        if (d < -0.5) d += 1.0;
+        return d;
+      };
+      const smoothstep = (e0, e1, x) => {
+        const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
+        return t * t * (3 - 2 * t);
+      };
+
+      for (let y = 0; y < height; y++) {
+        const v = y / (height - 1);
+        let baseR, baseG, baseB;
+        if (v < 0.5) {
+          const t = v / 0.5;
+          baseR = skyTop[0] * (1 - t) + horizon[0] * t;
+          baseG = skyTop[1] * (1 - t) + horizon[1] * t;
+          baseB = skyTop[2] * (1 - t) + horizon[2] * t;
+        } else {
+          const t = (v - 0.5) / 0.5;
+          baseR = horizon[0] * (1 - t) + ground[0] * t;
+          baseG = horizon[1] * (1 - t) + ground[1] * t;
+          baseB = horizon[2] * (1 - t) + ground[2] * t;
+        }
+        for (let x = 0; x < width; x++) {
+          const u = x / width;
+          let r = baseR, g = baseG, b = baseB;
+          for (let k = 0; k < lights.length; k++) {
+            const L = lights[k];
+            const dx = wrapDeltaU(u, L.u) * 2.0;
+            const dy = v - L.v;
+            let w = 0;
+            if (L.type === 'rect') {
+              const rot = L.rot || 0;
+              const cosR = Math.cos(rot), sinR = Math.sin(rot);
+              const rx = Math.abs(dx * cosR - dy * sinR);
+              const ry = Math.abs(dx * sinR + dy * cosR);
+              w = (1.0 - smoothstep(L.du * 2.0, (L.du + L.feather) * 2.0, rx)) *
+                  (1.0 - smoothstep(L.dv, L.dv + L.feather, ry));
+            } else {
+              const dist = Math.hypot(dx, dy);
+              w = 1.0 - smoothstep(L.r * 0.4, L.r * 1.4, dist);
+            }
+            if (w > 0.001) {
+              r += L.color[0] * w;
+              g += L.color[1] * w;
+              b += L.color[2] * w;
+            }
+          }
+          const idx = (y * width + x) * 4;
+          data[idx] = r; data[idx + 1] = g; data[idx + 2] = b; data[idx + 3] = 1.0;
+        }
+      }
+      const hdrTex = new THREE.DataTexture(data, width, height, THREE.RGBAFormat, THREE.FloatType);
+      hdrTex.mapping = THREE.EquirectangularReflectionMapping;
+      hdrTex.minFilter = THREE.LinearFilter;
+      hdrTex.magFilter = THREE.LinearFilter;
+      hdrTex.needsUpdate = true;
+      return hdrTex;
+    }
+
+    function applyHDRTexture(hdrTex) {
+      if (currentEnvRT) currentEnvRT.dispose();
+      currentEnvRT = pmremGenerator.fromEquirectangular(hdrTex);
+      scene.environment = currentEnvRT.texture;
+      scene.environmentIntensity = 1.15;
+      hdrTex.dispose();
+    }
+
+    function buildStudioEnvironment(preset) {
+      applyHDRTexture(generateProceduralHDRTexture(preset));
+    }
+
+    function updateLightAndEnvRotation() {
+      if (!keyLight) return;
+      const rad = THREE.MathUtils.degToRad(s3d.lightAngle + 180);
+      keyLight.position.set(Math.cos(rad) * 320, 310, Math.sin(rad) * 320);
+      if (scene.environmentRotation) {
+        scene.environmentRotation.y = rad - THREE.MathUtils.degToRad(42);
+      }
+    }
+
+    // Демо-дизайн строго в координатах реальной развёртки g (P1=x1..x2, P2=x2..x3, P3=x3..x4, P4=x4..x5)
+    function drawDemoArtwork(ctx, g, texW, texH) {
+      const sx = texW / g.totalW, sy = texH / g.totalH;
+      ctx.fillStyle = '#162136';
+      ctx.fillRect(0, 0, texW, texH);
+
+      const grad = ctx.createLinearGradient(0, g.yTopSide * sy, 0, g.yBot * sy);
+      grad.addColorStop(0, '#1e2d4a');
+      grad.addColorStop(0.5, '#131d31');
+      grad.addColorStop(1, '#0d1424');
+      ctx.fillStyle = grad;
+      ctx.fillRect(g.x1 * sx, g.yTopSide * sy, (g.x5 - g.x1) * sx, g.H * sy);
+
+      // Диагональная полоса через P1 -> P2 -> P3
+      ctx.save();
+      ctx.fillStyle = '#23385e';
+      ctx.beginPath();
+      ctx.moveTo(g.x1 * sx, (g.yTopSide + g.H * 0.62) * sy);
+      ctx.lineTo(g.x4 * sx, (g.yTopSide + g.H * 0.42) * sy);
+      ctx.lineTo(g.x4 * sx, (g.yTopSide + g.H * 0.56) * sy);
+      ctx.lineTo(g.x1 * sx, (g.yTopSide + g.H * 0.76) * sy);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      // Главный фасад (Лицевая сторона) на P3 (x3..x4)
+      const cx = ((g.x3 + g.x4) / 2) * sx;
+      const cy = (g.yTopSide + g.H / 2) * sy;
+      ctx.strokeStyle = '#c8a962';
+      ctx.lineWidth = Math.max(2, 0.7 * sx);
+      ctx.strokeRect((g.x3 + 6) * sx, (g.yTopSide + 10) * sy, Math.max(4, g.p3W - 12) * sx, Math.max(4, g.H - 20) * sy);
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.textAlign = 'center';
+      ctx.font = `700 ${Math.round(Math.min(g.p3W * 0.14, 14) * sx)}px sans-serif`;
+      ctx.fillText('ROYAL', cx, (g.yTopSide + g.H * 0.28) * sy);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = `400 ${Math.round(Math.min(g.p3W * 0.055, 5) * sx)}px sans-serif`;
+      ctx.fillText('PREMIUM PACKAGING', cx, (g.yTopSide + g.H * 0.34) * sy);
+
+      ctx.beginPath();
+      ctx.arc(cx, cy + 4 * sy, Math.min(g.p3W, g.H) * 0.22 * sx, 0, Math.PI * 2);
+      ctx.fillStyle = '#1a2742';
+      ctx.fill();
+      ctx.lineWidth = 1.2 * sx;
+      ctx.strokeStyle = '#d4af37';
+      ctx.stroke();
+
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = `600 ${Math.round(Math.min(g.p3W * 0.06, 5.5) * sx)}px sans-serif`;
+      ctx.fillText('350 GSM', cx, (g.yTopSide + g.H * 0.84) * sy);
+
+      // Крышка над P1 (yLidCrease..yTop1)
+      const lidH = g.yTop1 - g.yLidCrease;
+      const lidCx = ((g.x1 + g.x2) / 2) * sx;
+      const lidCy = (g.yLidCrease + lidH / 2) * sy;
+      ctx.strokeStyle = '#c8a962';
+      ctx.strokeRect((g.x1 + 6) * sx, (g.yLidCrease + 6) * sy, Math.max(4, g.p1W - 12) * sx, Math.max(4, lidH - 12) * sy);
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = `700 ${Math.round(Math.min(g.p1W, lidH) * 0.14 * sx)}px sans-serif`;
+      ctx.fillText('R', lidCx, lidCy + 2.5 * sy);
+
+      // Боковина P2 (x2..x3)
+      ctx.save();
+      ctx.translate(((g.x2 + g.x3) / 2) * sx, cy);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = `600 ${Math.round(Math.min(g.p2W * 0.08, 6) * sx)}px sans-serif`;
+      ctx.fillText(`${g.boxType.toUpperCase()} • ${Math.round(g.W)}×${Math.round(g.L)}×${Math.round(g.H)}`, 0, 0);
+      ctx.restore();
+    }
+
+    function drawDemoMasks(g, texW, texH) {
+      const sx = texW / g.totalW, sy = texH / g.totalH;
+      const cx = ((g.x3 + g.x4) / 2) * sx, cy = (g.yTopSide + g.H / 2) * sy;
+      const lidH = g.yTop1 - g.yLidCrease;
+      const lidCx = ((g.x1 + g.x2) / 2) * sx, lidCy = (g.yLidCrease + lidH / 2) * sy;
+
+      const foilC = document.createElement('canvas');
+      foilC.width = texW; foilC.height = texH;
+      const fCtx = foilC.getContext('2d');
+      fCtx.fillStyle = '#ffffff'; fCtx.fillRect(0, 0, texW, texH);
+      fCtx.strokeStyle = '#000000'; fCtx.fillStyle = '#000000';
+      fCtx.lineWidth = Math.max(3, 1.1 * sx);
+      fCtx.strokeRect((g.x3 + 6) * sx, (g.yTopSide + 10) * sy, Math.max(4, g.p3W - 12) * sx, Math.max(4, g.H - 20) * sy);
+      fCtx.textAlign = 'center';
+      fCtx.font = `700 ${Math.round(Math.min(g.p3W * 0.14, 14) * sx)}px sans-serif`;
+      fCtx.fillText('ROYAL', cx, (g.yTopSide + g.H * 0.28) * sy);
+      fCtx.strokeRect((g.x1 + 6) * sx, (g.yLidCrease + 6) * sy, Math.max(4, g.p1W - 12) * sx, Math.max(4, lidH - 12) * sy);
+      fCtx.font = `700 ${Math.round(Math.min(g.p1W, lidH) * 0.14 * sx)}px sans-serif`;
+      fCtx.fillText('R', lidCx, lidCy + 2.5 * sy);
+
+      const embossC = document.createElement('canvas');
+      embossC.width = texW; embossC.height = texH;
+      const eCtx = embossC.getContext('2d');
+      eCtx.fillStyle = '#ffffff'; eCtx.fillRect(0, 0, texW, texH);
+      const r = Math.min(g.p3W, g.H) * 0.22 * sx;
+      const eGrad = eCtx.createRadialGradient(cx, cy + 4 * sy, r * 0.1, cx, cy + 4 * sy, r);
+      eGrad.addColorStop(0, '#000000'); eGrad.addColorStop(0.82, '#1d1d1d'); eGrad.addColorStop(1, '#ffffff');
+      eCtx.fillStyle = eGrad;
+      eCtx.beginPath(); eCtx.arc(cx, cy + 4 * sy, r, 0, Math.PI * 2); eCtx.fill();
+
+      const varnC = document.createElement('canvas');
+      varnC.width = texW; varnC.height = texH;
+      const vCtx = varnC.getContext('2d');
+      vCtx.fillStyle = '#ffffff'; vCtx.fillRect(0, 0, texW, texH);
+      vCtx.fillStyle = '#000000';
+      vCtx.beginPath();
+      vCtx.moveTo(g.x1 * sx, (g.yTopSide + g.H * 0.62) * sy);
+      vCtx.lineTo(g.x4 * sx, (g.yTopSide + g.H * 0.42) * sy);
+      vCtx.lineTo(g.x4 * sx, (g.yTopSide + g.H * 0.56) * sy);
+      vCtx.lineTo(g.x1 * sx, (g.yTopSide + g.H * 0.76) * sy);
+      vCtx.closePath(); vCtx.fill();
+
+      return { foilC, embossC, varnC };
+    }
+
+    // Отрисовка ТОЧНОГО контура выбранной развёртки (outerPath, innerCuts, creases) на текстуру и шаблон
+    function drawDielineOverlay(ctx, g, texW, texH, forTemplate = false) {
+      const sx = texW / g.totalW, sy = texH / g.totalH;
+      ctx.save();
+      ctx.scale(sx, sy);
+
+      // Линии биговки
+      ctx.strokeStyle = forTemplate ? '#0000FF' : 'rgba(96, 165, 250, 0.9)';
+      ctx.lineWidth = Math.max(0.45, g.totalW / 700);
+      ctx.setLineDash([4, 3]);
+      g.creases.forEach(c => {
+        ctx.beginPath();
+        ctx.moveTo(c.x1, c.y1);
+        ctx.lineTo(c.x2, c.y2);
+        ctx.stroke();
+      });
+
+      // Линии реза (внешний контур + внутренние прорези)
+      ctx.setLineDash([]);
+      ctx.strokeStyle = forTemplate ? '#FF0000' : 'rgba(248, 113, 113, 0.92)';
+      ctx.lineWidth = Math.max(0.55, g.totalW / 600);
+      ctx.stroke(new Path2D(g.outerPath));
+      if (g.innerCuts && g.innerCuts.length) {
+        g.innerCuts.forEach(p => ctx.stroke(new Path2D(p)));
+      }
+      ctx.restore();
+    }
+
+    function getMaskData(img, fallbackCanvas, w, h) {
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+      if (img) ctx.drawImage(img, 0, 0, w, h);
+      else if (fallbackCanvas) ctx.drawImage(fallbackCanvas, 0, 0, w, h);
+      return ctx.getImageData(0, 0, w, h).data;
+    }
+
+    function rebuildTextures() {
+      if (!s3d.inited) return;
+      const g = getBoxGeom();
+      TEX_H = Math.max(512, Math.round(TEX_W * (g.totalH / g.totalW)));
+      [albedoCanvas, roughnessCanvas, metalnessCanvas, bumpCanvas, clearcoatCanvas].forEach(c => {
+        c.width = TEX_W; c.height = TEX_H;
+      });
+
+      const aCtx = albedoCanvas.getContext('2d');
+      const rCtx = roughnessCanvas.getContext('2d');
+      const mCtx = metalnessCanvas.getContext('2d');
+      const bCtx = bumpCanvas.getContext('2d');
+      const cCtx = clearcoatCanvas.getContext('2d');
+
+      if (s3d.designImg) aCtx.drawImage(s3d.designImg, 0, 0, TEX_W, TEX_H);
+      else drawDemoArtwork(aCtx, g, TEX_W, TEX_H);
+
+      const demoMasks = drawDemoMasks(g, TEX_W, TEX_H);
+      const foilData = getMaskData(s3d.foilMaskImg, s3d.useDemoMasks ? demoMasks.foilC : null, TEX_W, TEX_H);
+      const embossData = getMaskData(s3d.embossMaskImg, s3d.useDemoMasks ? demoMasks.embossC : null, TEX_W, TEX_H);
+      const varnishData = getMaskData(s3d.varnishMaskImg, s3d.useDemoMasks ? demoMasks.varnC : null, TEX_W, TEX_H);
+
+      const pCanvas = document.createElement('canvas');
+      pCanvas.width = TEX_W; pCanvas.height = TEX_H;
+      const pCtx = pCanvas.getContext('2d');
+      pCtx.fillStyle = pCtx.createPattern(paperNoiseCanvas, 'repeat');
+      pCtx.fillRect(0, 0, TEX_W, TEX_H);
+      const paperData = pCtx.getImageData(0, 0, TEX_W, TEX_H).data;
+
+      let baseRough = 0.85, paperGrainStrength = 0.22, baseClearcoat = 0.0;
+      if (s3d.baseMaterial === 'bristol_matte_lam') {
+        baseRough = 0.58; paperGrainStrength = 0.06; baseClearcoat = 0.08;
+      } else if (s3d.baseMaterial === 'bristol_gloss_lam') {
+        baseRough = 0.20; paperGrainStrength = 0.03; baseClearcoat = 0.55;
+      }
+
+      const aImg = aCtx.getImageData(0, 0, TEX_W, TEX_H);
+      const rImg = rCtx.createImageData(TEX_W, TEX_H);
+      const mImg = mCtx.createImageData(TEX_W, TEX_H);
+      const bImg = bCtx.createImageData(TEX_W, TEX_H);
+      const cImg = cCtx.createImageData(TEX_W, TEX_H);
+      const foilRGB = s3d.foilColor === 'gold' ? [238, 190, 72] : [224, 230, 238];
+
+      for (let i = 0; i < aImg.data.length; i += 4) {
+        const fAlpha = foilData[i + 3] / 255, eAlpha = embossData[i + 3] / 255, vAlpha = varnishData[i + 3] / 255;
+        const fLum = (foilData[i] * 0.299 + foilData[i + 1] * 0.587 + foilData[i + 2] * 0.114) / 255;
+        const eLum = (embossData[i] * 0.299 + embossData[i + 1] * 0.587 + embossData[i + 2] * 0.114) / 255;
+        const vLum = (varnishData[i] * 0.299 + varnishData[i + 1] * 0.587 + varnishData[i + 2] * 0.114) / 255;
+
+        const fMask = s3d.foilEnabled ? (1.0 - fLum) * fAlpha : 0;
+        const eMask = s3d.embossEnabled ? (1.0 - eLum) * eAlpha : 0;
+        const vMask = s3d.varnishEnabled ? (1.0 - vLum) * vAlpha : 0;
+        const pVal = (paperData[i] - 128) * paperGrainStrength;
+
+        if (vMask > 0.02) {
+          const wet = 1.0 - vMask * 0.08;
+          aImg.data[i] = Math.round(aImg.data[i] * wet);
+          aImg.data[i + 1] = Math.round(aImg.data[i + 1] * wet);
+          aImg.data[i + 2] = Math.round(aImg.data[i + 2] * wet);
+        }
+        if (fMask > 0.02) {
+          aImg.data[i] = Math.round(aImg.data[i] * (1 - fMask) + foilRGB[0] * fMask);
+          aImg.data[i + 1] = Math.round(aImg.data[i + 1] * (1 - fMask) + foilRGB[1] * fMask);
+          aImg.data[i + 2] = Math.round(aImg.data[i + 2] * (1 - fMask) + foilRGB[2] * fMask);
+        }
+
+        const mByte = Math.round(Math.min(1, fMask * 0.96) * 255);
+        mImg.data[i] = mImg.data[i + 1] = mImg.data[i + 2] = mByte; mImg.data[i + 3] = 255;
+
+        let rough = baseRough + (pVal / 255) * 0.25;
+        if (vMask > 0.02) rough = rough * (1 - vMask) + 0.08 * vMask;
+        if (fMask > 0.02) rough = rough * (1 - fMask) + 0.11 * fMask;
+        const rByte = Math.max(12, Math.min(250, Math.round(rough * 255)));
+        rImg.data[i] = rImg.data[i + 1] = rImg.data[i + 2] = rByte; rImg.data[i + 3] = 255;
+
+        let cc = baseClearcoat;
+        if (vMask > 0.02) cc = Math.max(cc, vMask * 1.0);
+        if (fMask > 0.02) cc = cc * (1 - fMask);
+        const cByte = Math.max(0, Math.min(255, Math.round(cc * 255)));
+        cImg.data[i] = cImg.data[i + 1] = cImg.data[i + 2] = cByte; cImg.data[i + 3] = 255;
+
+        let bump = 128 + pVal - fMask * (s3d.foilDepth * 78) + eMask * (s3d.embossHeight * 95) + vMask * 26;
+        const bByte = Math.max(0, Math.min(255, Math.round(bump)));
+        bImg.data[i] = bImg.data[i + 1] = bImg.data[i + 2] = bByte; bImg.data[i + 3] = 255;
+      }
+
+      aCtx.putImageData(aImg, 0, 0);
+      rCtx.putImageData(rImg, 0, 0);
+      mCtx.putImageData(mImg, 0, 0);
+      bCtx.putImageData(bImg, 0, 0);
+      cCtx.putImageData(cImg, 0, 0);
+
+      if (s3d.showLines) drawDielineOverlay(aCtx, g, TEX_W, TEX_H, false);
+
+      const prevC = document.getElementById('uvPreviewCanvas3d');
+      prevC.width = 600;
+      prevC.height = Math.round(600 * (TEX_H / TEX_W));
+      prevC.getContext('2d').drawImage(albedoCanvas, 0, 0, prevC.width, prevC.height);
+
+      albedoTex.needsUpdate = true;
+      roughnessTex.needsUpdate = true;
+      metalnessTex.needsUpdate = true;
+      bumpTex.needsUpdate = true;
+      clearcoatTex.needsUpdate = true;
+    }
+
+    // Создаёт 3D-панель из 2D-контура (в координатах развёртки SVG: x вправо, y вниз)
+    // pivotSvgX, pivotSvgY — точка развёртки, которая станет (0, 0) в локальных координатах меша
+    function createSheetShapeMesh(pointsSvg, pivotSvgX, pivotSvgY, g, holesSvg = []) {
+      const thickness = 0.45;
+      const shape = new THREE.Shape();
+      pointsSvg.forEach((pt, idx) => {
+        const lx = pt[0] - pivotSvgX;
+        const ly = -(pt[1] - pivotSvgY); // SVG Y идёт вниз, Three.js Y — вверх
+        if (idx === 0) shape.moveTo(lx, ly);
+        else shape.lineTo(lx, ly);
+      });
+      shape.closePath();
+
+      holesSvg.forEach(holePts => {
+        const hole = new THREE.Path();
+        holePts.forEach((pt, idx) => {
+          const lx = pt[0] - pivotSvgX;
+          const ly = -(pt[1] - pivotSvgY);
+          if (idx === 0) hole.moveTo(lx, ly);
+          else hole.lineTo(lx, ly);
+        });
+        hole.closePath();
+        shape.holes.push(hole);
+      });
+
+      const geo = new THREE.ExtrudeGeometry(shape, {
+        depth: thickness,
+        bevelEnabled: true,
+        bevelSegments: 1,
+        steps: 1,
+        bevelSize: 0.12,
+        bevelThickness: 0.1
+      });
+
+      const pos = geo.attributes.position, uv = geo.attributes.uv;
+      for (let i = 0; i < pos.count; i++) {
+        const sheetX = pivotSvgX + pos.getX(i);
+        const sheetY = pivotSvgY - pos.getY(i);
+        uv.setXY(i, sheetX / g.totalW, 1.0 - (sheetY / g.totalH));
+      }
+      uv.needsUpdate = true;
+
+      const norm = geo.attributes.normal;
+      geo.clearGroups();
+      for (let t = 0; t < pos.count / 3; t++) {
+        geo.addGroup(t * 3, 3, norm.getZ(t * 3) > 0.2 ? 0 : 1);
+      }
+      const mesh = new THREE.Mesh(geo, [outerMaterial, innerCardboardMat]);
+      mesh.position.set(0, 0, -thickness / 2);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      return mesh;
+    }
+
+    function rectPts(x1, y1, x2, y2) {
+      return [[x1, y1], [x2, y1], [x2, y2], [x1, y2]];
+    }
+
+    // Построение 3D-коробки строго по выбранной развёртке g (A60.20 / A55.20 / A20.20)
+    function buildBox3D() {
+      if (!s3d.inited) return;
+      while (boxRoot.children.length > 0) boxRoot.remove(boxRoot.children[0]);
+
+      const g = getBoxGeom();
+      const { x0, x1, x2, x3, x4, x5, yTuckTop, yLidCrease, yTop1, yTopSide, yBot, yDustTop, H, L, W, d, dustH } = g;
+      const tCard = 0.55;
+
+      // Базовая панель P1 (x1..x2, фасад с верхней крышкой)
+      const p1Group = new THREE.Group();
+      p1Group.position.set(-g.p1W / 2, 0, g.p2W / 2);
+      boxRoot.add(p1Group);
+      p1Group.add(createSheetShapeMesh(rectPts(x1, yTop1, x2, yBot), x1, yBot, g));
+
+      // Клеевой клапан слева от P1 (x0..x1) — слегка утоплен внутрь, чтобы прятался под P4
+      const glueChamf = Math.min(g.glueW * 0.3, H * 0.15);
+      const gluePivot = new THREE.Group();
+      gluePivot.position.set(0.35, 0, -tCard * 0.9);
+      p1Group.add(gluePivot);
+      gluePivot.add(createSheetShapeMesh([
+        [x0, yTopSide + glueChamf],
+        [x1, yTopSide],
+        [x1, yBot],
+        [x0, yBot - glueChamf]
+      ], x1, yBot, g));
+
+      // Панель P2 справа от P1 (x2..x3, боковина)
+      const p2Pivot = new THREE.Group();
+      p2Pivot.position.set(g.p1W, 0, 0);
+      p1Group.add(p2Pivot);
+      p2Pivot.add(createSheetShapeMesh(rectPts(x2, yTopSide, x3, yBot), x2, yBot, g));
+
+      // Панель P3 справа от P2 (x3..x4, противоположный фасад)
+      const p3Pivot = new THREE.Group();
+      p3Pivot.position.set(g.p2W, 0, 0);
+      p2Pivot.add(p3Pivot);
+      p3Pivot.add(createSheetShapeMesh(rectPts(x3, yTopSide, x4, yBot), x3, yBot, g));
+
+      // Панель P4 справа от P3 (x4..x5, вторая боковина)
+      const p4Pivot = new THREE.Group();
+      p4Pivot.position.set(g.p3W, 0, 0);
+      p3Pivot.add(p4Pivot);
+      p4Pivot.add(createSheetShapeMesh(rectPts(x4, yTopSide, x5, yBot), x4, yBot, g));
+
+      // --- ВЕРХНИЕ КЛАПАНЫ (общие для всех 3 конструкций) ---
+      // Верхняя крышка на P1 (yLidCrease..yTop1)
+      const lidPivot = new THREE.Group();
+      lidPivot.position.set(0, yBot - yTop1 + tCard * 0.3, 0);
+      p1Group.add(lidPivot);
+      lidPivot.add(createSheetShapeMesh(rectPts(x1, yLidCrease, x2, yTop1), x1, yTop1, g));
+
+      // Верхний язычок на крышке (yTuckTop..yLidCrease)
+      const tuckPivot = new THREE.Group();
+      tuckPivot.position.set(0, yTop1 - yLidCrease, 0);
+      lidPivot.add(tuckPivot);
+      const tOff = 0.5, tTap = Math.min(g.tuckH * 0.45, g.p1W * 0.12);
+      tuckPivot.add(createSheetShapeMesh([
+        [x1 + tOff + tTap, yTuckTop],
+        [x2 - tOff - tTap, yTuckTop],
+        [x2 - tOff, yLidCrease],
+        [x1 + tOff, yLidCrease]
+      ], x1, yLidCrease, g));
+
+      // Верхний пыльник на P2
+      const topDustP2Pivot = new THREE.Group();
+      topDustP2Pivot.position.set(0, H - tCard * 0.2, 0);
+      p2Pivot.add(topDustP2Pivot);
+      topDustP2Pivot.add(createSheetShapeMesh([
+        [x2 + 4, yDustTop],
+        [x3 - 8, yDustTop],
+        [x3 - 0.5, yTopSide],
+        [x2, yTopSide]
+      ], x2, yTopSide, g));
+
+      // Верхний пыльник на P4
+      const topDustP4Pivot = new THREE.Group();
+      topDustP4Pivot.position.set(0, H - tCard * 0.4, 0);
+      p4Pivot.add(topDustP4Pivot);
+      topDustP4Pivot.add(createSheetShapeMesh([
+        [x4 + 8, yDustTop],
+        [x5 - 4, yDustTop],
+        [x5, yTopSide],
+        [x4 + 0.5, yTopSide]
+      ], x4, yTopSide, g));
+
+      // --- НИЖНИЕ КЛАПАНЫ (зависят от выбранной конструкции ECMA) ---
+      let botP1Pivot = null, botP2Pivot = null, botP3Pivot = null, botP4Pivot = null, botTuckP3Pivot = null;
+
+      if (g.isEcma020) {
+        // ECMA A20.20.03.01 (Встречный клапан): крышка с язычком на P3, пыльники на P2 и P4
+        const yBot3 = yBot + d;
+        const yBotLidCrease = yBot3 + L;
+        const yBotTuck = yBotLidCrease + g.tuckH;
+        const yDustBot = yBot + dustH;
+
+        botP2Pivot = new THREE.Group();
+        botP2Pivot.position.set(0, -tCard * 0.2, 0);
+        p2Pivot.add(botP2Pivot);
+        botP2Pivot.add(createSheetShapeMesh([
+          [x2, yBot], [x3 - 0.5, yBot], [x3 - 8, yDustBot], [x2 + 4, yDustBot]
+        ], x2, yBot, g));
+
+        botP4Pivot = new THREE.Group();
+        botP4Pivot.position.set(0, -tCard * 0.4, 0);
+        p4Pivot.add(botP4Pivot);
+        botP4Pivot.add(createSheetShapeMesh([
+          [x4 + 0.5, yBot], [x5, yBot], [x5 - 4, yDustBot], [x4 + 8, yDustBot]
+        ], x4, yBot, g));
+
+        botP3Pivot = new THREE.Group();
+        botP3Pivot.position.set(0, -d - tCard * 0.6, 0);
+        p3Pivot.add(botP3Pivot);
+        botP3Pivot.add(createSheetShapeMesh(rectPts(x3, yBot3, x4, yBotLidCrease), x3, yBot3, g));
+
+        botTuckP3Pivot = new THREE.Group();
+        botTuckP3Pivot.position.set(0, -(yBotLidCrease - yBot3), 0);
+        botP3Pivot.add(botTuckP3Pivot);
+        botTuckP3Pivot.add(createSheetShapeMesh([
+          [x3 + tOff, yBotLidCrease],
+          [x4 - tOff, yBotLidCrease],
+          [x4 - tOff - tTap, yBotTuck],
+          [x3 + tOff + tTap, yBotTuck]
+        ], x3, yBotLidCrease, g));
+
+      } else if (g.isAutolock) {
+        // ECMA A60.20.01.01 (Автодно с окошком)
+        const bot1H = Math.max(24, L * (74.2508 / 90));
+        const taperY = yBot + L * (44.8115 / 90);
+        const taperIn1 = Math.min(5.5, W * 0.08);
+        const ch1X = Math.min(2.04, W * 0.035);
+        const tongueW = Math.max(12, W * (43.0902 / 90));
+        const cx1 = (x1 + x2) / 2;
+        const winH = Math.max(6.0, L * (17.8746 / 90));
+        const winTopW = tongueW + 0.77;
+        const winBotW = Math.max(8, winTopW - 2 * Math.min(2.5, winTopW * 0.08));
+
+        botP1Pivot = new THREE.Group();
+        botP1Pivot.position.set(0, -tCard * 0.8, 0);
+        p1Group.add(botP1Pivot);
+        botP1Pivot.add(createSheetShapeMesh([
+          [x1, yBot], [x2, yBot], [x2 - ch1X, taperY], [x2 - ch1X - taperIn1, yBot + bot1H],
+          [x1 + ch1X + taperIn1, yBot + bot1H], [x1 + ch1X, taperY]
+        ], x1, yBot, g, [[
+          [cx1 - winTopW / 2, taperY], [cx1 + winTopW / 2, taperY],
+          [cx1 + winBotW / 2, taperY + winH], [cx1 - winBotW / 2, taperY + winH]
+        ]]));
+
+        const bot2H = Math.max(16, W * (41.2240 / 90));
+        const innerGap = Math.min(3.39, L * 0.05, W * 0.05);
+
+        botP2Pivot = new THREE.Group();
+        botP2Pivot.position.set(0, -tCard * 0.2, 0);
+        p2Pivot.add(botP2Pivot);
+        botP2Pivot.add(createSheetShapeMesh([
+          [x2, yBot], [x3 - innerGap, yBot], [x3 - innerGap, yBot + bot2H], [x2 + L * 0.45, yBot + bot2H]
+        ], x2, yBot, g));
+
+        const shoulderY = yBot + L * (43.3938 / 90);
+        const tBotY = shoulderY + Math.max(5, L * (18.5 / 90));
+        const cx3 = (x3 + x4) / 2;
+        botP3Pivot = new THREE.Group();
+        botP3Pivot.position.set(0, -tCard * 0.6, 0);
+        p3Pivot.add(botP3Pivot);
+        botP3Pivot.add(createSheetShapeMesh([
+          [x3, yBot], [x4, yBot], [cx3 + tongueW / 2, shoulderY], [cx3 + tongueW / 2, tBotY],
+          [cx3 - tongueW / 2, tBotY], [cx3 - tongueW / 2, shoulderY]
+        ], x3, yBot, g));
+
+        botP4Pivot = new THREE.Group();
+        botP4Pivot.position.set(0, -tCard * 0.4, 0);
+        p4Pivot.add(botP4Pivot);
+        botP4Pivot.add(createSheetShapeMesh([
+          [x4 + innerGap, yBot], [x5, yBot], [x5 - L * 0.45, yBot + bot2H], [x4 + innerGap, yBot + bot2H]
+        ], x4, yBot, g));
+
+      } else {
+        // ECMA A55.20.01.01 (Замок 1-2-3 с учётом bottomSwapped)
+        const botF = Math.max(0, Number(state.a55BotF) || 3);
+        const botG = Math.max(2, Number(state.a55BotG) || 14.5);
+        const botK = Math.max(12, Number(state.a55BotK) || 52.5);
+        const baseSlot = state.bottomSwapped ? W : L;
+        const baseHook = state.bottomSwapped ? L : W;
+        const slotI = baseSlot / 2;
+        const hookE = botF + botG;
+        const hookA = slotI + 1;
+        const hookD = Math.max(2, Number(state.a55BotD) || Math.floor(baseHook / 4 - 1));
+        const ySlotShelf = yBot + slotI;
+        const ySlotFoot = yBot + botK;
+        const yHookShelf = yBot + hookE;
+        const yHookBot = yHookShelf + hookD;
+
+        const makeUFlapPts = (xa, xb) => {
+          const sL = xa + botF + botG, sR = xb - botF - botG;
+          return [
+            [xa, yBot], [xb, yBot], [xb - botF, yBot + botF], [xb - botF, ySlotFoot],
+            [sR, ySlotFoot], [sR, ySlotShelf], [sL, ySlotShelf], [sL, ySlotFoot],
+            [xa + botF, ySlotFoot], [xa + botF, yBot + botF]
+          ];
+        };
+        const makeTonguePts = (xa, xb, jW) => {
+          const cx = (xa + xb) / 2, tw = Math.max(6, jW - 1.0);
+          const ySh = yBot + Math.max(4, baseSlot / 2 - 1.0);
+          return [[xa, yBot], [xb, yBot], [cx + tw / 2, ySh], [cx + tw / 2, ySlotFoot], [cx - tw / 2, ySlotFoot], [cx - tw / 2, ySh]];
+        };
+        const makeHookLeftPts = (xa, xb) => {
+          const xTh = xa + hookA;
+          return [[xa, yBot], [xb, yBot], [xb - 3, yHookBot], [Math.max(xa + 2, xTh - hookD * 0.5), yHookBot], [xTh, yHookShelf]];
+        };
+        const makeHookRightPts = (xa, xb) => {
+          const xTh = xb - hookA;
+          return [[xa, yBot], [xb, yBot], [xTh, yHookShelf], [Math.min(xb - 2, xTh + hookD * 0.5), yHookBot], [xa + 3, yHookBot]];
+        };
+
+        botP1Pivot = new THREE.Group(); botP1Pivot.position.set(0, -tCard * 0.8, 0); p1Group.add(botP1Pivot);
+        botP2Pivot = new THREE.Group(); botP2Pivot.position.set(0, -tCard * 0.2, 0); p2Pivot.add(botP2Pivot);
+        botP3Pivot = new THREE.Group(); botP3Pivot.position.set(0, -tCard * 0.6, 0); p3Pivot.add(botP3Pivot);
+        botP4Pivot = new THREE.Group(); botP4Pivot.position.set(0, -tCard * 0.4, 0); p4Pivot.add(botP4Pivot);
+
+        if (!state.bottomSwapped) {
+          const jW1 = Math.max(8, (x2 - x1) - (botF + botG) * 2);
+          botP1Pivot.add(createSheetShapeMesh(makeUFlapPts(x1, x2), x1, yBot, g));
+          botP2Pivot.add(createSheetShapeMesh(makeHookLeftPts(x2, x3), x2, yBot, g));
+          botP3Pivot.add(createSheetShapeMesh(makeTonguePts(x3, x4, jW1), x3, yBot, g));
+          botP4Pivot.add(createSheetShapeMesh(makeHookRightPts(x4, x5), x4, yBot, g));
+        } else {
+          const jW2 = Math.max(8, (x3 - x2) - (botF + botG) * 2);
+          botP1Pivot.add(createSheetShapeMesh(makeHookRightPts(x1, x2), x1, yBot, g));
+          botP2Pivot.add(createSheetShapeMesh(makeUFlapPts(x2, x3), x2, yBot, g));
+          botP3Pivot.add(createSheetShapeMesh(makeHookLeftPts(x3, x4), x3, yBot, g));
+          botP4Pivot.add(createSheetShapeMesh(makeTonguePts(x4, x5, jW2), x4, yBot, g));
+        }
+      }
+
+      pivots = {
+        p1Group, gluePivot, p2Pivot, p3Pivot, p4Pivot,
+        lidPivot, tuckPivot, topDustP2Pivot, topDustP4Pivot,
+        botP1Pivot, botP2Pivot, botP3Pivot, botP4Pivot, botTuckP3Pivot
+      };
+
+      applyFoldAngles(s3d.fold);
+      controls.target.set(0, H * 0.48, 0);
+    }
+
+    function applyFoldAngles(t) {
+      if (!pivots.p2Pivot) return;
+      const deg = THREE.MathUtils.degToRad;
+      const g = getBoxGeom();
+
+      // 1. Клеевой клапан складывается ПЕРВЫМ и загибается чуть внутрь (-92.5°), чтобы полностью прятаться под P4
+      const glueT = Math.min(1, t / 0.22);
+      pivots.gluePivot.rotation.y = deg(-92.5 * glueT);
+
+      // 2. Складывание стенок корпуса (P1 -> P2 -> P3 -> P4) после клеевого клапана
+      const wallT = THREE.MathUtils.clamp((t - 0.14) / 0.41, 0, 1);
+      pivots.p2Pivot.rotation.y = deg(90 * wallT);
+      pivots.p3Pivot.rotation.y = deg(90 * wallT);
+      pivots.p4Pivot.rotation.y = deg(90 * wallT);
+
+      // 2. Складывание нижних клапанов
+      const botT = THREE.MathUtils.clamp((t - 0.45) / 0.35, 0, 1);
+      if (pivots.botP2Pivot) pivots.botP2Pivot.rotation.x = deg(90.4 * botT);
+      if (pivots.botP4Pivot) pivots.botP4Pivot.rotation.x = deg(90.2 * botT);
+      if (pivots.botP3Pivot) pivots.botP3Pivot.rotation.x = deg(90.0 * botT);
+      if (pivots.botP1Pivot) pivots.botP1Pivot.rotation.x = deg(90.6 * botT);
+      if (pivots.botTuckP3Pivot) pivots.botTuckP3Pivot.rotation.x = deg(89.0 * botT);
+
+      // 3. Складывание верхних пыльников, крышки и язычка
+      const flapsT = THREE.MathUtils.clamp((t - 0.60) / 0.25, 0, 1);
+      const lidT = THREE.MathUtils.clamp((t - 0.72) / 0.28, 0, 1);
+      pivots.topDustP2Pivot.rotation.x = deg(-91.2 * flapsT);
+      pivots.topDustP4Pivot.rotation.x = deg(-91.0 * flapsT);
+      pivots.lidPivot.rotation.x = deg(-90.0 * lidT);
+      pivots.tuckPivot.rotation.x = deg(-89.0 * lidT);
+
+      // Поднимаем развёртку над полом при раскладывании
+      boxRoot.position.y = (1 - botT) * g.maxBottomDepth;
+    }
+
+    function init3DStudio() {
+      if (s3d.inited) return;
+      const container = document.getElementById('studio3dCanvasContainer');
+      renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(Math.max(1, container.clientWidth), Math.max(1, container.clientHeight));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.06;
+      container.appendChild(renderer.domElement);
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color('#191d26');
+
+      camera = new THREE.PerspectiveCamera(36, Math.max(1, container.clientWidth) / Math.max(1, container.clientHeight), 1, 4000);
+      camera.position.set(-240, 210, -320);
+
+      controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.06;
+
+      pmremGenerator = new THREE.PMREMGenerator(renderer);
+      pmremGenerator.compileEquirectangularShader();
+      buildStudioEnvironment(s3d.studioEnvPreset);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.08));
+
+      keyLight = new THREE.DirectionalLight(0xfffcf5, 1.15);
+      keyLight.castShadow = true;
+      keyLight.shadow.mapSize.set(2048, 2048);
+      keyLight.shadow.camera.near = 20;
+      keyLight.shadow.camera.far = 1200;
+      const dShadow = 260;
+      keyLight.shadow.camera.left = -dShadow;
+      keyLight.shadow.camera.right = dShadow;
+      keyLight.shadow.camera.top = dShadow;
+      keyLight.shadow.camera.bottom = -dShadow;
+      keyLight.shadow.bias = -0.0004;
+      scene.add(keyLight);
+
+      const fillLight = new THREE.DirectionalLight(0xeef4ff, 0.25);
+      fillLight.position.set(240, 170, -220);
+      scene.add(fillLight);
+
+      const rimLight = new THREE.DirectionalLight(0xfff3db, 0.65);
+      rimLight.position.set(-180, 250, 240);
+      scene.add(rimLight);
+
+      floorMat = new THREE.MeshStandardMaterial({ color: 0x1b202b, roughness: 0.88, metalness: 0.02 });
+      const floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(2500, 2500), floorMat);
+      floorMesh.rotation.x = -Math.PI / 2;
+      floorMesh.position.y = -0.5;
+      floorMesh.receiveShadow = true;
+      scene.add(floorMesh);
+
+      updateLightAndEnvRotation();
+      paperNoiseCanvas = createPaperNoiseCanvas(512);
+
+      albedoCanvas = document.createElement('canvas');
+      roughnessCanvas = document.createElement('canvas');
+      metalnessCanvas = document.createElement('canvas');
+      bumpCanvas = document.createElement('canvas');
+      clearcoatCanvas = document.createElement('canvas');
+
+      albedoTex = new THREE.CanvasTexture(albedoCanvas);
+      albedoTex.colorSpace = THREE.SRGBColorSpace;
+      albedoTex.anisotropy = 8;
+      roughnessTex = new THREE.CanvasTexture(roughnessCanvas);
+      metalnessTex = new THREE.CanvasTexture(metalnessCanvas);
+      bumpTex = new THREE.CanvasTexture(bumpCanvas);
+      clearcoatTex = new THREE.CanvasTexture(clearcoatCanvas);
+
+      outerMaterial = new THREE.MeshPhysicalMaterial({
+        map: albedoTex,
+        roughnessMap: roughnessTex,
+        metalnessMap: metalnessTex,
+        bumpMap: bumpTex,
+        bumpScale: 1.4,
+        clearcoatMap: clearcoatTex,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.03,
+        ior: 1.58,
+        reflectivity: 0.92,
+        roughness: 1.0,
+        metalness: 1.0
+      });
+
+      innerCardboardMat = new THREE.MeshStandardMaterial({ color: 0xf1efe9, roughness: 0.88, metalness: 0.0 });
+      boxRoot = new THREE.Group();
+      scene.add(boxRoot);
+
+      s3d.inited = true;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        if (window.__viewMode === '3d') {
+          controls.update();
+          renderer.render(scene, camera);
+        }
+      }
+      animate();
+    }
+
+    function handleResize3d() {
+      if (!s3d.inited || window.__viewMode !== '3d') return;
+      const container = document.getElementById('studio3dCanvasContainer');
+      const w = Math.max(1, container.clientWidth);
+      const h = Math.max(1, container.clientHeight);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', handleResize3d);
+
+    window.__sync3dStudioDims = (genState) => {
+      const key = JSON.stringify([
+        genState.boxType, genState.bottomSwapped,
+        genState.L, genState.W, genState.H, genState.d, genState.glueW, genState.tuckH,
+        genState.a55TopB, genState.a55TopC, genState.a55TopD, genState.a55TopE,
+        genState.a55BotB, genState.a55BotC, genState.a55BotD, genState.a55BotF, genState.a55BotG, genState.a55BotK, genState.a55BotR
+      ]);
+
+      const badge = document.getElementById('studio3dDimBadge');
+      if (badge) badge.textContent = `${genState.W}×${genState.L}×${genState.H} мм`;
+      const coneNotice = document.getElementById('studio3dConeNotice');
+      if (coneNotice) coneNotice.classList.toggle('hidden', genState.boxType !== 'cone');
+
+      if (key !== s3d.geomKey) {
+        s3d.geomKey = key;
+        if (window.__viewMode === '3d' && s3d.inited) {
+          rebuildTextures();
+          buildBox3D();
+          s3d.dirtyGeom = false;
+        } else {
+          s3d.dirtyGeom = true;
+        }
+      }
+    };
+
+    window.__activate3dStudio = (genState) => {
+      window.__sync3dStudioDims(genState);
+      if (!s3d.inited) {
+        init3DStudio();
+        rebuildTextures();
+        buildBox3D();
+        s3d.dirtyGeom = false;
+      } else if (s3d.dirtyGeom) {
+        rebuildTextures();
+        buildBox3D();
+        s3d.dirtyGeom = false;
+      }
+      requestAnimationFrame(handleResize3d);
+    };
+
+    // --- Обработчики элементов управления 3D Студии ---
+    function loadImageFile(file, callback) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => callback(img);
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('foldSlider3d').addEventListener('input', e => {
+      const pct = Number(e.target.value);
+      s3d.fold = pct / 100;
+      document.getElementById('foldVal3d').textContent = `${pct}%`;
+      applyFoldAngles(s3d.fold);
+    });
+
+    document.getElementById('showLines3d').addEventListener('change', e => {
+      s3d.showLines = e.target.checked;
+      rebuildTextures();
+    });
+
+    document.getElementById('baseMaterial3d').addEventListener('change', e => {
+      s3d.baseMaterial = e.target.value;
+      rebuildTextures();
+    });
+
+    document.getElementById('designFile3d').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById('designFileName3d').textContent = file.name;
+      loadImageFile(file, img => { s3d.designImg = img; rebuildTextures(); });
+    });
+
+    document.getElementById('foilMaskFile3d').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById('foilFileName3d').textContent = file.name;
+      s3d.useDemoMasks = false;
+      loadImageFile(file, img => { s3d.foilMaskImg = img; rebuildTextures(); });
+    });
+
+    document.getElementById('embossMaskFile3d').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById('embossFileName3d').textContent = file.name;
+      s3d.useDemoMasks = false;
+      loadImageFile(file, img => { s3d.embossMaskImg = img; rebuildTextures(); });
+    });
+
+    document.getElementById('varnishMaskFile3d').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById('varnishFileName3d').textContent = file.name;
+      s3d.useDemoMasks = false;
+      loadImageFile(file, img => { s3d.varnishMaskImg = img; rebuildTextures(); });
+    });
+
+    document.getElementById('btnDemoDesign3d').addEventListener('click', () => {
+      s3d.designImg = s3d.foilMaskImg = s3d.embossMaskImg = s3d.varnishMaskImg = null;
+      s3d.useDemoMasks = true;
+      document.getElementById('designFileName3d').textContent = 'Встроенный демо-макет';
+      document.getElementById('foilFileName3d').textContent = 'Демо-маска';
+      document.getElementById('embossFileName3d').textContent = 'Демо-маска';
+      document.getElementById('varnishFileName3d').textContent = 'Демо-маска';
+      rebuildTextures();
+    });
+
+    document.getElementById('clearFoil3d').addEventListener('click', () => {
+      s3d.foilMaskImg = null; s3d.useDemoMasks = false;
+      document.getElementById('foilFileName3d').textContent = 'Не загружена';
+      rebuildTextures();
+    });
+    document.getElementById('clearEmboss3d').addEventListener('click', () => {
+      s3d.embossMaskImg = null; s3d.useDemoMasks = false;
+      document.getElementById('embossFileName3d').textContent = 'Не загружена';
+      rebuildTextures();
+    });
+    document.getElementById('clearVarnish3d').addEventListener('click', () => {
+      s3d.varnishMaskImg = null; s3d.useDemoMasks = false;
+      document.getElementById('varnishFileName3d').textContent = 'Не загружена';
+      rebuildTextures();
+    });
+
+    document.getElementById('btnDownloadTemplate3d').addEventListener('click', () => {
+      const g = getBoxGeom();
+      const scalePxPerMm = 10;
+      const w = Math.round(g.totalW * scalePxPerMm), h = Math.round(g.totalH * scalePxPerMm);
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+      drawDielineOverlay(ctx, g, w, h, true);
+      const link = document.createElement('a');
+      link.download = `template_${g.boxType}_${Math.round(g.W)}x${Math.round(g.L)}x${Math.round(g.H)}.png`;
+      link.href = c.toDataURL('image/png');
+      link.click();
+    });
+
+    document.getElementById('foilEnabled3d').addEventListener('change', e => { s3d.foilEnabled = e.target.checked; rebuildTextures(); });
+    document.querySelectorAll('#foilColorGroup3d .foil-color-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#foilColorGroup3d .foil-color-btn').forEach(b => {
+          b.className = 'foil-color-btn py-1 rounded-lg border text-[11px] font-semibold cursor-pointer bg-slate-900 border-slate-700 text-slate-400 hover:text-white';
+        });
+        btn.className = 'foil-color-btn py-1 rounded-lg border text-[11px] font-semibold cursor-pointer bg-amber-500/20 border-amber-500/60 text-amber-200';
+        s3d.foilColor = btn.dataset.foil;
+        rebuildTextures();
+      });
+    });
+    document.getElementById('foilDepth3d').addEventListener('input', e => {
+      s3d.foilDepth = Number(e.target.value);
+      document.getElementById('foilDepthLabel3d').textContent = s3d.foilDepth.toFixed(2);
+      rebuildTextures();
+    });
+    document.getElementById('embossEnabled3d').addEventListener('change', e => { s3d.embossEnabled = e.target.checked; rebuildTextures(); });
+    document.getElementById('embossHeight3d').addEventListener('input', e => {
+      s3d.embossHeight = Number(e.target.value);
+      document.getElementById('embossHeightLabel3d').textContent = s3d.embossHeight.toFixed(2);
+      rebuildTextures();
+    });
+    document.getElementById('varnishEnabled3d').addEventListener('change', e => { s3d.varnishEnabled = e.target.checked; rebuildTextures(); });
+
+    document.getElementById('studioEnvPreset3d').addEventListener('change', e => {
+      s3d.studioEnvPreset = e.target.value;
+      document.getElementById('hdrFileName3d').textContent = 'Встроенный 32-bit HDRI';
+      if (s3d.inited) buildStudioEnvironment(s3d.studioEnvPreset);
+    });
+    document.getElementById('hdrFile3d').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file || !s3d.inited) return;
+      document.getElementById('hdrFileName3d').textContent = file.name;
+      const url = URL.createObjectURL(file);
+      new RGBELoader().load(url, hdrTex => {
+        hdrTex.mapping = THREE.EquirectangularReflectionMapping;
+        applyHDRTexture(hdrTex);
+        URL.revokeObjectURL(url);
+      });
+    });
+    document.getElementById('lightAngle3d').addEventListener('input', e => {
+      s3d.lightAngle = Number(e.target.value);
+      document.getElementById('lightAngleLabel3d').textContent = `${s3d.lightAngle}°`;
+      updateLightAndEnvRotation();
+    });
+    document.getElementById('bgPreset3d').addEventListener('change', e => {
+      s3d.bgPreset = e.target.value;
+      if (!s3d.inited) return;
+      if (s3d.bgPreset === 'dark') { scene.background.set('#191d26'); floorMat.color.set('#1b202b'); }
+      else if (s3d.bgPreset === 'light') { scene.background.set('#e5e7eb'); floorMat.color.set('#f3f4f6'); }
+      else { scene.background.set('#dfd7cb'); floorMat.color.set('#e8e1d6'); }
+    });
+
+    document.querySelectorAll('[data-cam3d]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!s3d.inited) return;
+        const mode = btn.dataset.cam3d;
+        const g = getBoxGeom();
+        const maxDim = Math.max(g.L, g.W, g.H);
+        if (mode === 'front34') {
+          s3d.fold = 1; document.getElementById('foldSlider3d').value = 100; document.getElementById('foldVal3d').textContent = '100%';
+          applyFoldAngles(1);
+          camera.position.set(-maxDim * 1.15, g.H * 0.95, -maxDim * 1.45);
+          controls.target.set(0, g.H * 0.48, 0);
+        } else if (mode === 'front') {
+          camera.position.set(0, g.H * 0.52, -maxDim * 1.65);
+          controls.target.set(0, g.H * 0.48, 0);
+        } else if (mode === 'top34') {
+          camera.position.set(-maxDim * 0.9, g.H * 1.55, -maxDim * 0.95);
+          controls.target.set(0, g.H * 0.72, 0);
+        } else if (mode === 'bottom') {
+          camera.position.set(-maxDim * 0.85, -maxDim * 0.65, -maxDim * 1.05);
+          controls.target.set(0, g.H * 0.25, 0);
+        } else if (mode === 'flat') {
+          s3d.fold = 0; document.getElementById('foldSlider3d').value = 0; document.getElementById('foldVal3d').textContent = '0%';
+          applyFoldAngles(0);
+          camera.position.set(0, g.H * 0.55, maxDim * 2.3);
+          controls.target.set(g.totalW * 0.35, g.H * 0.5, 0);
+        }
+      });
+    });
+
+    document.getElementById('btnRenderPNG3d').addEventListener('click', () => {
+      if (!s3d.inited) return;
+      const status = document.getElementById('statusText3d');
+      status.textContent = 'Рендеринг кадра высокого разрешения...';
+      const [targetW, targetH] = document.getElementById('renderRes3d').value.split('x').map(Number);
+      const container = document.getElementById('studio3dCanvasContainer');
+      const prevW = Math.max(1, container.clientWidth), prevH = Math.max(1, container.clientHeight);
+      const prevRatio = renderer.getPixelRatio();
+
+      const wasLines = s3d.showLines;
+      if (wasLines) { s3d.showLines = false; rebuildTextures(); }
+
+      renderer.setPixelRatio(1);
+      renderer.setSize(targetW, targetH, false);
+      camera.aspect = targetW / targetH;
+      camera.updateProjectionMatrix();
+      renderer.render(scene, camera);
+
+      const dataURL = renderer.domElement.toDataURL('image/png');
+
+      renderer.setPixelRatio(prevRatio);
+      renderer.setSize(prevW, prevH, false);
+      camera.aspect = prevW / prevH;
+      camera.updateProjectionMatrix();
+      if (wasLines) { s3d.showLines = true; rebuildTextures(); }
+      renderer.render(scene, camera);
+
+      const g = getBoxGeom();
+      const link = document.createElement('a');
+      link.download = `render_${g.boxType}_${Math.round(g.W)}x${Math.round(g.L)}x${Math.round(g.H)}.png`;
+      link.href = dataURL;
+      link.click();
+      status.textContent = `Рендер (${targetW}×${targetH} px) сохранён!`;
     });
   </script>
 </body>

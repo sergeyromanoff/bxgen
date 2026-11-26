@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="googlebot" content="noindex, nofollow" />
-  <title>Параметрический генератор коробок ECMA</title>
+  <title>Параметрический генератор коробок ECMA и конусов</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -78,7 +78,7 @@
       </div>
       <div>
         <div class="flex items-center gap-2">
-          <h1 class="text-sm sm:text-base font-bold text-white tracking-tight">Генератор развёртки коробок</h1>
+          <h1 class="text-sm sm:text-base font-bold text-white tracking-tight">Генератор развёрток: коробки и конусы</h1>
           <span id="headerTypeBadge" class="px-2 py-0.5 rounded-md bg-purple-500/15 border border-purple-500/35 text-[10px] font-mono font-semibold text-purple-300">ECMA A55.20</span>
         </div>
         <p class="text-[11px] text-slate-400">Параметрический штамп 1:1 (Рез #FF0000 / Биговка #0000FF) для CorelDRAW</p>
@@ -112,23 +112,23 @@
     <aside class="w-full lg:w-[390px] xl:w-[415px] bg-slate-900/95 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col shrink-0 lg:h-[calc(100vh-58px)]">
       <div class="flex-1 overflow-y-auto p-4 space-y-4">
 
-        <!-- 0. ТИП КОНСТРУКЦИИ КОРОБКИ (ECMA) -->
+        <!-- 0. ТИП КОНСТРУКЦИИ (ECMA / КОНУС) -->
         <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
           <div class="flex items-center justify-between">
             <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
               <span class="w-1.5 h-4 rounded-full bg-purple-500"></span>
-              Тип конструкции (ECMA)
+              Тип конструкции
             </h2>
-            <span class="text-[10px] font-mono text-slate-400">3 вида</span>
+            <span class="text-[10px] font-mono text-slate-400">3 коробки + конус</span>
           </div>
 
-          <div class="grid grid-cols-3 gap-1.5">
+          <div class="grid grid-cols-2 gap-1.5">
             <button id="btnTypeAutolock" type="button" class="text-left p-2 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-[11px] font-bold text-white leading-none">Автодно</span>
                 <span id="dotTypeAutolock" class="w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0"></span>
               </div>
-              <div class="text-[9px] font-mono text-cyan-300/90 leading-tight">A60.20.01.01</div>
+              <div class="text-[9px] font-mono text-cyan-300/90 leading-tight">ECMA A60.20.01.01</div>
               <div class="text-[9px] text-slate-400 leading-tight mt-0.5">С окошком</div>
             </button>
 
@@ -137,7 +137,7 @@
                 <span class="text-[11px] font-bold text-white leading-none">Замок</span>
                 <span id="dotTypeEcma055" class="w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)] shrink-0"></span>
               </div>
-              <div class="text-[9px] font-mono text-purple-300/90 leading-tight">A55.20.01.01</div>
+              <div class="text-[9px] font-mono text-purple-300/90 leading-tight">ECMA A55.20.01.01</div>
               <div class="text-[9px] text-slate-400 leading-tight mt-0.5">Крючки + паз</div>
             </button>
 
@@ -146,112 +146,238 @@
                 <span class="text-[11px] font-bold text-white leading-none">Встречн.</span>
                 <span id="dotTypeEcma020" class="w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0"></span>
               </div>
-              <div class="text-[9px] font-mono text-amber-300/90 leading-tight">A20.20.03.01</div>
+              <div class="text-[9px] font-mono text-amber-300/90 leading-tight">ECMA A20.20.03.01</div>
               <div class="text-[9px] text-slate-400 leading-tight mt-0.5">Клапаны P1/P3</div>
             </button>
-          </div>
-        </section>
 
-        <!-- 1. ГАБАРИТЫ КОРОБКИ -->
-        <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
-          <div class="flex items-center justify-between">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-              <span class="w-1.5 h-4 rounded-full bg-cyan-500"></span>
-              1. Габариты коробки (мм)
-            </h2>
-            <span class="text-[11px] font-mono text-slate-400">L × W × H</span>
-          </div>
-
-          <div class="flex items-end gap-1.5">
-            <div class="flex-1 min-w-0">
-              <label for="inputL" class="block text-[10px] text-slate-400 mb-1 truncate" title="Глубина крышки и боковые панели P2, P4">Длина L (глубина)</label>
-              <input id="inputL" type="number" min="25" max="600" step="0.5" value="65" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
-            </div>
-
-            <button id="btnSwapLW" type="button" title="Поменять длину L и ширину W местами" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-cyan-400 border border-slate-700 transition cursor-pointer shrink-0 mb-[1px]">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <polyline points="17 1 21 5 17 9" />
-                <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-                <polyline points="7 23 3 19 7 15" />
-                <path d="M21 13v2a4 4 0 0 1-4 4H3" />
-              </svg>
-            </button>
-
-            <div class="flex-1 min-w-0">
-              <label for="inputW" class="block text-[10px] text-slate-400 mb-1 truncate" title="Фасад P1 (с крышкой) и P3">Ширина W (фасад)</label>
-              <input id="inputW" type="number" min="25" max="600" step="0.5" value="70" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
-            </div>
-
-            <div class="flex-1 min-w-0">
-              <label for="inputH" class="block text-[10px] text-slate-400 mb-1 truncate">Высота H</label>
-              <input id="inputH" type="number" min="30" max="900" step="0.5" value="290" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
-            </div>
-          </div>
-
-          <!-- Быстрые пресеты -->
-          <div>
-            <span class="block text-[11px] text-slate-400 mb-1.5">Быстрые тестовые размеры:</span>
-            <div id="presetsContainer" class="flex flex-wrap gap-1.5"></div>
-          </div>
-        </section>
-
-        <!-- 2. ПРИПУСК И КЛАПАНЫ -->
-        <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
-          <div class="flex items-center justify-between">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-              <span class="w-1.5 h-4 rounded-full bg-emerald-500"></span>
-              2. Припуск и клапаны
-            </h2>
-            <span class="text-[11px] font-mono text-emerald-400">Бристоль 300–350 г</span>
-          </div>
-
-          <div class="grid grid-cols-3 gap-2">
-            <div>
-              <label for="inputD" class="block text-[11px] text-slate-400 mb-1">Припуск d (мм)</label>
-              <input id="inputD" type="number" min="0" max="5" step="0.1" value="0.5" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
-              <div class="flex gap-1 mt-1">
-                <button type="button" data-d="0.4" class="d-preset flex-1 py-0.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[9px] font-mono text-slate-400 cursor-pointer">0.4</button>
-                <button type="button" data-d="0.5" class="d-preset flex-1 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/40 text-[9px] font-mono text-emerald-300 cursor-pointer">0.5</button>
-                <button type="button" data-d="1.2" class="d-preset flex-1 py-0.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[9px] font-mono text-slate-400 cursor-pointer">1.2</button>
+            <button id="btnTypeCone" type="button" class="text-left p-2 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-[11px] font-bold text-white leading-none">Конусы</span>
+                <span id="dotTypeCone" class="w-1.5 h-1.5 rounded-full bg-slate-700 shrink-0"></span>
               </div>
-            </div>
-            <div>
-              <label for="inputGlueW" class="block text-[11px] text-slate-400 mb-1">Клеевой (мм)</label>
-              <input id="inputGlueW" type="number" min="8" max="40" step="0.5" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
-            </div>
-            <div>
-              <label for="inputTuckH" class="block text-[11px] text-slate-400 mb-1">Язычок (мм)</label>
-              <input id="inputTuckH" type="number" min="8" max="40" step="0.5" value="15.5" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
-            </div>
+              <div class="text-[9px] font-mono text-emerald-300/90 leading-tight">Конус / Этикетка</div>
+              <div class="text-[9px] text-slate-400 leading-tight mt-0.5">Ø₁ × Ø₂ × H + нахлёст</div>
+            </button>
           </div>
+        </section>
 
-          <!-- Переключатель порядка нижних клапанов (для ECMA A55.20) -->
-          <div id="bottomSwapWrap" class="pt-2 border-t border-slate-800/80">
-            <button id="btnSwapBottom" type="button" class="w-full px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-medium text-slate-200 flex items-center justify-between gap-2 transition cursor-pointer">
-              <span class="flex items-center gap-2">
-                <svg class="w-3.5 h-3.5 text-purple-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <!-- ==================== БЛОК ПАРАМЕТРОВ КОРОБОК ==================== -->
+        <div id="boxParamsWrap" class="space-y-4">
+          <!-- 1. ГАБАРИТЫ КОРОБКИ -->
+          <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                <span class="w-1.5 h-4 rounded-full bg-cyan-500"></span>
+                1. Габариты коробки (мм)
+              </h2>
+              <span class="text-[11px] font-mono text-slate-400">L × W × H</span>
+            </div>
+
+            <div class="flex items-end gap-1.5">
+              <div class="flex-1 min-w-0">
+                <label for="inputL" class="block text-[10px] text-slate-400 mb-1 truncate" title="Глубина крышки и боковые панели P2, P4">Длина L (глубина)</label>
+                <input id="inputL" type="number" min="25" max="600" step="0.5" value="65" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+              </div>
+
+              <button id="btnSwapLW" type="button" title="Поменять длину L и ширину W местами" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-cyan-400 border border-slate-700 transition cursor-pointer shrink-0 mb-[1px]">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <polyline points="17 1 21 5 17 9" />
                   <path d="M3 11V9a4 4 0 0 1 4-4h14" />
                   <polyline points="7 23 3 19 7 15" />
                   <path d="M21 13v2a4 4 0 0 1-4 4H3" />
                 </svg>
-                <span>Поменять нижние клапаны</span>
-              </span>
-              <span id="swapBottomBadge" class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300">P2/P4 крючки</span>
-            </button>
-          </div>
+              </button>
 
-          <div class="pt-1 space-y-2 border-t border-slate-800/80">
-            <label class="flex items-center justify-between gap-2 text-xs text-slate-300 cursor-pointer select-none">
-              <span>Насечки под клей на боковом клапане</span>
-              <input id="chkGlueNotches" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
-            </label>
-            <label class="flex items-center justify-between gap-2 text-xs text-slate-300 cursor-pointer select-none">
-              <span>Показывать габаритные размеры на чертеже</span>
-              <input id="chkShowDims" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
-            </label>
-          </div>
-        </section>
+              <div class="flex-1 min-w-0">
+                <label for="inputW" class="block text-[10px] text-slate-400 mb-1 truncate" title="Фасад P1 (с крышкой) и P3">Ширина W (фасад)</label>
+                <input id="inputW" type="number" min="25" max="600" step="0.5" value="70" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <label for="inputH" class="block text-[10px] text-slate-400 mb-1 truncate">Высота H</label>
+                <input id="inputH" type="number" min="30" max="900" step="0.5" value="290" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+              </div>
+            </div>
+
+            <!-- Быстрые пресеты -->
+            <div>
+              <span class="block text-[11px] text-slate-400 mb-1.5">Быстрые тестовые размеры:</span>
+              <div id="presetsContainer" class="flex flex-wrap gap-1.5"></div>
+            </div>
+          </section>
+
+          <!-- 2. ПРИПУСК И КЛАПАНЫ -->
+          <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                <span class="w-1.5 h-4 rounded-full bg-emerald-500"></span>
+                2. Припуск и клапаны
+              </h2>
+              <span class="text-[11px] font-mono text-emerald-400">Бристоль 300–350 г</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <div>
+                <label for="inputD" class="block text-[11px] text-slate-400 mb-1">Припуск d (мм)</label>
+                <input id="inputD" type="number" min="0" max="5" step="0.1" value="0.5" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+                <div class="flex gap-1 mt-1">
+                  <button type="button" data-d="0.4" class="d-preset flex-1 py-0.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[9px] font-mono text-slate-400 cursor-pointer">0.4</button>
+                  <button type="button" data-d="0.5" class="d-preset flex-1 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/40 text-[9px] font-mono text-emerald-300 cursor-pointer">0.5</button>
+                  <button type="button" data-d="1.2" class="d-preset flex-1 py-0.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[9px] font-mono text-slate-400 cursor-pointer">1.2</button>
+                </div>
+              </div>
+              <div>
+                <label for="inputGlueW" class="block text-[11px] text-slate-400 mb-1">Клеевой (мм)</label>
+                <input id="inputGlueW" type="number" min="8" max="40" step="0.5" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+              </div>
+              <div>
+                <label for="inputTuckH" class="block text-[11px] text-slate-400 mb-1">Язычок (мм)</label>
+                <input id="inputTuckH" type="number" min="8" max="40" step="0.5" value="15.5" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+              </div>
+            </div>
+
+            <!-- Переключатель порядка нижних клапанов (для ECMA A55.20) -->
+            <div id="bottomSwapWrap" class="pt-2 border-t border-slate-800/80">
+              <button id="btnSwapBottom" type="button" class="w-full px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-medium text-slate-200 flex items-center justify-between gap-2 transition cursor-pointer">
+                <span class="flex items-center gap-2">
+                  <svg class="w-3.5 h-3.5 text-purple-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polyline points="17 1 21 5 17 9" />
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                    <polyline points="7 23 3 19 7 15" />
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                  </svg>
+                  <span>Поменять нижние клапаны</span>
+                </span>
+                <span id="swapBottomBadge" class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300">P2/P4 крючки</span>
+              </button>
+            </div>
+
+            <div class="pt-1 space-y-2 border-t border-slate-800/80">
+              <label class="flex items-center justify-between gap-2 text-xs text-slate-300 cursor-pointer select-none">
+                <span>Насечки под клей на боковом клапане</span>
+                <input id="chkGlueNotches" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
+              </label>
+              <label class="flex items-center justify-between gap-2 text-xs text-slate-300 cursor-pointer select-none">
+                <span>Показывать габаритные размеры на чертеже</span>
+                <input id="chkShowDims" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <!-- ==================== БЛОК ПАРАМЕТРОВ КОНУСА ==================== -->
+        <div id="coneParamsWrap" class="hidden space-y-4">
+          <!-- 1. РАЗМЕРЫ КОНУСА -->
+          <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                <span class="w-1.5 h-4 rounded-full bg-emerald-500"></span>
+                1. Размеры конуса (мм)
+              </h2>
+              <span class="text-[11px] font-mono text-emerald-400">Ø₁ × Ø₂ × H</span>
+            </div>
+
+            <div class="flex items-end gap-1.5">
+              <div class="flex-1 min-w-0">
+                <label for="inputConeD1" class="block text-[10px] text-slate-400 mb-1 truncate" title="Диаметр верхней окружности">Верхний Ø₁</label>
+                <input id="inputConeD1" type="number" min="10" max="600" step="0.5" value="90" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+              </div>
+
+              <button id="btnSwapConeD" type="button" title="Поменять верхний и нижний диаметры местами" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-emerald-400 border border-slate-700 transition cursor-pointer shrink-0 mb-[1px]">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <polyline points="17 1 21 5 17 9" />
+                  <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                  <polyline points="7 23 3 19 7 15" />
+                  <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                </svg>
+              </button>
+
+              <div class="flex-1 min-w-0">
+                <label for="inputConeD2" class="block text-[10px] text-slate-400 mb-1 truncate" title="Диаметр нижней окружности">Нижний Ø₂</label>
+                <input id="inputConeD2" type="number" min="10" max="600" step="0.5" value="60" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <label id="labelConeH" for="inputConeH" class="block text-[10px] text-slate-400 mb-1 truncate">Высота H</label>
+                <input id="inputConeH" type="number" min="10" max="600" step="0.5" value="110" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+              </div>
+            </div>
+
+            <!-- Тип измеряемой высоты -->
+            <div class="grid grid-cols-2 gap-1.5 pt-0.5">
+              <button id="btnConeHVert" type="button" class="px-2.5 py-1.5 rounded-lg border text-[11px] font-medium transition cursor-pointer bg-emerald-500/15 border-emerald-500/50 text-emerald-200">
+                Высота вертикаль H
+              </button>
+              <button id="btnConeHSlant" type="button" class="px-2.5 py-1.5 rounded-lg border text-[11px] font-medium transition cursor-pointer bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200">
+                По стенке (образующая)
+              </button>
+            </div>
+
+            <!-- Быстрые пресеты конусов -->
+            <div>
+              <span class="block text-[11px] text-slate-400 mb-1.5">Быстрые тестовые конусы:</span>
+              <div id="conePresetsContainer" class="flex flex-wrap gap-1.5"></div>
+            </div>
+          </section>
+
+          <!-- 2. ОХВАТ, ДЛИНА ЭТИКЕТКИ И НАХЛЁСТ -->
+          <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                <span class="w-1.5 h-4 rounded-full bg-cyan-500"></span>
+                2. Длина этикетки и нахлёст
+              </h2>
+              <span id="coneWrapBadge" class="text-[10px] font-mono text-cyan-300">360°</span>
+            </div>
+
+            <!-- Переключатель: Полный оборот / Заданная длина -->
+            <div class="grid grid-cols-2 gap-1.5">
+              <button id="btnConeModeFull" type="button" class="px-2.5 py-2 rounded-lg border text-xs font-medium transition cursor-pointer bg-cyan-500/15 border-cyan-500/50 text-cyan-200">
+                Полный оборот (360°)
+              </button>
+              <button id="btnConeModePartial" type="button" class="px-2.5 py-2 rounded-lg border text-xs font-medium transition cursor-pointer bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200">
+                Своя длина (мм)
+              </button>
+            </div>
+
+            <!-- Поле длины этикетки (для частичного охвата) -->
+            <div id="conePartialLenWrap" class="hidden space-y-1.5">
+              <div class="flex items-center justify-between">
+                <label for="inputConeLabelLen" class="text-[11px] text-slate-300">Длина этикетки по центру (мм)</label>
+                <span id="coneFullCircHint" class="text-[10px] font-mono text-slate-400">Полная: —</span>
+              </div>
+              <input id="inputConeLabelLen" type="number" min="10" max="2000" step="0.5" value="100" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+              <div class="flex gap-1">
+                <button type="button" data-clen="80" class="clen-preset flex-1 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300 cursor-pointer">80</button>
+                <button type="button" data-clen="100" class="clen-preset flex-1 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300 cursor-pointer">100</button>
+                <button type="button" data-clen="120" class="clen-preset flex-1 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300 cursor-pointer">120</button>
+                <button type="button" data-clen="150" class="clen-preset flex-1 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300 cursor-pointer">150</button>
+              </div>
+            </div>
+
+            <!-- Нахлёст (мм) -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between">
+                <label for="inputConeOverlap" class="text-[11px] text-slate-300">Нахлёст на стык (мм)</label>
+                <span class="text-[10px] font-mono text-slate-400">Линия стыка #0000FF</span>
+              </div>
+              <input id="inputConeOverlap" type="number" min="0" max="100" step="0.5" value="10" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+              <div class="flex gap-1">
+                <button type="button" data-ov="0" class="ov-preset flex-1 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300 cursor-pointer">0 мм</button>
+                <button type="button" data-ov="5" class="ov-preset flex-1 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300 cursor-pointer">5 мм</button>
+                <button type="button" data-ov="10" class="ov-preset flex-1 py-1 rounded bg-emerald-500/15 border border-emerald-500/40 text-[10px] font-mono text-emerald-300 cursor-pointer">10 мм</button>
+                <button type="button" data-ov="15" class="ov-preset flex-1 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300 cursor-pointer">15 мм</button>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800/80">
+              <label class="flex items-center justify-between gap-2 text-xs text-slate-300 cursor-pointer select-none">
+                <span>Показывать габаритные размеры на чертеже</span>
+                <input id="chkShowDimsCone" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
+              </label>
+            </div>
+          </section>
+        </div>
 
         <!-- 3. ГАБАРИТЫ РАЗВЁРТКИ И ОФСЕТНЫЕ ФОРМАТЫ -->
         <section class="bg-slate-850 border border-slate-800 rounded-xl p-3.5 space-y-3">
@@ -309,7 +435,7 @@
           </span>
           <span class="flex items-center gap-1.5">
             <span class="w-4 h-0.5 border-t-2 border-dashed border-blue-500 inline-block"></span>
-            Биговка (<span class="font-mono text-blue-400">#0000FF</span>)
+            <span id="legendCreaseLabel">Биговка (<span class="font-mono text-blue-400">#0000FF</span>)</span>
           </span>
         </div>
 
@@ -345,7 +471,7 @@
 
   <script>
     // =========================================================================
-    // СОСТОЯНИЕ ПАРАМЕТРОВ ГЕНЕРАТОРА КОРОБОК ECMA
+    // СОСТОЯНИЕ ПАРАМЕТРОВ ГЕНЕРАТОРА КОРОБОК ECMA И КОНУСОВ
     // =========================================================================
     const PRESETS_BY_TYPE = {
       autolock: [
@@ -368,17 +494,34 @@
       ]
     };
 
+    const CONE_PRESETS = [
+      { label: 'Стакан Ø90×60×110', d1: 90, d2: 60, h: 110, mode: 'full', len: 100, ov: 10, primary: true },
+      { label: 'Ведро Ø120×95×130', d1: 120, d2: 95, h: 130, mode: 'full', len: 100, ov: 12 },
+      { label: 'Кольеретка Ø32×52×65', d1: 32, d2: 52, h: 65, mode: 'full', len: 100, ov: 8 },
+      { label: 'Этикетка 100мм (Ø90×60)', d1: 90, d2: 60, h: 90, mode: 'partial', len: 100, ov: 0 }
+    ];
+
     const state = {
-      boxType: 'ecma055',  // 'autolock' (ECMA A60.20.01.01) | 'ecma055' (ECMA A55.20.01.01) | 'ecma020' (ECMA A20.20.03.01)
-      bottomSwapped: false,// Для A55.20: false (стандарт) = P1 паз, P2/P4 крючки (к пазу P1), P3 язычок | true = P1/P3 крючки, P2 паз, P4 язычок
-      L: 65,               // Длина / глубина (Панели 2, 4 и глубина крышки)
-      W: 70,               // Ширина / фасад (Панели 1, 3)
-      H: 290,              // Номинальная высота боковых стенок (P2, P3, P4)
-      d: 0.5,              // Припуск на толщину материала (мм) — Бристоль 300–350 г/м²
-      glueW: 15,           // Ширина бокового клеевого клапана (мм)
-      tuckH: 15.5,         // Высота запорного язычка крышки от биговки (мм)
+      boxType: 'ecma055',  // 'autolock' | 'ecma055' | 'ecma020' | 'cone'
+      bottomSwapped: false,
+      L: 65,
+      W: 70,
+      H: 290,
+      d: 0.5,
+      glueW: 15,
+      tuckH: 15.5,
       glueNotches: true,
       showDims: true,
+
+      // Параметры конуса
+      coneD1: 90,          // Верхний диаметр (мм)
+      coneD2: 60,          // Нижний диаметр (мм)
+      coneH: 110,          // Высота между верхней и нижней окружностями (мм)
+      coneHeightMode: 'vertical', // 'vertical' | 'slant'
+      coneWrapMode: 'full',       // 'full' (360°) | 'partial' (своя длина)
+      coneLabelLen: 100,   // Длина этикетки по средней дуге (мм) для режима 'partial'
+      coneOverlap: 10,     // Нахлёст (мм)
+
       zoom: 1,
       panX: 0,
       panY: 0
@@ -405,7 +548,6 @@
 
     /**
      * Вычисление точного скругления угла по касательной (истинная дуга окружности SVG).
-     * Возвращает точки касания T1, T2 и готовую команду SVG-пути `L T1 A r r 0 0 sweep T2`.
      */
     function filletCorner(pPrev, pCorner, pNext, radius) {
       const v1x = pPrev.x - pCorner.x;
@@ -440,7 +582,6 @@
       const t1 = { x: pCorner.x + u1x * tDist, y: pCorner.y + u1y * tDist };
       const t2 = { x: pCorner.x + u2x * tDist, y: pCorner.y + u2y * tDist };
 
-      // Направление поворота (в SVG ось Y направлена вниз: cross > 0 => по часовой, sweep = 1)
       const cross = (-u1x) * u2y - (-u1y) * u2x;
       const sweep = cross > 0 ? 1 : 0;
 
@@ -454,9 +595,206 @@
     }
 
     // =========================================================================
-    // РАСЧЁТ ПАРАМЕТРИЧЕСКОЙ ГЕОМЕТРИИ РАЗВЁРТКИ (ECMA A60 / A55 / A20)
+    // РАСЧЁТ ПАРАМЕТРИЧЕСКОЙ ГЕОМЕТРИИ КОНУСА / КОНУСНОЙ ЭТИКЕТКИ
+    // =========================================================================
+    function calculateConeGeometry() {
+      const D1 = Math.max(5, Math.min(1000, Number(state.coneD1) || 90));
+      const D2 = Math.max(5, Math.min(1000, Number(state.coneD2) || 60));
+      const inputH = Math.max(5, Math.min(1000, Number(state.coneH) || 110));
+      const overlap = Math.max(0, Math.min(200, Number(state.coneOverlap) || 0));
+      const isPartial = state.coneWrapMode === 'partial';
+      const labelLen = Math.max(5, Math.min(3000, Number(state.coneLabelLen) || 100));
+
+      const deltaR = Math.abs(D1 - D2) / 2;
+      let slantL, vertH;
+
+      if (state.coneHeightMode === 'slant') {
+        slantL = Math.max(inputH, deltaR + 0.5);
+        vertH = Math.sqrt(Math.max(0, slantL * slantL - deltaR * deltaR));
+      } else {
+        vertH = inputH;
+        slantL = Math.sqrt(vertH * vertH + deltaR * deltaR);
+      }
+
+      const fullTopCirc = Math.PI * D1;
+      const fullBotCirc = Math.PI * D2;
+      const fullMidCirc = Math.PI * ((D1 + D2) / 2);
+
+      const isCylinder = Math.abs(D1 - D2) < 0.05;
+
+      if (isCylinder) {
+        const baseW = isPartial ? labelLen : fullMidCirc;
+        const totalW = baseW + overlap;
+        const totalH = slantL;
+
+        const outerPath = `M 0 0 L ${f(totalW)} 0 L ${f(totalW)} ${f(totalH)} L 0 ${f(totalH)} Z`;
+        const creases = [];
+        if (overlap > 0.01) {
+          creases.push({ x1: baseW, y1: 0, x2: baseW, y2: totalH });
+        }
+
+        const wrapPct = Math.min(999, (baseW / fullMidCirc) * 100);
+        const summaryHtml =
+          `Режим: <span class="text-emerald-300">Цилиндр (Ø${f(D1)} мм)</span> • Образующая L = <span class="text-white">${f(slantL)} мм</span><br/>` +
+          `Длина: <span class="text-cyan-300">${f(baseW)} мм</span> (${f(wrapPct)}% охвата)` +
+          (overlap > 0 ? ` + нахлёст <span class="text-amber-300">${f(overlap)} мм</span>` : '') + `<br/>` +
+          `Полная окружность: <span class="text-slate-200">${f(fullMidCirc)} мм</span>`;
+
+        return {
+          isCone: true,
+          isCylinder: true,
+          D1, D2, vertH, slantL, overlap, isPartial, labelLen,
+          fullTopCirc, fullMidCirc, fullBotCirc,
+          arcTop: totalW, arcMid: totalW, arcBot: totalW,
+          rIn: Infinity, rOut: Infinity,
+          thetaDeg: 0,
+          wrapPct,
+          clampedAngle: false,
+          totalW, totalH,
+          outerPath,
+          innerCuts: [],
+          glueNotchLines: [],
+          creases,
+          summaryHtml,
+          seamPtMid: overlap > 0.01 ? { x: baseW + overlap / 2, y: totalH / 2 } : null,
+          labelCenter: { x: baseW / 2, y: totalH / 2 }
+        };
+      }
+
+      // Усечённый конус (D1 != D2)
+      const dMin = Math.min(D1, D2);
+      const dMax = Math.max(D1, D2);
+      const dDiff = dMax - dMin;
+
+      const rIn = (dMin * slantL) / dDiff;
+      const rOut = rIn + slantL;
+      const rMid = (rIn + rOut) / 2;
+
+      const fullAngleRad = (Math.PI * dDiff) / slantL; // Полный угол сектора (рад)
+      const baseAngleRad = isPartial ? (labelLen / rMid) : fullAngleRad;
+      const overlapAngleRad = overlap / rMid;
+
+      const maxSafeRad = (359.5 * Math.PI) / 180;
+      const rawTotalRad = baseAngleRad + overlapAngleRad;
+      const clampedAngle = rawTotalRad > maxSafeRad;
+      const totalAngleRad = Math.min(rawTotalRad, maxSafeRad);
+      const effOverlapRad = Math.min(overlapAngleRad, totalAngleRad * 0.49);
+
+      const topIsWider = D1 > D2;
+      const halfA = totalAngleRad / 2;
+
+      // Функция точки на полярной сетке:
+      // Если верх шире (D1 > D2): центр дуги СНИЗУ, верхняя дуга = rOut, нижняя = rIn
+      // Если низ шире (D1 < D2): центр дуги СВЕРХУ, верхняя дуга = rIn, нижняя = rOut
+      const pt = (R, phi) => {
+        const x = R * Math.sin(phi);
+        const y = topIsWider ? (-R * Math.cos(phi)) : (R * Math.cos(phi));
+        return { x, y };
+      };
+
+      // Точный расчёт габаритного прямоугольника сектора
+      const sampleAngles = [-halfA, 0, halfA];
+      if (halfA >= Math.PI / 2) {
+        sampleAngles.push(-Math.PI / 2, Math.PI / 2);
+      }
+      if (halfA >= Math.PI) {
+        sampleAngles.push(-Math.PI, Math.PI);
+      }
+
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const ang of sampleAngles) {
+        for (const R of [rIn, rOut]) {
+          const p = pt(R, ang);
+          if (p.x < minX) minX = p.x;
+          if (p.x > maxX) maxX = p.x;
+          if (p.y < minY) minY = p.y;
+          if (p.y > maxY) maxY = p.y;
+        }
+      }
+
+      const shift = (p) => ({ x: p.x - minX, y: p.y - minY });
+      const totalW = maxX - minX;
+      const totalH = maxY - minY;
+      const largeArc = totalAngleRad > Math.PI ? 1 : 0;
+
+      let outerPath = '';
+      if (topIsWider) {
+        const pOutL = shift(pt(rOut, -halfA));
+        const pOutR = shift(pt(rOut, halfA));
+        const pInR = shift(pt(rIn, halfA));
+        const pInL = shift(pt(rIn, -halfA));
+        outerPath =
+          `M ${f(pOutL.x)} ${f(pOutL.y)} ` +
+          `A ${f(rOut)} ${f(rOut)} 0 ${largeArc} 1 ${f(pOutR.x)} ${f(pOutR.y)} ` +
+          `L ${f(pInR.x)} ${f(pInR.y)} ` +
+          `A ${f(rIn)} ${f(rIn)} 0 ${largeArc} 0 ${f(pInL.x)} ${f(pInL.y)} Z`;
+      } else {
+        const pInL = shift(pt(rIn, -halfA));
+        const pInR = shift(pt(rIn, halfA));
+        const pOutR = shift(pt(rOut, halfA));
+        const pOutL = shift(pt(rOut, -halfA));
+        outerPath =
+          `M ${f(pInL.x)} ${f(pInL.y)} ` +
+          `A ${f(rIn)} ${f(rIn)} 0 ${largeArc} 0 ${f(pInR.x)} ${f(pInR.y)} ` +
+          `L ${f(pOutR.x)} ${f(pOutR.y)} ` +
+          `A ${f(rOut)} ${f(rOut)} 0 ${largeArc} 1 ${f(pOutL.x)} ${f(pOutL.y)} Z`;
+      }
+
+      // Синяя линия стыка (если задан нахлёст > 0)
+      const creases = [];
+      let seamPtMid = null;
+      if (overlap > 0.01 && effOverlapRad > 1e-4) {
+        const seamPhi = halfA - effOverlapRad;
+        const sIn = shift(pt(rIn, seamPhi));
+        const sOut = shift(pt(rOut, seamPhi));
+        creases.push({ x1: sIn.x, y1: sIn.y, x2: sOut.x, y2: sOut.y });
+        seamPtMid = shift(pt(rMid, halfA - effOverlapRad / 2));
+      }
+
+      const arcTop = (topIsWider ? rOut : rIn) * totalAngleRad;
+      const arcBot = (topIsWider ? rIn : rOut) * totalAngleRad;
+      const arcMid = rMid * totalAngleRad;
+      const thetaDeg = (totalAngleRad * 180) / Math.PI;
+      const wrapPct = (baseAngleRad / fullAngleRad) * 100;
+      const labelCenter = shift(pt(rMid, -effOverlapRad / 2));
+
+      const summaryHtml =
+        `Образующая L: <span class="text-white font-semibold">${f(slantL)} мм</span> ` +
+        `(верт. H = <span class="text-slate-200">${f(vertH)} мм</span>)<br/>` +
+        `Радиусы дуг: Rвн = <span class="text-cyan-300">${f(rIn)}</span> • Rнар = <span class="text-cyan-300">${f(rOut)} мм</span> • Угол <span class="text-emerald-300">${f(thetaDeg)}°</span><br/>` +
+        `Дуги (с нахлёстом): Верх <span class="text-slate-200">${f(arcTop)}</span> / Центр <span class="text-slate-200">${f(arcMid)}</span> / Низ <span class="text-slate-200">${f(arcBot)} мм</span>` +
+        (isPartial ? `<br/>Охват окружности: <span class="text-amber-300">${f(wrapPct)}%</span> (полная по центру: ${f(fullMidCirc)} мм)` : '') +
+        (clampedAngle ? `<br/><span class="text-rose-400">Внимание: угол ограничен 359.5° (превышен полный круг развёртки)</span>` : '');
+
+      return {
+        isCone: true,
+        isCylinder: false,
+        D1, D2, vertH, slantL, overlap, isPartial, labelLen,
+        fullTopCirc, fullMidCirc, fullBotCirc,
+        arcTop, arcMid, arcBot,
+        rIn, rOut,
+        thetaDeg,
+        wrapPct,
+        clampedAngle,
+        totalW, totalH,
+        outerPath,
+        innerCuts: [],
+        glueNotchLines: [],
+        creases,
+        summaryHtml,
+        seamPtMid,
+        labelCenter
+      };
+    }
+
+    // =========================================================================
+    // РАСЧЁТ ПАРАМЕТРИЧЕСКОЙ ГЕОМЕТРИИ РАЗВЁРТКИ (ECMA A60 / A55 / A20 / CONE)
     // =========================================================================
     function calculateGeometry() {
+      if (state.boxType === 'cone') {
+        return calculateConeGeometry();
+      }
+
       const isAutolock = state.boxType === 'autolock';
       const isEcma055 = state.boxType === 'ecma055';
       const isEcma020 = state.boxType === 'ecma020';
@@ -472,8 +810,6 @@
       const glueW = Math.max(8, Math.min(40, Number(state.glueW) || 15));
       const tuckH = Math.max(8, Math.min(40, Number(state.tuckH) || 15.5));
 
-      // 1. КООРДИНАТЫ ЧЕТЫРЁХ ОСНОВНЫХ ПАНЕЛЕЙ ПО X
-      // Правая крайняя стенка P4 укорочена на d (компенсация на склейке)
       const p1W = W;
       const p2W = L;
       const p3W = W;
@@ -486,25 +822,21 @@
       const x4 = x3 + p3W;
       const x5 = x4 + p4W;
 
-      // 2. ВЕРТИКАЛЬНЫЕ УРОВНИ ПО Y (Y = 0 — верхний край язычка крышки)
-      // Для автодна (HANSARAY 90×90×297): глубина крышки L + 0.66 мм (90.66 мм)
       const lidDepth = isAutolock ? (L + 0.66) : L;
       const yTuckTop = 0;
-      const yLidCrease = tuckH;             // Синяя биговка запорного язычка
-      const earUp = 1.0;                    // Выступ ушка выше биговки язычка
+      const yLidCrease = tuckH;
+      const earUp = 1.0;
       const yEarTop = yLidCrease - earUp;
-      const yTop1 = yLidCrease + lidDepth;  // Верхняя биговка крышки на P1
-      const yTopSide = yTop1 + d;           // Верхний уровень боковин P2, P3, P4 и клеевого клапана (P1 выше на d)
-      const yBot = yTopSide + H;            // Линия биговки дна (высота P2..P4 = H, высота P1 = H + d)
+      const yTop1 = yLidCrease + lidDepth;
+      const yTopSide = yTop1 + d;
+      const yBot = yTopSide + H;
 
-      // 3. ПАРАМЕТРЫ ВЕРХНЕЙ КРЫШКИ, ЯЗЫЧКА И ПЫЛЕЗАЩИТНЫХ КЛАПАНОВ
       const tuckOffset = 0.5;
       const earW = isAutolock
-        ? Math.min(Math.max(4.0, W * (6.0 / 90)), 8.0)       // 6.00 мм при W=90 (точно по HANSARAY)
+        ? Math.min(Math.max(4.0, W * (6.0 / 90)), 8.0)
         : Math.min(Math.max(4.0, W * 0.055), 8.0);
       const tuckInset = Math.min(tuckH * 0.65, W * 0.14);
 
-      // Истинная круговая дуга язычка крышки для автодна (R = 20.00 мм при tuckH = 15.5 мм -> dx = 6.225 мм)
       const tuckArcDy = Math.max(4.0, tuckH - earUp);
       const maxTuckArcDx = Math.max(2.0, (W - 2 * tuckOffset - 10.0) / 2);
       const baseTuckR = Math.max(tuckArcDy + 0.5, tuckArcDy * (20.0 / 14.5));
@@ -512,29 +844,22 @@
       const tuckArcDx = Math.min(rawTuckDx, maxTuckArcDx);
       const tuckArcR = (tuckArcDx * tuckArcDx + tuckArcDy * tuckArcDy) / (2 * tuckArcDx);
 
-      // Верхние пылезащитные клапаны
       const dustInnerOffset = 0.5;
       const dustH = isAutolock
-        ? Math.max(10, W / 2 - d - 2.7909)                   // 41.709 мм при W=90, d=0.5 (точно по HANSARAY)
+        ? Math.max(10, W / 2 - d - 2.7909)
         : Math.max(10, W / 2 - d - 3.0);
       const yDustTop = yTopSide - dustH;
 
-      // Клеевой клапан слева (скос ровно 20° -> 5.460 мм при glueW = 15 мм)
       const glueChamfer = isAutolock
         ? Math.min(H * 0.25, glueW * Math.tan(20.0 * Math.PI / 180))
         : Math.min(glueW * 0.35, 6.0);
 
-      // =======================================================================
-      // ПОСТРОЕНИЕ ВЕРХНЕЙ И ПРАВОЙ ЧАСТИ ВНЕШНЕГО КОНТУРА РЕЗА
-      // =======================================================================
       const outer = [];
 
-      // Старт: левый стык клеевого клапана и крышки
       outer.push(`M ${f(x1)} ${f(yTopSide)}`);
       outer.push(`L ${f(x1)} ${f(yEarTop)}`);
       outer.push(`L ${f(x1 + tuckOffset)} ${f(yEarTop)}`);
 
-      // Запорный язычок крышки
       if (isAutolock) {
         outer.push(`A ${f(tuckArcR)} ${f(tuckArcR)} 0 0 1 ${f(x1 + tuckOffset + tuckArcDx)} ${f(yTuckTop)}`);
         outer.push(`L ${f(x2 - tuckOffset - tuckArcDx)} ${f(yTuckTop)}`);
@@ -547,7 +872,6 @@
       outer.push(`L ${f(x2)} ${f(yEarTop)}`);
       outer.push(`L ${f(x2)} ${f(yTopSide)}`);
 
-      // Верхние пылезащитные клапаны Панелей 2 и 4
       if (isAutolock) {
         const outDx1 = Math.min(3.0, p4W * 0.08);
         const outDy1 = dustH * (2.2748 / 41.7091);
@@ -590,12 +914,8 @@
         outer.push(`L ${f(x5)} ${f(yTopSide)}`);
       }
 
-      // Правый вертикальный рез Панели 4
       outer.push(`L ${f(x5)} ${f(yBot)}`);
 
-      // =======================================================================
-      // НИЖНИЕ КЛАПАНЫ (ЗАВИСЯТ ОТ ТИПА КОРОБКИ ECMA)
-      // =======================================================================
       const innerCuts = [];
       const extraCreases = [];
       let vCrease3End = yBot;
@@ -605,10 +925,6 @@
       let heightSummaryHtml = `Высота: P1 = <span class="text-cyan-300">${f(H + d)} мм</span>, P2–P4 = <span class="text-slate-200">${f(H)} мм</span><br/>`;
 
       if (isEcma020) {
-        // ---------------------------------------------------------------------
-        // ВАРИАНТ 3: ECMA A20.20.03.01 (ВСТРЕЧНЫЙ КЛАПАН / REVERSE TUCK END)
-        // Верхняя крышка на P1 (01), нижняя крышка на P3 (03), пыльники на P2 и P4
-        // ---------------------------------------------------------------------
         const yBot3 = yBot + d;
         const yBotLidCrease = yBot3 + L;
         const yBotEar = yBotLidCrease + earUp;
@@ -667,11 +983,6 @@
         bottomInfoHtml = `A20.20.03.01: крышки P1/P3 <span class="text-slate-200">${f(L)} мм</span> / пыльники <span class="text-emerald-300">${f(dustH)} мм</span>`;
 
       } else if (isEcma055) {
-        // ---------------------------------------------------------------------
-        // ВАРИАНТ 2: ECMA A55.20.01.01
-        // - Стандарт (!bottomSwapped): P1 паз, P2 крючок (к P1), P3 язычок, P4 крючок (к стыку с P1)
-        // - Сдвиг (bottomSwapped):     P1 крючок (к P2), P2 паз, P3 крючок (к P2), P4 язычок
-        // ---------------------------------------------------------------------
         const step = Math.min(3.0, W * 0.08, L * 0.08);
         const clearance = Math.max(0.5, 2 * d);
         const hooksOnP2P4 = !state.bottomSwapped;
@@ -736,7 +1047,6 @@
           outer.push(`L ${f(xL)} ${f(yBot)}`);
         };
 
-        // Крючок с прямой гранью справа (xR) и скосом/носком влево (к xL)
         const appendHookPointingLeft = (xL, xR) => {
           const tX = xL + throatX;
           const tY = yBot + throatY;
@@ -752,7 +1062,6 @@
           outer.push(`L ${f(xL)} ${f(yBot)}`);
         };
 
-        // Крючок с прямой гранью слева (xL) и скосом/носком вправо (к xR)
         const appendHookPointingRight = (xL, xR) => {
           const tX = xR - throatX;
           const tY = yBot + throatY;
@@ -769,14 +1078,12 @@
         };
 
         if (hooksOnP2P4) {
-          // Стандарт: P4 крючок вправо (к стыку с P1) -> P3 язычок -> P2 крючок влево (к P1) -> P1 паз
           appendHookPointingRight(x4, x5);
           appendTongue(x3, x4);
           appendHookPointingLeft(x2, x3);
           appendSlot(x1, x2);
           bottomInfoHtml = `A55.20.01.01: язычок P3 <span class="text-slate-200">${f(tongueW)} мм</span> / паз P1 <span class="text-emerald-300">${f(slotW)} мм</span>`;
         } else {
-          // Сдвиг: P4 язычок -> P3 крючок влево (к P2) -> P2 паз -> P1 крючок вправо (к P2)
           appendTongue(x4, x5);
           appendHookPointingLeft(x3, x4);
           appendSlot(x2, x3);
@@ -788,9 +1095,6 @@
         maxBottomDepth = Math.max(hHookDeep, hSlotFlap);
 
       } else {
-        // ---------------------------------------------------------------------
-        // ВАРИАНТ 1: ECMA A60.20.01.01 (АВТОДНО — ПОЛНОСТЬЮ ПО HANSARAY 90×90×297)
-        // ---------------------------------------------------------------------
         const innerGap = Math.min(3.39, L * 0.05, W * 0.05);
 
         const chamfer1X = Math.min(2.0382, W * 0.035);
@@ -879,14 +1183,10 @@
         bottomInfoHtml = `A60.20.01.01: язычок <span class="text-slate-200">${f(tongueW)} мм</span> / окошко <span class="text-emerald-300">${f(winTopW)} мм</span>`;
       }
 
-      // Боковой клеевой клапан слева (x1 -> x0 -> yTopSide)
       outer.push(`L ${f(x0)} ${f(yBot - glueChamfer)}`);
       outer.push(`L ${f(x0)} ${f(yTopSide + glueChamfer)}`);
       outer.push(`Z`);
 
-      // =======================================================================
-      // ОБЩИЕ ВНУТРЕННИЕ ЛИНИИ РЕЗА (ПРОРЕЗИ ВЕРХНЕЙ КРЫШКИ И НАСЕЧКИ ПОД КЛЕЙ)
-      // =======================================================================
       innerCuts.push(
         `M ${f(x1 + tuckOffset)} ${f(yEarTop)} ` +
         `L ${f(x1 + earW)} ${f(yEarTop)} ` +
@@ -922,21 +1222,15 @@
         }
       }
 
-      // =======================================================================
-      // ЛИНИИ БИГОВКИ (#0000FF)
-      // =======================================================================
       const creases = [
-        // Вертикальные
         { x1: x1, y1: isAutolock ? yTop1 : yTopSide, x2: x1, y2: yBot },
         { x1: x2, y1: yTop1, x2: x2, y2: yBot },
         { x1: x3, y1: yTopSide, x2: x3, y2: vCrease3End },
         { x1: x4, y1: yTopSide, x2: x4, y2: vCrease4End },
-        // Горизонтальные (верхние)
         { x1: x1 + earW, y1: yLidCrease, x2: x2 - earW, y2: yLidCrease },
         { x1: x1, y1: yTop1, x2: x2, y2: yTop1 },
         { x1: x2, y1: yTopSide, x2: isAutolock ? x3 : (x3 - dustInnerOffset), y2: yTopSide },
         { x1: isAutolock ? x4 : (x4 + dustInnerOffset), y1: yTopSide, x2: x5, y2: yTopSide },
-        // Горизонтальные (нижние, зависят от конструкции)
         ...extraCreases
       ];
 
@@ -944,6 +1238,7 @@
       const totalH = yBot + maxBottomDepth;
 
       return {
+        isCone: false,
         boxType: state.boxType,
         isAutolock,
         isEcma055,
@@ -964,7 +1259,7 @@
     }
 
     // =========================================================================
-    // ПРОВЕРКА ВХОДИМОСТИ НА ОФСЕТНЫЕ ФОРМАТЫ (35×50 и 50×70, ВКЛЮЧАЯ ВАЛЕТ)
+    // ПРОВЕРКА ВХОДИМОСТИ НА ОФСЕТНЫЕ ФОРМАТЫ (35×50 и 50×70)
     // =========================================================================
     function checkSheetFit(g, workW, workH) {
       const bw = g.totalW;
@@ -977,6 +1272,13 @@
       const n90 = (bh <= workW && bw <= workH)
         ? Math.floor((workW + gap) / (bh + gap)) * Math.floor((workH + gap) / (bw + gap))
         : 0;
+
+      if (g.isCone) {
+        const best = Math.max(n0, n90);
+        if (best <= 0) return { fits: false, text: 'Не помещается' };
+        if (best === 1) return { fits: true, text: n0 >= 1 ? 'Входит (1 шт, 0°)' : 'Входит (1 шт, 90°)' };
+        return { fits: true, text: `${best} шт/л (габарит)` };
+      }
 
       const topFlapH = g.yTopSide - g.yTuckTop;
       const bodyOnlyH = g.H + g.d;
@@ -1017,7 +1319,7 @@
     }
 
     // =========================================================================
-    // ОБНОВЛЕНИЕ КНОПОК ТИПА КОРОБКИ, ПЕРЕКЛЮЧАТЕЛЯ КЛАПАНОВ И ПРЕСЕТОВ
+    // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ПРИ ПЕРЕКЛЮЧЕНИИ РЕЖИМОВ
     // =========================================================================
     function syncBottomSwapUI() {
       const wrap = document.getElementById('bottomSwapWrap');
@@ -1041,11 +1343,51 @@
       }
     }
 
+    function syncConeUI() {
+      const isVert = state.coneHeightMode === 'vertical';
+      const btnVert = document.getElementById('btnConeHVert');
+      const btnSlant = document.getElementById('btnConeHSlant');
+      const labelH = document.getElementById('labelConeH');
+
+      const activeGreen = 'px-2.5 py-1.5 rounded-lg border text-[11px] font-medium transition cursor-pointer bg-emerald-500/15 border-emerald-500/50 text-emerald-200';
+      const inactiveBtn = 'px-2.5 py-1.5 rounded-lg border text-[11px] font-medium transition cursor-pointer bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200';
+
+      btnVert.className = isVert ? activeGreen : inactiveBtn;
+      btnSlant.className = !isVert ? activeGreen : inactiveBtn;
+      labelH.textContent = isVert ? 'Высота H' : 'Стенка L';
+
+      const isPartial = state.coneWrapMode === 'partial';
+      const btnFull = document.getElementById('btnConeModeFull');
+      const btnPart = document.getElementById('btnConeModePartial');
+      const partWrap = document.getElementById('conePartialLenWrap');
+      const wrapBadge = document.getElementById('coneWrapBadge');
+
+      const activeCyan = 'px-2.5 py-2 rounded-lg border text-xs font-medium transition cursor-pointer bg-cyan-500/15 border-cyan-500/50 text-cyan-200';
+      const inactiveMode = 'px-2.5 py-2 rounded-lg border text-xs font-medium transition cursor-pointer bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200';
+
+      btnFull.className = !isPartial ? activeCyan : inactiveMode;
+      btnPart.className = isPartial ? activeCyan : inactiveMode;
+      partWrap.classList.toggle('hidden', !isPartial);
+      wrapBadge.textContent = isPartial ? `${f(state.coneLabelLen)} мм` : '360°';
+
+      document.getElementById('chkShowDimsCone').checked = state.showDims;
+    }
+
     function syncTypeUI() {
       const t = state.boxType;
+      const isCone = t === 'cone';
+
+      document.getElementById('boxParamsWrap').classList.toggle('hidden', isCone);
+      document.getElementById('coneParamsWrap').classList.toggle('hidden', !isCone);
+      document.getElementById('legendCreaseLabel').innerHTML = isCone
+        ? 'Стык нахлёста (<span class="font-mono text-blue-400">#0000FF</span>)'
+        : 'Биговка (<span class="font-mono text-blue-400">#0000FF</span>)';
 
       const badge = document.getElementById('headerTypeBadge');
-      if (t === 'ecma020') {
+      if (isCone) {
+        badge.textContent = 'КОНУС / ЭТИКЕТКА';
+        badge.className = 'px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/35 text-[10px] font-mono font-semibold text-emerald-300';
+      } else if (t === 'ecma020') {
         badge.textContent = 'ECMA A20.20';
         badge.className = 'px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/35 text-[10px] font-mono font-semibold text-amber-300';
       } else if (t === 'ecma055') {
@@ -1077,6 +1419,13 @@
           active: t === 'ecma020',
           activeCls: 'text-left p-2 rounded-xl border-2 border-amber-500 bg-amber-500/10 transition cursor-pointer',
           dotCls: 'w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)] shrink-0'
+        },
+        {
+          id: 'btnTypeCone',
+          dot: 'dotTypeCone',
+          active: t === 'cone',
+          activeCls: 'text-left p-2 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 transition cursor-pointer',
+          dotCls: 'w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] shrink-0'
         }
       ];
 
@@ -1089,34 +1438,65 @@
       });
 
       syncBottomSwapUI();
+      syncConeUI();
 
-      const presets = PRESETS_BY_TYPE[t] || PRESETS_BY_TYPE.autolock;
-      const primaryCls = t === 'ecma020'
-        ? 'preset-btn px-2.5 py-1 rounded-md bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-[11px] font-mono text-amber-200 font-semibold transition cursor-pointer'
-        : (t === 'ecma055'
-            ? 'preset-btn px-2.5 py-1 rounded-md bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/40 text-[11px] font-mono text-purple-200 font-semibold transition cursor-pointer'
-            : 'preset-btn px-2.5 py-1 rounded-md bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-[11px] font-mono text-cyan-200 font-semibold transition cursor-pointer');
+      if (!isCone) {
+        const presets = PRESETS_BY_TYPE[t] || PRESETS_BY_TYPE.autolock;
+        const primaryCls = t === 'ecma020'
+          ? 'preset-btn px-2.5 py-1 rounded-md bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-[11px] font-mono text-amber-200 font-semibold transition cursor-pointer'
+          : (t === 'ecma055'
+              ? 'preset-btn px-2.5 py-1 rounded-md bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/40 text-[11px] font-mono text-purple-200 font-semibold transition cursor-pointer'
+              : 'preset-btn px-2.5 py-1 rounded-md bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-[11px] font-mono text-cyan-200 font-semibold transition cursor-pointer');
 
-      const container = document.getElementById('presetsContainer');
-      container.innerHTML = presets.map(p => {
-        const cls = p.primary
-          ? primaryCls
-          : 'preset-btn px-2.5 py-1 rounded-md bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-mono text-slate-300 transition cursor-pointer';
-        return `<button type="button" data-l="${p.l}" data-w="${p.w}" data-h="${p.h}" class="${cls}">${p.label}</button>`;
-      }).join('');
+        const container = document.getElementById('presetsContainer');
+        container.innerHTML = presets.map(p => {
+          const cls = p.primary
+            ? primaryCls
+            : 'preset-btn px-2.5 py-1 rounded-md bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-mono text-slate-300 transition cursor-pointer';
+          return `<button type="button" data-l="${p.l}" data-w="${p.w}" data-h="${p.h}" class="${cls}">${p.label}</button>`;
+        }).join('');
 
-      container.querySelectorAll('.preset-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          state.L = parseFloat(btn.dataset.l);
-          state.W = parseFloat(btn.dataset.w);
-          state.H = parseFloat(btn.dataset.h);
-          document.getElementById('inputL').value = state.L;
-          document.getElementById('inputW').value = state.W;
-          document.getElementById('inputH').value = state.H;
-          render();
-          fitToViewport();
+        container.querySelectorAll('.preset-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.L = parseFloat(btn.dataset.l);
+            state.W = parseFloat(btn.dataset.w);
+            state.H = parseFloat(btn.dataset.h);
+            document.getElementById('inputL').value = state.L;
+            document.getElementById('inputW').value = state.W;
+            document.getElementById('inputH').value = state.H;
+            render();
+            fitToViewport();
+          });
         });
-      });
+      } else {
+        const cContainer = document.getElementById('conePresetsContainer');
+        cContainer.innerHTML = CONE_PRESETS.map((p, idx) => {
+          const cls = p.primary
+            ? 'cone-preset-btn px-2.5 py-1 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-[11px] font-mono text-emerald-200 font-semibold transition cursor-pointer'
+            : 'cone-preset-btn px-2.5 py-1 rounded-md bg-slate-900 hover:bg-slate-800 border border-slate-700 text-[11px] font-mono text-slate-300 transition cursor-pointer';
+          return `<button type="button" data-idx="${idx}" class="${cls}">${p.label}</button>`;
+        }).join('');
+
+        cContainer.querySelectorAll('.cone-preset-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const p = CONE_PRESETS[Number(btn.dataset.idx)];
+            state.coneD1 = p.d1;
+            state.coneD2 = p.d2;
+            state.coneH = p.h;
+            state.coneWrapMode = p.mode;
+            state.coneLabelLen = p.len;
+            state.coneOverlap = p.ov;
+            document.getElementById('inputConeD1').value = state.coneD1;
+            document.getElementById('inputConeD2').value = state.coneD2;
+            document.getElementById('inputConeH').value = state.coneH;
+            document.getElementById('inputConeLabelLen').value = state.coneLabelLen;
+            document.getElementById('inputConeOverlap').value = state.coneOverlap;
+            syncConeUI();
+            render();
+            fitToViewport();
+          });
+        });
+      }
     }
 
     // =========================================================================
@@ -1143,28 +1523,35 @@
         ? 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
         : 'px-2 py-0.5 rounded font-mono text-[11px] font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30';
 
-      document.getElementById('panelSummaryText').innerHTML =
-        `Панели: Клей <span class="text-slate-200">${f(g.glueW)}</span> + ` +
-        `P1(<span class="text-cyan-300">${f(g.p1W)}</span>) + ` +
-        `P2(<span class="text-cyan-300">${f(g.p2W)}</span>) + ` +
-        `P3(<span class="text-cyan-300">${f(g.p3W)}</span>) + ` +
-        `P4(<span class="text-amber-300">${f(g.p4W)}</span>) = <span class="text-white font-semibold">${f(g.totalW)} мм</span><br/>` +
-        g.heightSummaryHtml +
-        g.bottomInfoHtml;
+      if (g.isCone) {
+        document.getElementById('coneFullCircHint').textContent = `Полная: ${f(g.fullMidCirc)} мм`;
+        document.getElementById('coneWrapBadge').textContent = g.isPartial ? `${f(g.labelLen)} мм` : '360°';
+        document.getElementById('panelSummaryText').innerHTML = g.summaryHtml;
+      } else {
+        document.getElementById('panelSummaryText').innerHTML =
+          `Панели: Клей <span class="text-slate-200">${f(g.glueW)}</span> + ` +
+          `P1(<span class="text-cyan-300">${f(g.p1W)}</span>) + ` +
+          `P2(<span class="text-cyan-300">${f(g.p2W)}</span>) + ` +
+          `P3(<span class="text-cyan-300">${f(g.p3W)}</span>) + ` +
+          `P4(<span class="text-amber-300">${f(g.p4W)}</span>) = <span class="text-white font-semibold">${f(g.totalW)} мм</span><br/>` +
+          g.heightSummaryHtml +
+          g.bottomInfoHtml;
+      }
 
-      const padLeft = state.showDims ? 36 : 16;
-      const padTop = state.showDims ? 30 : 16;
-      const padRight = state.showDims ? 44 : 16;
-      const padBottom = state.showDims ? 34 : 16;
+      const maxDim = Math.max(g.totalW, g.totalH, 40);
+      const padLeft = state.showDims ? Math.max(26, maxDim * 0.08) : 16;
+      const padTop = state.showDims ? Math.max(24, maxDim * 0.07) : 16;
+      const padRight = state.showDims ? Math.max(36, maxDim * 0.10) : 16;
+      const padBottom = state.showDims ? Math.max(24, maxDim * 0.07) : 16;
 
       const vbW = g.totalW + padLeft + padRight;
       const vbH = g.totalH + padTop + padBottom;
-      const strokeW = Math.max(0.55, Math.min(1.4, Math.max(g.totalW, g.totalH) / 520));
-      const fontSize = Math.max(7, Math.min(13, Math.max(g.totalW, g.totalH) / 48));
+      const strokeW = Math.max(0.4, Math.min(1.4, maxDim / 480));
+      const fontSize = Math.max(5.5, Math.min(13, maxDim / 42));
 
       let svgContent = `
         <g transform="translate(${f(padLeft)}, ${f(padTop)})">
-          <path d="${g.outerPath}" fill="rgba(56, 189, 248, 0.05)" stroke="none" />
+          <path d="${g.outerPath}" fill="rgba(56, 189, 248, 0.06)" stroke="none" />
 
           <g id="CREASE" stroke="#3b82f6" stroke-width="${f(strokeW)}" stroke-dasharray="${f(strokeW * 4)} ${f(strokeW * 3)}" fill="none" stroke-linecap="round">
             ${g.creases.map(c => `<line x1="${f(c.x1)}" y1="${f(c.y1)}" x2="${f(c.x2)}" y2="${f(c.y2)}" />`).join('')}
@@ -1180,40 +1567,65 @@
       if (state.showDims) {
         const dimColor = '#38bdf8';
         const labelColor = '#94a3b8';
-        const dimY = -12;
-        const dimX = g.totalW + 18;
-        const panelLabelY = g.yTopSide + g.H * 0.5;
+        const dimY = -Math.max(10, fontSize * 1.1);
+        const dimX = g.totalW + Math.max(12, fontSize * 1.4);
 
-        svgContent += `
-          <g id="DIMENSIONS" font-family="JetBrains Mono, monospace" font-size="${f(fontSize)}" text-anchor="middle">
-            <text x="${f((g.x1 + g.x2) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P1</text>
-            <text x="${f((g.x1 + g.x2) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p1W)} мм</text>
+        if (g.isCone) {
+          const lc = g.labelCenter;
+          const infoLine1 = g.isCylinder
+            ? `Цилиндр Ø${f(g.D1)} мм`
+            : `Ø${f(g.D1)} → Ø${f(g.D2)} мм • ${f(g.thetaDeg)}°`;
+          const infoLine2 = `L = ${f(g.slantL)} мм` + (g.overlap > 0 ? ` • Нахлёст ${f(g.overlap)} мм` : '');
 
-            <text x="${f((g.x2 + g.x3) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P2</text>
-            <text x="${f((g.x2 + g.x3) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p2W)} мм</text>
+          svgContent += `
+            <g id="DIMENSIONS" font-family="JetBrains Mono, monospace" font-size="${f(fontSize)}" text-anchor="middle">
+              <text x="${f(lc.x)}" y="${f(lc.y - fontSize * 0.35)}" fill="#e2e8f0" font-weight="600">${infoLine1}</text>
+              <text x="${f(lc.x)}" y="${f(lc.y + fontSize * 1.0)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${infoLine2}</text>
 
-            <text x="${f((g.x3 + g.x4) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P3</text>
-            <text x="${f((g.x3 + g.x4) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p3W)} мм</text>
+              <line x1="0" y1="${f(dimY)}" x2="${f(g.totalW)}" y2="${f(dimY)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="0" y1="${f(dimY - 3)}" x2="0" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="${f(g.totalW)}" y1="${f(dimY - 3)}" x2="${f(g.totalW)}" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <text x="${f(g.totalW / 2)}" y="${f(dimY - 4)}" fill="${dimColor}">Ширина габарита: ${f(g.totalW)} мм</text>
 
-            <text x="${f((g.x4 + g.x5) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#fbbf24" font-weight="600">P4</text>
-            <text x="${f((g.x4 + g.x5) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="#fbbf24" font-size="${f(fontSize * 0.85)}">${f(g.p4W)} мм</text>
+              <line x1="${f(dimX)}" y1="0" x2="${f(dimX)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="${f(dimX - 3)}" y1="0" x2="${f(dimX + 3)}" y2="0" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="${f(dimX - 3)}" y1="${f(g.totalH)}" x2="${f(dimX + 3)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <text x="${f(dimX + fontSize * 1.1)}" y="${f(g.totalH / 2)}" fill="${dimColor}" transform="rotate(90, ${f(dimX + fontSize * 1.1)}, ${f(g.totalH / 2)})">Высота габарита: ${f(g.totalH)} мм</text>
+            </g>
+          `;
+        } else {
+          const panelLabelY = g.yTopSide + g.H * 0.5;
+          svgContent += `
+            <g id="DIMENSIONS" font-family="JetBrains Mono, monospace" font-size="${f(fontSize)}" text-anchor="middle">
+              <text x="${f((g.x1 + g.x2) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P1</text>
+              <text x="${f((g.x1 + g.x2) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p1W)} мм</text>
 
-            <line x1="0" y1="${f(dimY)}" x2="${f(g.totalW)}" y2="${f(dimY)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
-            <line x1="0" y1="${f(dimY - 3)}" x2="0" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
-            <line x1="${f(g.totalW)}" y1="${f(dimY - 3)}" x2="${f(g.totalW)}" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
-            <text x="${f(g.totalW / 2)}" y="${f(dimY - 4)}" fill="${dimColor}">Общая ширина: ${f(g.totalW)} мм</text>
+              <text x="${f((g.x2 + g.x3) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P2</text>
+              <text x="${f((g.x2 + g.x3) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p2W)} мм</text>
 
-            <line x1="${f(dimX)}" y1="0" x2="${f(dimX)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
-            <line x1="${f(dimX - 3)}" y1="0" x2="${f(dimX + 3)}" y2="0" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
-            <line x1="${f(dimX - 3)}" y1="${f(g.totalH)}" x2="${f(dimX + 3)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
-            <text x="${f(dimX + fontSize * 1.1)}" y="${f(g.totalH / 2)}" fill="${dimColor}" transform="rotate(90, ${f(dimX + fontSize * 1.1)}, ${f(g.totalH / 2)})">Общая высота: ${f(g.totalH)} мм</text>
+              <text x="${f((g.x3 + g.x4) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#e2e8f0" font-weight="600">P3</text>
+              <text x="${f((g.x3 + g.x4) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="${labelColor}" font-size="${f(fontSize * 0.85)}">${f(g.p3W)} мм</text>
 
-            <line x1="-14" y1="${f(g.yTopSide)}" x2="-14" y2="${f(g.yBot)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
-            <line x1="-17" y1="${f(g.yTopSide)}" x2="-11" y2="${f(g.yTopSide)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
-            <line x1="-17" y1="${f(g.yBot)}" x2="-11" y2="${f(g.yBot)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
-            <text x="${f(-18)}" y="${f(g.yTopSide + g.H / 2)}" fill="#34d399" transform="rotate(-90, -18, ${f(g.yTopSide + g.H / 2)})">H = ${f(g.H)} мм</text>
-          </g>
-        `;
+              <text x="${f((g.x4 + g.x5) / 2)}" y="${f(panelLabelY - fontSize * 0.4)}" fill="#fbbf24" font-weight="600">P4</text>
+              <text x="${f((g.x4 + g.x5) / 2)}" y="${f(panelLabelY + fontSize * 0.9)}" fill="#fbbf24" font-size="${f(fontSize * 0.85)}">${f(g.p4W)} мм</text>
+
+              <line x1="0" y1="${f(dimY)}" x2="${f(g.totalW)}" y2="${f(dimY)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="0" y1="${f(dimY - 3)}" x2="0" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="${f(g.totalW)}" y1="${f(dimY - 3)}" x2="${f(g.totalW)}" y2="${f(dimY + 3)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <text x="${f(g.totalW / 2)}" y="${f(dimY - 4)}" fill="${dimColor}">Общая ширина: ${f(g.totalW)} мм</text>
+
+              <line x1="${f(dimX)}" y1="0" x2="${f(dimX)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="${f(dimX - 3)}" y1="0" x2="${f(dimX + 3)}" y2="0" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="${f(dimX - 3)}" y1="${f(g.totalH)}" x2="${f(dimX + 3)}" y2="${f(g.totalH)}" stroke="${dimColor}" stroke-width="${f(strokeW * 0.7)}" />
+              <text x="${f(dimX + fontSize * 1.1)}" y="${f(g.totalH / 2)}" fill="${dimColor}" transform="rotate(90, ${f(dimX + fontSize * 1.1)}, ${f(g.totalH / 2)})">Общая высота: ${f(g.totalH)} мм</text>
+
+              <line x1="-14" y1="${f(g.yTopSide)}" x2="-14" y2="${f(g.yBot)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="-17" y1="${f(g.yTopSide)}" x2="-11" y2="${f(g.yTopSide)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
+              <line x1="-17" y1="${f(g.yBot)}" x2="-11" y2="${f(g.yBot)}" stroke="#34d399" stroke-width="${f(strokeW * 0.7)}" />
+              <text x="${f(-18)}" y="${f(g.yTopSide + g.H / 2)}" fill="#34d399" transform="rotate(-90, -18, ${f(g.yTopSide + g.H / 2)})">H = ${f(g.H)} мм</text>
+            </g>
+          `;
+        }
       }
 
       svgContent += `</g>`;
@@ -1232,11 +1644,6 @@
       const g = calculateGeometry();
       const w = f(g.totalW);
       const h = f(g.totalH);
-      const typeLabel = g.isEcma020
-        ? 'ECMA-A20.20.03.01'
-        : (g.isEcma055
-            ? (state.bottomSwapped ? 'ECMA-A55.20.01.01-SWAP' : 'ECMA-A55.20.01.01')
-            : 'ECMA-A60.20.01.01');
 
       const creaseLines = g.creases
         .map(c => `    <line x1="${f(c.x1)}" y1="${f(c.y1)}" x2="${f(c.x2)}" y2="${f(c.y2)}" />`)
@@ -1250,13 +1657,18 @@
         .map(n => `    <line x1="${f(n.x1)}" y1="${f(n.y1)}" x2="${f(n.x2)}" y2="${f(n.y2)}" />`)
         .join('\n');
 
+      const commentLine = g.isCone
+        ? `CONE Parametric Die-Line | D1=${f(g.D1)}mm D2=${f(g.D2)}mm H=${f(g.vertH)}mm L=${f(g.slantL)}mm | Mode=${g.isPartial ? ('LEN_' + f(g.labelLen) + 'mm') : 'FULL_360'} | Overlap=${f(g.overlap)}mm`
+        : `${g.isEcma020 ? 'ECMA-A20.20.03.01' : (g.isEcma055 ? (state.bottomSwapped ? 'ECMA-A55.20.01.01-SWAP' : 'ECMA-A55.20.01.01') : 'ECMA-A60.20.01.01')} Parametric Box Die-Line | L=${f(g.L)}mm W=${f(g.W)}mm H=${f(g.H)}mm d=${f(g.d)}mm`;
+
+      const creaseGroup = creaseLines
+        ? `  <g id="CREASE" stroke="#0000FF" stroke-width="0.2" fill="none">\n${creaseLines}\n  </g>\n`
+        : '';
+
       return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="0 0 ${w} ${h}">
-  <!-- ${typeLabel} Parametric Box Die-Line | L=${f(g.L)}mm W=${f(g.W)}mm H=${f(g.H)}mm d=${f(g.d)}mm -->
-  <g id="CREASE" stroke="#0000FF" stroke-width="0.2" fill="none">
-${creaseLines}
-  </g>
-  <g id="CUT" stroke="#FF0000" stroke-width="0.2" fill="none" stroke-linejoin="miter">
+  <!-- ${commentLine} -->
+${creaseGroup}  <g id="CUT" stroke="#FF0000" stroke-width="0.2" fill="none" stroke-linejoin="miter">
     <path d="${g.outerPath}" />
 ${innerPaths}${notchLines ? '\n' + notchLines : ''}
   </g>
@@ -1299,7 +1711,7 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
     }
 
     // =========================================================================
-    // ПЕРЕКЛЮЧЕНИЕ ТИПА КОРОБКИ
+    // ПЕРЕКЛЮЧЕНИЕ ТИПА КОНСТРУКЦИИ
     // =========================================================================
     function isDefaultPreset(type, l, w, h) {
       if (type === 'autolock') return l === 90 && w === 90 && h === 297;
@@ -1313,7 +1725,7 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
       const prevType = state.boxType;
       state.boxType = newType;
 
-      if (isDefaultPreset(prevType, state.L, state.W, state.H)) {
+      if (newType !== 'cone' && prevType !== 'cone' && isDefaultPreset(prevType, state.L, state.W, state.H)) {
         const firstPreset = (PRESETS_BY_TYPE[newType] || PRESETS_BY_TYPE.autolock)[0];
         state.L = firstPreset.l;
         state.W = firstPreset.w;
@@ -1336,6 +1748,7 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
       document.getElementById('btnTypeAutolock').addEventListener('click', () => setBoxType('autolock'));
       document.getElementById('btnTypeEcma055').addEventListener('click', () => setBoxType('ecma055'));
       document.getElementById('btnTypeEcma020').addEventListener('click', () => setBoxType('ecma020'));
+      document.getElementById('btnTypeCone').addEventListener('click', () => setBoxType('cone'));
 
       document.getElementById('btnSwapBottom').addEventListener('click', () => {
         state.bottomSwapped = !state.bottomSwapped;
@@ -1351,12 +1764,20 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
         });
       };
 
+      // Коробки
       bindNum('inputL', 'L');
       bindNum('inputW', 'W');
       bindNum('inputH', 'H');
       bindNum('inputD', 'd');
       bindNum('inputGlueW', 'glueW');
       bindNum('inputTuckH', 'tuckH');
+
+      // Конус
+      bindNum('inputConeD1', 'coneD1');
+      bindNum('inputConeD2', 'coneD2');
+      bindNum('inputConeH', 'coneH');
+      bindNum('inputConeLabelLen', 'coneLabelLen');
+      bindNum('inputConeOverlap', 'coneOverlap');
 
       document.getElementById('btnSwapLW').addEventListener('click', () => {
         const tmp = state.L;
@@ -1365,6 +1786,56 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
         document.getElementById('inputL').value = state.L;
         document.getElementById('inputW').value = state.W;
         render();
+      });
+
+      document.getElementById('btnSwapConeD').addEventListener('click', () => {
+        const tmp = state.coneD1;
+        state.coneD1 = state.coneD2;
+        state.coneD2 = tmp;
+        document.getElementById('inputConeD1').value = state.coneD1;
+        document.getElementById('inputConeD2').value = state.coneD2;
+        render();
+      });
+
+      document.getElementById('btnConeHVert').addEventListener('click', () => {
+        state.coneHeightMode = 'vertical';
+        syncConeUI();
+        render();
+      });
+      document.getElementById('btnConeHSlant').addEventListener('click', () => {
+        state.coneHeightMode = 'slant';
+        syncConeUI();
+        render();
+      });
+
+      document.getElementById('btnConeModeFull').addEventListener('click', () => {
+        state.coneWrapMode = 'full';
+        syncConeUI();
+        render();
+        fitToViewport();
+      });
+      document.getElementById('btnConeModePartial').addEventListener('click', () => {
+        state.coneWrapMode = 'partial';
+        syncConeUI();
+        render();
+        fitToViewport();
+      });
+
+      document.querySelectorAll('.clen-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.coneLabelLen = parseFloat(btn.dataset.clen);
+          document.getElementById('inputConeLabelLen').value = state.coneLabelLen;
+          syncConeUI();
+          render();
+        });
+      });
+
+      document.querySelectorAll('.ov-preset').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.coneOverlap = parseFloat(btn.dataset.ov);
+          document.getElementById('inputConeOverlap').value = state.coneOverlap;
+          render();
+        });
       });
 
       document.querySelectorAll('.d-preset').forEach(btn => {
@@ -1380,27 +1851,38 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
         render();
       });
 
-      document.getElementById('chkShowDims').addEventListener('change', (e) => {
-        state.showDims = e.target.checked;
+      const syncDimsCheck = (checked) => {
+        state.showDims = checked;
+        document.getElementById('chkShowDims').checked = checked;
+        document.getElementById('chkShowDimsCone').checked = checked;
         render();
-      });
+      };
+      document.getElementById('chkShowDims').addEventListener('change', (e) => syncDimsCheck(e.target.checked));
+      document.getElementById('chkShowDimsCone').addEventListener('change', (e) => syncDimsCheck(e.target.checked));
 
       document.getElementById('btnDownloadSvg').addEventListener('click', () => {
         const svgText = buildCleanExportSvg();
-        const tag = state.boxType === 'ecma020'
-          ? 'ECMA-A20.20'
-          : (state.boxType === 'ecma055'
-              ? (state.bottomSwapped ? 'ECMA-A55.20_SWAP' : 'ECMA-A55.20')
-              : 'ECMA-A60.20');
-        const fname = `BOX_${tag}_${f(state.W)}x${f(state.L)}x${f(state.H)}mm.svg`;
+        let fname = '';
+        if (state.boxType === 'cone') {
+          const modeTag = state.coneWrapMode === 'partial' ? `L${f(state.coneLabelLen)}` : '360';
+          const ovTag = state.coneOverlap > 0 ? `_OV${f(state.coneOverlap)}` : '';
+          fname = `CONE_D${f(state.coneD1)}x${f(state.coneD2)}_H${f(state.coneH)}_${modeTag}${ovTag}mm.svg`;
+        } else {
+          const tag = state.boxType === 'ecma020'
+            ? 'ECMA-A20.20'
+            : (state.boxType === 'ecma055'
+                ? (state.bottomSwapped ? 'ECMA-A55.20_SWAP' : 'ECMA-A55.20')
+                : 'ECMA-A60.20');
+          fname = `BOX_${tag}_${f(state.W)}x${f(state.L)}x${f(state.H)}mm.svg`;
+        }
         downloadFile(svgText, fname, 'image/svg+xml;charset=utf-8');
         showToast(`Сохранён 1:1 макет: ${fname}`);
       });
 
       document.getElementById('btnDownloadHtml').addEventListener('click', () => {
         const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-        downloadFile(htmlContent, 'box-generator.html', 'text/html;charset=utf-8');
-        showToast('HTML-модуль сохранён: box-generator.html');
+        downloadFile(htmlContent, 'box-and-cone-generator.html', 'text/html;charset=utf-8');
+        showToast('HTML-модуль сохранён: box-and-cone-generator.html');
       });
 
       document.getElementById('btnZoomIn').addEventListener('click', () => {

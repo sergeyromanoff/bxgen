@@ -109,7 +109,7 @@
   <div class="flex-1 flex flex-col lg:flex-row min-h-0">
 
     <!-- ЛЕВАЯ ПАНЕЛЬ ПАРАМЕТРОВ -->
-    <aside class="w-full lg:w-[390px] xl:w-[415px] bg-slate-900/95 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col shrink-0 lg:h-[calc(100vh-58px)]">
+    <aside class="w-full lg:w-[405px] xl:w-[430px] bg-slate-900/95 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col shrink-0 lg:h-[calc(100vh-58px)]">
       <div class="flex-1 overflow-y-auto p-4 space-y-4">
 
         <!-- 0. ТИП КОНСТРУКЦИИ (ECMA / КОНУС) -->
@@ -138,7 +138,7 @@
                 <span id="dotTypeEcma055" class="w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)] shrink-0"></span>
               </div>
               <div class="text-[9px] font-mono text-purple-300/90 leading-tight">ECMA A55.20.01.01</div>
-              <div class="text-[9px] text-slate-400 leading-tight mt-0.5">Крючки + паз</div>
+              <div class="text-[9px] text-slate-400 leading-tight mt-0.5">Модель A–K (1-2-3)</div>
             </button>
 
             <button id="btnTypeEcma020" type="button" class="text-left p-2 rounded-xl border-2 border-slate-700/80 bg-slate-900/70 hover:border-slate-600 transition cursor-pointer">
@@ -175,8 +175,8 @@
 
             <div class="flex items-end gap-1.5">
               <div class="flex-1 min-w-0">
-                <label for="inputL" class="block text-[10px] text-slate-400 mb-1 truncate" title="Глубина крышки и боковые панели P2, P4">Длина L (глубина)</label>
-                <input id="inputL" type="number" min="25" max="600" step="0.5" value="65" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+                <label for="inputL" class="block text-[10px] text-slate-400 mb-1 truncate" title="Боковая стенка P2, P4 и глубина крышки">Длина L (боковая)</label>
+                <input id="inputL" type="number" min="20" max="800" step="0.5" value="70" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
               </div>
 
               <button id="btnSwapLW" type="button" title="Поменять длину L и ширину W местами" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-cyan-400 border border-slate-700 transition cursor-pointer shrink-0 mb-[1px]">
@@ -190,12 +190,12 @@
 
               <div class="flex-1 min-w-0">
                 <label for="inputW" class="block text-[10px] text-slate-400 mb-1 truncate" title="Фасад P1 (с крышкой) и P3">Ширина W (фасад)</label>
-                <input id="inputW" type="number" min="25" max="600" step="0.5" value="70" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+                <input id="inputW" type="number" min="20" max="800" step="0.5" value="100" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
               </div>
 
               <div class="flex-1 min-w-0">
                 <label for="inputH" class="block text-[10px] text-slate-400 mb-1 truncate">Высота H</label>
-                <input id="inputH" type="number" min="30" max="900" step="0.5" value="290" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
+                <input id="inputH" type="number" min="20" max="1200" step="0.5" value="220" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-sm font-mono text-white focus:outline-none focus:border-cyan-500 transition" />
               </div>
             </div>
 
@@ -228,11 +228,11 @@
               </div>
               <div>
                 <label for="inputGlueW" class="block text-[11px] text-slate-400 mb-1">Клеевой (мм)</label>
-                <input id="inputGlueW" type="number" min="8" max="40" step="0.5" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+                <input id="inputGlueW" type="number" min="8" max="50" step="0.5" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
               </div>
               <div>
                 <label for="inputTuckH" class="block text-[11px] text-slate-400 mb-1">Язычок (мм)</label>
-                <input id="inputTuckH" type="number" min="8" max="40" step="0.5" value="15.5" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
+                <input id="inputTuckH" type="number" min="6" max="50" step="0.5" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition" />
               </div>
             </div>
 
@@ -261,6 +261,114 @@
                 <span>Показывать габаритные размеры на чертеже</span>
                 <input id="chkShowDims" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-cyan-500 focus:ring-0 cursor-pointer" />
               </label>
+            </div>
+          </section>
+
+          <!-- 2Б. ПАРАМЕТРЫ КЛАПАНОВ A55 (РАЗДЕЛЬНО ПО КАЖДОМУ КЛАПАНУ + ОВЕРЛЕЙ БУКВ) -->
+          <section id="a55VarsSection" class="bg-slate-850 border border-purple-500/30 rounded-xl p-3.5 space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-300 flex items-center gap-2">
+                <span class="w-1.5 h-4 rounded-full bg-purple-400"></span>
+                Параметры A55 (по клапанам)
+              </h2>
+              <button id="btnA55Recalc" type="button" class="px-2 py-0.5 rounded-md bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/40 text-[10px] font-mono text-purple-200 cursor-pointer transition">
+                ↻ Пересчитать
+              </button>
+            </div>
+
+            <!-- Переключатели авто-формул и оверлея букв -->
+            <div class="space-y-2">
+              <label class="flex items-center justify-between gap-2 text-xs text-slate-300 cursor-pointer select-none">
+                <span>Авто-формулы при смене L / W</span>
+                <input id="chkA55Auto" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-purple-500 focus:ring-0 cursor-pointer" />
+              </label>
+              <label class="flex items-center justify-between gap-2 text-xs text-amber-200/95 cursor-pointer select-none">
+                <span>Оверлей букв (A–K, R) на чертеже</span>
+                <input id="chkA55Overlay" type="checkbox" checked class="w-4 h-4 rounded bg-slate-900 border-slate-600 text-amber-400 focus:ring-0 cursor-pointer" />
+              </label>
+            </div>
+
+            <!-- КЛАПАН 1: Верхние пыльники (P2 / P4) -->
+            <div class="bg-slate-900/75 border border-cyan-500/25 rounded-lg p-2.5 space-y-2">
+              <div class="flex items-center justify-between text-[10px]">
+                <span class="text-cyan-300 font-semibold flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                  1. Верхние пыльники (P2 / P4)
+                </span>
+                <span class="font-mono text-slate-400">A=0.5 • 97°/111°</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5">
+                <div>
+                  <label for="inA55TopB" class="block text-[10px] text-slate-400 mb-0.5" title="Фаска 45° со стороны крышки">B (45°)</label>
+                  <input id="inA55TopB" type="number" step="0.5" min="0" max="20" value="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-white focus:outline-none focus:border-cyan-400" />
+                </div>
+                <div>
+                  <label for="inA55TopC" class="block text-[10px] text-slate-400 mb-0.5" title="Фаска 45° со стороны P3">C (45°)</label>
+                  <input id="inA55TopC" type="number" step="0.5" min="0" max="20" value="2" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-white focus:outline-none focus:border-cyan-400" />
+                </div>
+                <div>
+                  <label for="inA55TopD" class="block text-[10px] text-slate-400 mb-0.5" title="Ступенька отступа A=0.5 мм">D (ступ.)</label>
+                  <input id="inA55TopD" type="number" step="0.5" min="0" max="20" value="3.5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-white focus:outline-none focus:border-cyan-400" />
+                </div>
+                <div>
+                  <label for="inA55TopE" class="block text-[10px] text-slate-400 mb-0.5" title="W/2 - 5 (макс 50 при W > 100)">E (выс.)</label>
+                  <input id="inA55TopE" type="number" step="0.5" min="5" max="150" value="45" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-cyan-300 focus:outline-none focus:border-cyan-400" />
+                </div>
+              </div>
+            </div>
+
+            <!-- КЛАПАН 2: Нижние крючки (B, C, D и R скругление рядом) -->
+            <div class="bg-slate-900/75 border border-amber-500/25 rounded-lg p-2.5 space-y-2">
+              <div class="flex items-center justify-between text-[10px]">
+                <span class="text-amber-300 font-semibold flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                  <span id="a55HookPanelTitle">2. Крючки дна (P2 / P4)</span>
+                </span>
+                <span class="font-mono text-slate-400">A=I+1 • E=F+G</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5">
+                <div>
+                  <label for="inA55BotB" class="block text-[10px] text-slate-400 mb-0.5" title="Фаска 45° крючка со стороны паза">B (45°)</label>
+                  <input id="inA55BotB" type="number" step="0.5" min="0" max="20" value="5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-white focus:outline-none focus:border-amber-400" />
+                </div>
+                <div>
+                  <label for="inA55BotC" class="block text-[10px] text-slate-400 mb-0.5" title="Фаска 45° крючка у внешней биговки">C (45°)</label>
+                  <input id="inA55BotC" type="number" step="0.5" min="0" max="20" value="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-white focus:outline-none focus:border-amber-400" />
+                </div>
+                <div>
+                  <label for="inA55BotD" class="block text-[10px] text-slate-400 mb-0.5" title="Глубина зацепа носка крючка">D (зацеп)</label>
+                  <input id="inA55BotD" type="number" step="1" min="2" max="100" value="24" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-amber-300 focus:outline-none focus:border-amber-400" />
+                </div>
+                <div>
+                  <label for="inA55BotR" class="block text-[10px] text-slate-400 mb-0.5" title="Радиус скругления носка крючка">R (скругл.)</label>
+                  <input id="inA55BotR" type="number" step="0.5" min="0" max="30" value="6" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-amber-300 focus:outline-none focus:border-amber-400" />
+                </div>
+              </div>
+            </div>
+
+            <!-- КЛАПАН 3: П-образный паз и глубина язычка (F, G, K) -->
+            <div class="bg-slate-900/75 border border-emerald-500/25 rounded-lg p-2.5 space-y-2">
+              <div class="flex items-center justify-between text-[10px]">
+                <span class="text-emerald-300 font-semibold flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span id="a55SlotPanelTitle">3. П-паз (P1) и язычок (P3)</span>
+                </span>
+                <span class="font-mono text-slate-400">I=L/2 • J паз</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1.5">
+                <div>
+                  <label for="inA55BotF" class="block text-[10px] text-slate-400 mb-0.5" title="Фаска 45° П-образного клапана">F (45°)</label>
+                  <input id="inA55BotF" type="number" step="0.5" min="0" max="20" value="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-white focus:outline-none focus:border-emerald-400" />
+                </div>
+                <div>
+                  <label for="inA55BotG" class="block text-[10px] text-slate-400 mb-0.5" title="Ширина ножки П-клапана (макс 40 при >200)">G (ножка)</label>
+                  <input id="inA55BotG" type="number" step="0.5" min="2" max="100" value="14.5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-emerald-300 focus:outline-none focus:border-emerald-400" />
+                </div>
+                <div>
+                  <label for="inA55BotK" class="block text-[10px] text-slate-400 mb-0.5" title="Полная глубина П-клапана и язычка (0.75 * base)">K (глуб.)</label>
+                  <input id="inA55BotK" type="number" step="0.5" min="10" max="300" value="52.5" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-emerald-300 focus:outline-none focus:border-emerald-400" />
+                </div>
+              </div>
             </div>
           </section>
         </div>
@@ -303,7 +411,6 @@
               </div>
             </div>
 
-            <!-- Тип измеряемой высоты -->
             <div class="grid grid-cols-2 gap-1.5 pt-0.5">
               <button id="btnConeHVert" type="button" class="px-2.5 py-1.5 rounded-lg border text-[11px] font-medium transition cursor-pointer bg-emerald-500/15 border-emerald-500/50 text-emerald-200">
                 Высота вертикаль H
@@ -313,7 +420,6 @@
               </button>
             </div>
 
-            <!-- Быстрые пресеты конусов -->
             <div>
               <span class="block text-[11px] text-slate-400 mb-1.5">Быстрые тестовые конусы:</span>
               <div id="conePresetsContainer" class="flex flex-wrap gap-1.5"></div>
@@ -330,7 +436,6 @@
               <span id="coneWrapBadge" class="text-[10px] font-mono text-cyan-300">360°</span>
             </div>
 
-            <!-- Переключатель: Полный оборот / Заданная длина -->
             <div class="grid grid-cols-2 gap-1.5">
               <button id="btnConeModeFull" type="button" class="px-2.5 py-2 rounded-lg border text-xs font-medium transition cursor-pointer bg-cyan-500/15 border-cyan-500/50 text-cyan-200">
                 Полный оборот (360°)
@@ -340,7 +445,6 @@
               </button>
             </div>
 
-            <!-- Поле длины этикетки (для частичного охвата) -->
             <div id="conePartialLenWrap" class="hidden space-y-1.5">
               <div class="flex items-center justify-between">
                 <label for="inputConeLabelLen" class="text-[11px] text-slate-300">Длина этикетки по центру (мм)</label>
@@ -355,7 +459,6 @@
               </div>
             </div>
 
-            <!-- Нахлёст (мм) -->
             <div class="space-y-1.5">
               <div class="flex items-center justify-between">
                 <label for="inputConeOverlap" class="text-[11px] text-slate-300">Нахлёст на стык (мм)</label>
@@ -397,7 +500,6 @@
             </div>
           </div>
 
-          <!-- Проверка входимости в 35x50 и 50x70 -->
           <div class="space-y-1.5 text-xs">
             <div id="fitCard35" class="flex items-center justify-between px-2.5 py-2 rounded-lg bg-slate-900/80 border border-slate-800">
               <div>
@@ -470,6 +572,8 @@
   <div id="toast" class="fixed bottom-4 right-4 z-50 px-4 py-2.5 rounded-xl bg-slate-900 border border-cyan-500/50 text-cyan-200 text-xs font-medium shadow-2xl opacity-0 pointer-events-none transition-opacity duration-200"></div>
 
   <script>
+    const DEG2RAD = Math.PI / 180;
+
     // =========================================================================
     // СОСТОЯНИЕ ПАРАМЕТРОВ ГЕНЕРАТОРА КОРОБОК ECMA И КОНУСОВ
     // =========================================================================
@@ -481,10 +585,11 @@
         { label: '120×80×180', l: 120, w: 80, h: 180 }
       ],
       ecma055: [
-        { label: '70×65×290 (Эталон)', l: 65, w: 70, h: 290, primary: true },
-        { label: '80×80×200', l: 80, w: 80, h: 200 },
-        { label: '100×70×250', l: 100, w: 70, h: 250 },
-        { label: '60×60×150', l: 60, w: 60, h: 150 }
+        { label: '70×100×220 (Эталон)', l: 70, w: 100, h: 220, primary: true },
+        { label: '65×95×290', l: 65, w: 95, h: 290 },
+        { label: '80×110×250', l: 80, w: 110, h: 250 },
+        { label: '90×90×240', l: 90, w: 90, h: 240 },
+        { label: '120×220×300', l: 120, w: 220, h: 300 }
       ],
       ecma020: [
         { label: '80×60×180 (Эталон)', l: 60, w: 80, h: 180, primary: true },
@@ -504,35 +609,48 @@
     const state = {
       boxType: 'ecma055',  // 'autolock' | 'ecma055' | 'ecma020' | 'cone'
       bottomSwapped: false,
-      L: 65,
-      W: 70,
-      H: 290,
+      L: 70,
+      W: 100,
+      H: 220,
       d: 0.5,
       glueW: 15,
-      tuckH: 15.5,
+      tuckH: 15,
       glueNotches: true,
       showDims: true,
 
+      // Переменные A–K для новой модели ECMA A55.20.01.01 («Замок»)
+      a55AutoFormula: true,
+      a55ShowOverlay: true,
+      a55TopB: 3,
+      a55TopC: 2,
+      a55TopD: 3.5,
+      a55TopE: 45,
+      a55BotB: 5,
+      a55BotC: 3,
+      a55BotD: 24,
+      a55BotF: 3,
+      a55BotG: 14.5,
+      a55BotK: 52.5,
+      a55BotR: 6,
+
       // Параметры конуса
-      coneD1: 90,          // Верхний диаметр (мм)
-      coneD2: 60,          // Нижний диаметр (мм)
-      coneH: 110,          // Высота между верхней и нижней окружностями (мм)
+      coneD1: 90,
+      coneD2: 60,
+      coneH: 110,
       coneHeightMode: 'vertical', // 'vertical' | 'slant'
-      coneWrapMode: 'full',       // 'full' (360°) | 'partial' (своя длина)
-      coneLabelLen: 100,   // Длина этикетки по средней дуге (мм) для режима 'partial'
-      coneOverlap: 10,     // Нахлёст (мм)
+      coneWrapMode: 'full',       // 'full' | 'partial'
+      coneLabelLen: 100,
+      coneOverlap: 10,
 
       zoom: 1,
       panX: 0,
       panY: 0
     };
 
-    // Форматирование числа до 3 знаков без лишних нулей для чистого SVG
     function f(num) {
       return Number(num.toFixed(3));
     }
 
-    // Показ всплывающего уведомления
     let toastTimer = null;
     function showToast(msg) {
       const el = document.getElementById('toast');
@@ -546,9 +664,48 @@
       }, 2400);
     }
 
-    /**
-     * Вычисление точного скругления угла по касательной (истинная дуга окружности SVG).
-     */
+    // Пересчёт зависимых формульных параметров A55 (E, G, K, D)
+    function recomputeA55DerivedParams() {
+      const L = Math.max(20, Number(state.L) || 70);
+      const W = Math.max(20, Number(state.W) || 100);
+      const F = Math.max(0, Number(state.a55BotF) || 3);
+
+      state.a55TopE = W > 100 ? 50 : Math.max(8, Number((W / 2 - 5).toFixed(2)));
+
+      const slotPanelW = state.bottomSwapped ? L : W;
+      const baseSlot = state.bottomSwapped ? W : L;
+
+      if (slotPanelW > 200 || baseSlot > 200) {
+        state.a55BotG = 40;
+      } else {
+        state.a55BotG = Math.max(2, Number((baseSlot / 4 - F).toFixed(2)));
+      }
+
+      state.a55BotK = Number(((baseSlot / 4) * 3).toFixed(2));
+
+      const baseHook = state.bottomSwapped ? L : W;
+      const hookE = F + state.a55BotG;
+      const rawD = Math.floor(baseHook / 4 - 1);
+      const maxDByK = Math.floor(state.a55BotK - hookE);
+      state.a55BotD = Math.max(2, Math.min(rawD, maxDByK));
+    }
+
+    function syncA55Inputs() {
+      document.getElementById('inA55TopB').value = state.a55TopB;
+      document.getElementById('inA55TopC').value = state.a55TopC;
+      document.getElementById('inA55TopD').value = state.a55TopD;
+      document.getElementById('inA55TopE').value = state.a55TopE;
+      document.getElementById('inA55BotB').value = state.a55BotB;
+      document.getElementById('inA55BotC').value = state.a55BotC;
+      document.getElementById('inA55BotD').value = state.a55BotD;
+      document.getElementById('inA55BotF').value = state.a55BotF;
+      document.getElementById('inA55BotG').value = state.a55BotG;
+      document.getElementById('inA55BotK').value = state.a55BotK;
+      document.getElementById('inA55BotR').value = state.a55BotR;
+      document.getElementById('chkA55Auto').checked = state.a55AutoFormula;
+      document.getElementById('chkA55Overlay').checked = state.a55ShowOverlay;
+    }
+
     function filletCorner(pPrev, pCorner, pNext, radius) {
       const v1x = pPrev.x - pCorner.x;
       const v1y = pPrev.y - pCorner.y;
@@ -586,11 +743,392 @@
       const sweep = cross > 0 ? 1 : 0;
 
       return {
-        t1,
-        t2,
-        r: actualR,
-        sweep,
+        t1, t2, r: actualR, sweep,
         svg: `L ${f(t1.x)} ${f(t1.y)} A ${f(actualR)} ${f(actualR)} 0 0 ${sweep} ${f(t2.x)} ${f(t2.y)}`
+      };
+    }
+
+    function roundCornerA55(pPrev, pCorner, pNext, radius) {
+      if (radius <= 0.01) {
+        return `L ${f(pCorner.x)} ${f(pCorner.y)}`;
+      }
+      const v1x = pPrev.x - pCorner.x;
+      const v1y = pPrev.y - pCorner.y;
+      const len1 = Math.hypot(v1x, v1y);
+      const v2x = pNext.x - pCorner.x;
+      const v2y = pNext.y - pCorner.y;
+      const len2 = Math.hypot(v2x, v2y);
+
+      if (len1 < 0.05 || len2 < 0.05) {
+        return `L ${f(pCorner.x)} ${f(pCorner.y)}`;
+      }
+
+      const u1x = v1x / len1;
+      const u1y = v1y / len1;
+      const u2x = v2x / len2;
+      const u2y = v2y / len2;
+
+      const dot = Math.max(-0.9999, Math.min(0.9999, u1x * u2x + u1y * u2y));
+      const theta = Math.acos(dot);
+      if (theta < 0.03 || Math.abs(Math.PI - theta) < 0.03) {
+        return `L ${f(pCorner.x)} ${f(pCorner.y)}`;
+      }
+
+      const halfTan = Math.tan(theta / 2);
+      const maxDist = Math.min(len1 * 0.48, len2 * 0.48);
+      const dist = Math.min(radius / halfTan, maxDist);
+      const r = dist * halfTan;
+
+      const p1 = { x: pCorner.x + u1x * dist, y: pCorner.y + u1y * dist };
+      const p2 = { x: pCorner.x + u2x * dist, y: pCorner.y + u2y * dist };
+
+      const cross = u1x * u2y - u1y * u2x;
+      const sweep = cross < 0 ? 1 : 0;
+
+      return `L ${f(p1.x)} ${f(p1.y)} A ${f(r)} ${f(r)} 0 0 ${sweep} ${f(p2.x)} ${f(p2.y)}`;
+    }
+
+    // =========================================================================
+    // РАСЧЁТ НОВОЙ ГЕОМЕТРИИ «ЗАМОК» (ECMA A55.20.01.01, МОДЕЛЬ A–K + ОВЕРЛЕЙ)
+    // =========================================================================
+    function calculateA55Geometry() {
+      const L = Math.max(20, Math.min(800, Number(state.L) || 70));
+      const W = Math.max(20, Math.min(800, Number(state.W) || 100));
+      const H = Math.max(20, Math.min(1200, Number(state.H) || 220));
+      const d = Math.max(0, Math.min(5, Number(state.d) || 0));
+      const glueW = Math.max(8, Math.min(50, Number(state.glueW) || 15));
+      const tuckH = Math.max(6, Math.min(50, Number(state.tuckH) || 15));
+
+      const p1W = W;
+      const p2W = L;
+      const p3W = W;
+      const p4W = Math.max(15, L - d);
+
+      const x0 = 0;
+      const x1 = glueW;
+      const x2 = x1 + p1W;
+      const x3 = x2 + p2W;
+      const x4 = x3 + p3W;
+      const x5 = x4 + p4W;
+
+      const yTuckTop = 0;
+      const yLidCrease = tuckH;
+      const earSlotDepth = 1.0;
+      const yEarTop = yLidCrease - earSlotDepth;
+      const yTop1 = yLidCrease + L;
+      const yTopSide = yTop1 + d;
+      const yBot = yTopSide + H;
+
+      const creases = [];
+      const innerCuts = [];
+      const cut = [];
+
+      // 1. Верхняя крышка и язычок на P1
+      const tuckMargin = 0.5;
+      const earW = Math.min(Math.max(4, p1W * 0.055), 8);
+      const tuckR = Math.min(tuckH * 0.65, p1W * 0.14);
+
+      cut.push(`M ${f(x1)} ${f(yTopSide)}`);
+      cut.push(`L ${f(x1)} ${f(yEarTop)}`);
+      cut.push(`L ${f(x1 + tuckMargin)} ${f(yEarTop)}`);
+      cut.push(`Q ${f(x1 + tuckMargin)} ${f(yTuckTop)} ${f(x1 + tuckMargin + tuckR)} ${f(yTuckTop)}`);
+      cut.push(`L ${f(x2 - tuckMargin - tuckR)} ${f(yTuckTop)}`);
+      cut.push(`Q ${f(x2 - tuckMargin)} ${f(yTuckTop)} ${f(x2 - tuckMargin)} ${f(yEarTop)}`);
+      cut.push(`L ${f(x2)} ${f(yEarTop)}`);
+      cut.push(`L ${f(x2)} ${f(yTopSide)}`);
+
+      innerCuts.push(`M ${f(x1 + tuckMargin)} ${f(yEarTop)} L ${f(x1 + earW)} ${f(yEarTop)} L ${f(x1 + earW)} ${f(yLidCrease + 1.0)}`);
+      innerCuts.push(`M ${f(x2 - tuckMargin)} ${f(yEarTop)} L ${f(x2 - earW)} ${f(yEarTop)} L ${f(x2 - earW)} ${f(yLidCrease + 1.0)}`);
+
+      creases.push({ x1: x1 + earW, y1: yLidCrease, x2: x2 - earW, y2: yLidCrease });
+      creases.push({ x1: x1, y1: yTop1, x2: x2, y2: yTop1 });
+
+      // 2. Верхние боковые пылезащитные клапаны (P2 и зеркально P4, 97° / 111°)
+      const topA = 0.5;
+      const topB = Math.max(0, Number(state.a55TopB) || 0);
+      const topC = Math.max(0, Number(state.a55TopC) || 0);
+      const topD = Math.max(0, Number(state.a55TopD) || 0);
+      const topE = Math.max(topB + 2, topD + topC + 2, Number(state.a55TopE) || 45);
+
+      const tan7 = Math.tan((97 - 90) * DEG2RAD);
+      const tan21 = Math.tan((111 - 90) * DEG2RAD);
+      const yDustTop = yTopSide - topE;
+
+      const p2_bX = x2 + topB;
+      const p2_bY = yTopSide - topB;
+      const p2_topLeftX = p2_bX + (topE - topB) * tan7;
+      const p2_cX = x3 - topA - topC;
+      const p2_cY = yTopSide - topD - topC;
+      const p2_topRightX = p2_cX - (topE - topD - topC) * tan21;
+
+      cut.push(`L ${f(p2_bX)} ${f(p2_bY)}`);
+      cut.push(`L ${f(p2_topLeftX)} ${f(yDustTop)}`);
+      cut.push(`L ${f(p2_topRightX)} ${f(yDustTop)}`);
+      cut.push(`L ${f(p2_cX)} ${f(p2_cY)}`);
+      cut.push(`L ${f(x3 - topA)} ${f(yTopSide - topD)}`);
+      cut.push(`L ${f(x3 - topA)} ${f(yTopSide)}`);
+      creases.push({ x1: x2, y1: yTopSide, x2: x3 - topA, y2: yTopSide });
+
+      cut.push(`L ${f(x4 + topA)} ${f(yTopSide)}`);
+
+      const p4_cX = x4 + topA + topC;
+      const p4_cY = yTopSide - topD - topC;
+      const p4_topLeftX = p4_cX + (topE - topD - topC) * tan21;
+      const p4_bX = x5 - topB;
+      const p4_bY = yTopSide - topB;
+      const p4_topRightX = p4_bX - (topE - topB) * tan7;
+
+      cut.push(`L ${f(x4 + topA)} ${f(yTopSide - topD)}`);
+      cut.push(`L ${f(p4_cX)} ${f(p4_cY)}`);
+      cut.push(`L ${f(p4_topLeftX)} ${f(yDustTop)}`);
+      cut.push(`L ${f(p4_topRightX)} ${f(yDustTop)}`);
+      cut.push(`L ${f(p4_bX)} ${f(p4_bY)}`);
+      cut.push(`L ${f(x5)} ${f(yTopSide)}`);
+      creases.push({ x1: x4 + topA, y1: yTopSide, x2: x5, y2: yTopSide });
+
+      cut.push(`L ${f(x5)} ${f(yBot)}`);
+
+      // 3. Нижнее замковое дно 1-2-3 (переменные B–K, R)
+      const botB = Math.max(0, Number(state.a55BotB) || 5);
+      const botC = Math.max(0, Number(state.a55BotC) || 3);
+      const botF = Math.max(0, Number(state.a55BotF) || 3);
+      const botG = Math.max(2, Number(state.a55BotG) || 14.5);
+      const botK = Math.max(12, Number(state.a55BotK) || 52.5);
+      const botR = Math.max(0, Number(state.a55BotR) ?? 6);
+
+      const baseSlot = state.bottomSwapped ? W : L;
+      const baseHook = state.bottomSwapped ? L : W;
+
+      const slotI = baseSlot / 2;
+      const ySlotShelf = yBot + slotI;
+      const ySlotFoot = yBot + botK;
+
+      const drawUFlap = (xa, xb) => {
+        const panelW = xb - xa;
+        const jW = Math.max(8, panelW - (botF + botG) * 2);
+        const sL = xa + botF + botG;
+        const sR = xb - botF - botG;
+
+        const pChamR = { x: xb - botF, y: yBot + botF };
+        const pOutBotR = { x: xb - botF, y: ySlotFoot };
+        const pInBotR = { x: sR, y: ySlotFoot };
+        const pInTopR = { x: sR, y: ySlotShelf };
+        const pInTopL = { x: sL, y: ySlotShelf };
+        const pInBotL = { x: sL, y: ySlotFoot };
+        const pOutBotL = { x: xa + botF, y: ySlotFoot };
+        const pChamL = { x: xa + botF, y: yBot + botF };
+        const pEnd = { x: xa, y: yBot };
+
+        const rLeg = Math.min(4, botG * 0.35);
+
+        cut.push(`L ${f(pChamR.x)} ${f(pChamR.y)}`);
+        cut.push(roundCornerA55(pChamR, pOutBotR, pInBotR, rLeg));
+        cut.push(roundCornerA55(pOutBotR, pInBotR, pInTopR, rLeg));
+        cut.push(`L ${f(pInTopR.x)} ${f(pInTopR.y)}`);
+        cut.push(`L ${f(pInTopL.x)} ${f(pInTopL.y)}`);
+        cut.push(roundCornerA55(pInTopL, pInBotL, pOutBotL, rLeg));
+        cut.push(roundCornerA55(pInBotL, pOutBotL, pChamL, rLeg));
+        cut.push(`L ${f(pChamL.x)} ${f(pChamL.y)}`);
+        cut.push(`L ${f(pEnd.x)} ${f(pEnd.y)}`);
+
+        return { jW, slotI, xa, xb, sL, sR };
+      };
+
+      const drawLockTongue = (xa, xb, jW) => {
+        const cx = (xa + xb) / 2;
+        const tongueW = Math.max(6, jW - 1.0);
+        const tL = cx - tongueW / 2;
+        const tR = cx + tongueW / 2;
+        const shoulderDepth = Math.max(4, baseSlot / 2 - 1.0);
+        const yShoulder = yBot + shoulderDepth;
+
+        const pShR = { x: tR, y: yShoulder };
+        const pBotR = { x: tR, y: ySlotFoot };
+        const pBotL = { x: tL, y: ySlotFoot };
+        const pShL = { x: tL, y: yShoulder };
+        const pEnd = { x: xa, y: yBot };
+
+        const rTongue = Math.min(4, tongueW * 0.25);
+
+        cut.push(`L ${f(pShR.x)} ${f(pShR.y)}`);
+        cut.push(roundCornerA55(pShR, pBotR, pBotL, rTongue));
+        cut.push(roundCornerA55(pBotR, pBotL, pShL, rTongue));
+        cut.push(`L ${f(pShL.x)} ${f(pShL.y)}`);
+        cut.push(`L ${f(pEnd.x)} ${f(pEnd.y)}`);
+
+        return { tongueW, shoulderDepth };
+      };
+
+      const hookE = botF + botG;
+      const hookA = slotI + 1;
+      const hookD = Math.max(2, Number(state.a55BotD) || Math.floor(baseHook / 4 - 1));
+      const yHookShelf = yBot + hookE;
+      const yHookBot = yHookShelf + hookD;
+
+      const pushHookNoseArc = (xStart, dirX) => {
+        const r = Math.min(botR, hookD * 0.55);
+        if (r <= 0.1) {
+          cut.push(`L ${f(xStart + dirX * hookD)} ${f(yHookBot)}`);
+          return;
+        }
+        const sin45 = Math.SQRT1_2;
+        const arcStartDist = hookD - r * (1 + sin45);
+        if (arcStartDist > 0.2) {
+          const xArcStart = xStart + dirX * arcStartDist;
+          const yArcStart = yHookShelf + arcStartDist;
+          const xArcEnd = xArcStart - dirX * (r * sin45);
+          const yArcEnd = yHookBot;
+          const sweep = dirX > 0 ? 1 : 0;
+          cut.push(`L ${f(xArcStart)} ${f(yArcStart)}`);
+          cut.push(`A ${f(r)} ${f(r)} 0 0 ${sweep} ${f(xArcEnd)} ${f(yArcEnd)}`);
+        } else {
+          const rHalf = hookD / 2;
+          const sweep = dirX > 0 ? 1 : 0;
+          cut.push(`A ${f(rHalf)} ${f(rHalf)} 0 0 ${sweep} ${f(xStart)} ${f(yHookBot)}`);
+        }
+      };
+
+      const pushHookNoseArcReverse = (xStart, dirX) => {
+        const r = Math.min(botR, hookD * 0.55);
+        const sin45 = Math.SQRT1_2;
+        const arcStartDist = hookD - r * (1 + sin45);
+        if (r > 0.1 && arcStartDist > 0.2) {
+          const xArcStart = xStart + dirX * arcStartDist;
+          const yArcStart = yHookShelf + arcStartDist;
+          const xArcEnd = xArcStart - dirX * (r * sin45);
+          const yArcEnd = yHookBot;
+          const sweep = dirX < 0 ? 1 : 0;
+          cut.push(`L ${f(xArcEnd)} ${f(yArcEnd)}`);
+          cut.push(`A ${f(r)} ${f(r)} 0 0 ${sweep} ${f(xArcStart)} ${f(yArcStart)}`);
+          cut.push(`L ${f(xStart)} ${f(yHookShelf)}`);
+        } else {
+          const rHalf = Math.max(0.5, hookD / 2);
+          const sweep = dirX < 0 ? 1 : 0;
+          cut.push(`L ${f(xStart)} ${f(yHookBot)}`);
+          cut.push(`A ${f(rHalf)} ${f(rHalf)} 0 0 ${sweep} ${f(xStart)} ${f(yHookShelf)}`);
+        }
+      };
+
+      const drawHookLeft = (xa, xb) => {
+        const xThroat = xa + hookA;
+        cut.push(`L ${f(xb - botC)} ${f(yBot + botC)}`);
+        cut.push(`L ${f(xb - botC)} ${f(yHookBot)}`);
+        pushHookNoseArcReverse(xThroat, -1);
+        cut.push(`L ${f(xa + botB)} ${f(yBot + botB)}`);
+        cut.push(`L ${f(xa)} ${f(yBot)}`);
+        return { xa, xb, xThroat };
+      };
+
+      const drawHookRight = (xa, xb) => {
+        const xThroat = xb - hookA;
+        cut.push(`L ${f(xb - botB)} ${f(yBot + botB)}`);
+        cut.push(`L ${f(xThroat)} ${f(yHookShelf)}`);
+        pushHookNoseArc(xThroat, +1);
+        cut.push(`L ${f(xa + botC)} ${f(yHookBot)}`);
+        cut.push(`L ${f(xa + botC)} ${f(yBot + botC)}`);
+        cut.push(`L ${f(xa)} ${f(yBot)}`);
+        return { xa, xb, xThroat };
+      };
+
+      let uInfo, tInfo, hLeftInfo;
+      if (!state.bottomSwapped) {
+        drawHookRight(x4, x5);
+        const jW1 = Math.max(8, (x2 - x1) - (botF + botG) * 2);
+        tInfo = drawLockTongue(x3, x4, jW1);
+        hLeftInfo = drawHookLeft(x2, x3);
+        uInfo = drawUFlap(x1, x2);
+      } else {
+        const jW2 = Math.max(8, (x3 - x2) - (botF + botG) * 2);
+        tInfo = drawLockTongue(x4, x5, jW2);
+        hLeftInfo = drawHookLeft(x3, x4);
+        uInfo = drawUFlap(x2, x3);
+        drawHookRight(x1, x2);
+      }
+
+      creases.push({ x1: x1, y1: yBot, x2: x5, y2: yBot });
+
+      // 4. Клеевой клапан слева (скосы 15°, насечки с отступом 5 мм от биговки)
+      const chamfer15 = Math.min(glueW * Math.tan(15 * DEG2RAD), H * 0.15);
+      cut.push(`L ${f(x0)} ${f(yBot - chamfer15)}`);
+      cut.push(`L ${f(x0)} ${f(yTopSide + chamfer15)}`);
+      cut.push('Z');
+
+      if (state.glueNotches) {
+        const notchMarginCrease = 5.0;
+        const notchWidth = 5.0;
+        const notchXEnd = x1 - notchMarginCrease;
+        const notchXStart = notchXEnd - notchWidth;
+        if (notchXStart >= x0 + 0.5) {
+          const yNStart = yTopSide + chamfer15 + 6;
+          const yNEnd = yBot - chamfer15 - 6;
+          for (let ny = yNStart; ny <= yNEnd; ny += 10) {
+            innerCuts.push(`M ${f(notchXStart)} ${f(ny + 1.2)} L ${f(notchXEnd)} ${f(ny - 1.2)}`);
+          }
+        }
+      }
+
+      creases.push({ x1: x1, y1: yTop1, x2: x1, y2: yBot });
+      creases.push({ x1: x2, y1: yTop1, x2: x2, y2: yBot });
+      creases.push({ x1: x3, y1: yTopSide, x2: x3, y2: yBot });
+      creases.push({ x1: x4, y1: yTopSide, x2: x4, y2: yBot });
+
+      const maxBotY = Math.max(ySlotFoot, yHookBot);
+      const maxBottomDepth = maxBotY - yBot;
+
+      // Координаты для визуального оверлея букв (A–K, R)
+      const overlayPoints = {
+        // Верхний пыльник P2 (cyan)
+        top: [
+          { code: 'B', px: x2 + topB * 0.5, py: yTopSide - topB * 0.5, lx: x2 + 12, ly: yTopSide - 12, color: 'cyan' },
+          { code: 'E', px: (x2 + x3) / 2, py: yDustTop + topE * 0.5, lx: (x2 + x3) / 2, ly: yDustTop - 10, color: 'cyan' },
+          { code: 'C', px: p2_cX, py: p2_cY, lx: x3 + 12, ly: yTopSide - topD - topC - 8, color: 'cyan' },
+          { code: 'D', px: x3 - topA, py: yTopSide - topD * 0.5, lx: x3 + 18, ly: yTopSide - 4, color: 'cyan' },
+          { code: 'A', px: x3 - topA * 0.5, py: yTopSide, lx: x3 + 12, ly: yTopSide + 12, color: 'cyan' }
+        ],
+        // Нижний П-паз (emerald)
+        slot: [
+          { code: 'F', px: uInfo.xa + botF * 0.5, py: yBot + botF * 0.5, lx: uInfo.xa - 9, ly: yBot + 10, color: 'emerald' },
+          { code: 'G', px: uInfo.xa + botF + botG * 0.5, py: ySlotFoot, lx: uInfo.xa + botF + botG * 0.5, ly: ySlotFoot + 12, color: 'emerald' },
+          { code: 'I', px: (uInfo.sL + uInfo.sR) / 2, py: yBot + slotI * 0.5, lx: (uInfo.sL + uInfo.sR) / 2, ly: yBot + slotI * 0.5, color: 'emerald' },
+          { code: 'J', px: (uInfo.sL + uInfo.sR) / 2, py: ySlotShelf, lx: (uInfo.sL + uInfo.sR) / 2, ly: ySlotShelf + 13, color: 'emerald' },
+          { code: 'K', px: uInfo.xb - botF, py: yBot + botK * 0.5, lx: uInfo.xb - botF - botG * 0.5, ly: ySlotFoot + 12, color: 'emerald' }
+        ],
+        // Нижний крючок (amber)
+        hook: [
+          { code: 'B', px: hLeftInfo.xa + botB * 0.5, py: yBot + botB * 0.5, lx: hLeftInfo.xa + 12, ly: yBot - 11, color: 'amber' },
+          { code: 'A', px: (hLeftInfo.xa + hLeftInfo.xThroat) / 2, py: yHookShelf, lx: hLeftInfo.xa + hookA * 0.45, ly: yBot + hookE * 0.55, color: 'amber' },
+          { code: 'D', px: hLeftInfo.xThroat, py: yHookShelf + hookD * 0.5, lx: hLeftInfo.xThroat + 13, ly: yHookShelf + hookD * 0.45, color: 'amber' },
+          { code: 'R', px: hLeftInfo.xThroat - Math.min(hookD * 0.45, botR * 0.9), py: yHookBot - Math.min(botR * 0.5, hookD * 0.25), lx: hLeftInfo.xThroat - 14, ly: yHookBot + 11, color: 'amber' },
+          { code: 'C', px: hLeftInfo.xb - botC * 0.5, py: yBot + botC * 0.5, lx: hLeftInfo.xb - 10, ly: yBot - 11, color: 'amber' }
+        ]
+      };
+
+      const heightSummaryHtml = `Высота: P1 = <span class="text-cyan-300">${f(H + d)} мм</span>, P2–P4 = <span class="text-slate-200">${f(H)} мм</span> • Пыльник E = <span class="text-slate-200">${f(topE)} мм</span><br/>`;
+      const bottomInfoHtml =
+        `П-клапан: G=<span class="text-slate-200">${f(botG)}</span>, I=<span class="text-slate-200">${f(uInfo.slotI)}</span>, J=<span class="text-emerald-300">${f(uInfo.jW)}</span>, K=<span class="text-slate-200">${f(botK)}</span><br/>` +
+        `Крючки: A=<span class="text-amber-300">${f(hookA)}</span>, D=<span class="text-amber-300">${f(hookD)}</span>, E=<span class="text-slate-200">${f(hookE)}</span>, R=<span class="text-amber-300">${f(botR)}</span> • Язычок: <span class="text-cyan-300">${f(tInfo.tongueW)} мм</span>`;
+
+      return {
+        isCone: false,
+        boxType: 'ecma055',
+        isAutolock: false,
+        isEcma055: true,
+        isEcma020: false,
+        L, W, H, d, glueW, tuckH,
+        p1W, p2W, p3W, p4W,
+        x0, x1, x2, x3, x4, x5,
+        yTuckTop, yLidCrease, yTop1, yTopSide, yBot, yDustTop,
+        dustH: topE,
+        maxBottomDepth,
+        totalW: x5,
+        totalH: maxBotY,
+        outerPath: cut.join(' '),
+        innerCuts,
+        glueNotchLines: [],
+        creases,
+        overlayPoints,
+        heightSummaryHtml,
+        bottomInfoHtml
       };
     }
 
@@ -661,7 +1199,6 @@
         };
       }
 
-      // Усечённый конус (D1 != D2)
       const dMin = Math.min(D1, D2);
       const dMax = Math.max(D1, D2);
       const dDiff = dMax - dMin;
@@ -670,7 +1207,7 @@
       const rOut = rIn + slantL;
       const rMid = (rIn + rOut) / 2;
 
-      const fullAngleRad = (Math.PI * dDiff) / slantL; // Полный угол сектора (рад)
+      const fullAngleRad = (Math.PI * dDiff) / slantL;
       const baseAngleRad = isPartial ? (labelLen / rMid) : fullAngleRad;
       const overlapAngleRad = overlap / rMid;
 
@@ -683,23 +1220,15 @@
       const topIsWider = D1 > D2;
       const halfA = totalAngleRad / 2;
 
-      // Функция точки на полярной сетке:
-      // Если верх шире (D1 > D2): центр дуги СНИЗУ, верхняя дуга = rOut, нижняя = rIn
-      // Если низ шире (D1 < D2): центр дуги СВЕРХУ, верхняя дуга = rIn, нижняя = rOut
       const pt = (R, phi) => {
         const x = R * Math.sin(phi);
         const y = topIsWider ? (-R * Math.cos(phi)) : (R * Math.cos(phi));
         return { x, y };
       };
 
-      // Точный расчёт габаритного прямоугольника сектора
       const sampleAngles = [-halfA, 0, halfA];
-      if (halfA >= Math.PI / 2) {
-        sampleAngles.push(-Math.PI / 2, Math.PI / 2);
-      }
-      if (halfA >= Math.PI) {
-        sampleAngles.push(-Math.PI, Math.PI);
-      }
+      if (halfA >= Math.PI / 2) sampleAngles.push(-Math.PI / 2, Math.PI / 2);
+      if (halfA >= Math.PI) sampleAngles.push(-Math.PI, Math.PI);
 
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
       for (const ang of sampleAngles) {
@@ -740,7 +1269,6 @@
           `A ${f(rOut)} ${f(rOut)} 0 ${largeArc} 1 ${f(pOutL.x)} ${f(pOutL.y)} Z`;
       }
 
-      // Синяя линия стыка (если задан нахлёст > 0)
       const creases = [];
       let seamPtMid = null;
       if (overlap > 0.01 && effOverlapRad > 1e-4) {
@@ -791,17 +1319,15 @@
     // РАСЧЁТ ПАРАМЕТРИЧЕСКОЙ ГЕОМЕТРИИ РАЗВЁРТКИ (ECMA A60 / A55 / A20 / CONE)
     // =========================================================================
     function calculateGeometry() {
-      if (state.boxType === 'cone') {
-        return calculateConeGeometry();
-      }
+      if (state.boxType === 'cone') return calculateConeGeometry();
+      if (state.boxType === 'ecma055') return calculateA55Geometry();
 
       const isAutolock = state.boxType === 'autolock';
-      const isEcma055 = state.boxType === 'ecma055';
       const isEcma020 = state.boxType === 'ecma020';
 
-      const defaultL = isEcma055 ? 65 : (isEcma020 ? 60 : 90);
-      const defaultW = isEcma055 ? 70 : (isEcma020 ? 80 : 90);
-      const defaultH = isEcma055 ? 290 : (isEcma020 ? 180 : 297);
+      const defaultL = isEcma020 ? 60 : 90;
+      const defaultW = isEcma020 ? 80 : 90;
+      const defaultH = isEcma020 ? 180 : 297;
 
       const L = Math.max(25, Math.min(600, Number(state.L) || defaultL));
       const W = Math.max(25, Math.min(600, Number(state.W) || defaultW));
@@ -982,118 +1508,6 @@
         heightSummaryHtml = `Высота: P1, P3 = <span class="text-cyan-300">${f(H + d)} мм</span>, P2, P4 = <span class="text-slate-200">${f(H)} мм</span><br/>`;
         bottomInfoHtml = `A20.20.03.01: крышки P1/P3 <span class="text-slate-200">${f(L)} мм</span> / пыльники <span class="text-emerald-300">${f(dustH)} мм</span>`;
 
-      } else if (isEcma055) {
-        const step = Math.min(3.0, W * 0.08, L * 0.08);
-        const clearance = Math.max(0.5, 2 * d);
-        const hooksOnP2P4 = !state.bottomSwapped;
-
-        const lockSpan = hooksOnP2P4 ? L : W;
-        const hookSpan = hooksOnP2P4 ? W : L;
-        const slotPanelW = hooksOnP2P4 ? p1W : p2W;
-        const hookPanelW = hooksOnP2P4 ? p4W : p1W;
-
-        const slotTopDepth = lockSpan / 2;
-        const lockTabH = Math.min(17.0, Math.min(W, L) * 0.28);
-        const hSlotFlap = slotTopDepth + lockTabH;
-        const rSlot = Math.min(4.0, lockTabH * 0.35);
-        const slotTopY = yBot + slotTopDepth;
-        const tongueShoulderY = yBot + Math.max(10.0, slotTopDepth - clearance);
-        const yBotDeep = yBot + hSlotFlap;
-
-        const outerSpanSlot = Math.max(14.0, slotPanelW - 2 * step);
-        const slotW = Math.max(8.0, Math.min(outerSpanSlot - 2 * (rSlot + 2.0), outerSpanSlot * (34.0 / 59.0)));
-        const tongueW = Math.max(6.0, slotW - 1.0);
-
-        const hHookDeep = Math.max(14.0, hookSpan / 2);
-        const hHookShallow = Math.max(13.0, hHookDeep - clearance);
-        const throatX = Math.min(hookPanelW - step - 6.0, (hooksOnP2P4 ? L : W) / 2 + clearance);
-        const throatY = hHookShallow * (15.5 / 31.5);
-        const rHook = Math.min(6.5, (hHookShallow - throatY) * 0.40625);
-        const hookAlpha = 40.0 * Math.PI / 180;
-        const arcH = rHook * (1 + Math.cos(hookAlpha));
-        const arcDx = rHook * Math.sin(hookAlpha);
-        const diagDyShallow = Math.max(0.5, (hHookShallow - throatY) - arcH);
-        const diagDxShallow = diagDyShallow / Math.tan(hookAlpha);
-        const diagDyDeep = Math.max(0.5, (hHookDeep - throatY) - arcH);
-        const diagDxDeep = diagDyDeep / Math.tan(hookAlpha);
-
-        const appendTongue = (xL, xR) => {
-          const cx = (xL + xR) / 2;
-          const tR = cx + tongueW / 2;
-          const tL = cx - tongueW / 2;
-          outer.push(`L ${f(tR)} ${f(tongueShoulderY)}`);
-          outer.push(`L ${f(tR)} ${f(yBotDeep - rSlot)}`);
-          outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(tR - rSlot)} ${f(yBotDeep)}`);
-          outer.push(`L ${f(tL + rSlot)} ${f(yBotDeep)}`);
-          outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(tL)} ${f(yBotDeep - rSlot)}`);
-          outer.push(`L ${f(tL)} ${f(tongueShoulderY)}`);
-          outer.push(`L ${f(xL)} ${f(yBot)}`);
-        };
-
-        const appendSlot = (xL, xR) => {
-          const cx = (xL + xR) / 2;
-          const sR = cx + slotW / 2;
-          const sL = cx - slotW / 2;
-          outer.push(`L ${f(xR - step)} ${f(yBot + step)}`);
-          outer.push(`L ${f(xR - step)} ${f(yBotDeep)}`);
-          outer.push(`L ${f(sR + rSlot)} ${f(yBotDeep)}`);
-          outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(sR)} ${f(yBotDeep - rSlot)}`);
-          outer.push(`L ${f(sR)} ${f(slotTopY)}`);
-          outer.push(`L ${f(sL)} ${f(slotTopY)}`);
-          outer.push(`L ${f(sL)} ${f(yBotDeep - rSlot)}`);
-          outer.push(`A ${f(rSlot)} ${f(rSlot)} 0 0 1 ${f(sL - rSlot)} ${f(yBotDeep)}`);
-          outer.push(`L ${f(xL + step)} ${f(yBotDeep)}`);
-          outer.push(`L ${f(xL + step)} ${f(yBot + step)}`);
-          outer.push(`L ${f(xL)} ${f(yBot)}`);
-        };
-
-        const appendHookPointingLeft = (xL, xR) => {
-          const tX = xL + throatX;
-          const tY = yBot + throatY;
-          const arcEndX = tX - diagDxDeep;
-          const arcEndY = tY + diagDyDeep;
-          const arcStartX = arcEndX + arcDx;
-          const botY = yBot + hHookDeep;
-          outer.push(`L ${f(xR - step)} ${f(yBot + step)}`);
-          outer.push(`L ${f(xR - step)} ${f(botY)}`);
-          outer.push(`L ${f(arcStartX)} ${f(botY)}`);
-          outer.push(`A ${f(rHook)} ${f(rHook)} 0 0 1 ${f(arcEndX)} ${f(arcEndY)}`);
-          outer.push(`L ${f(tX)} ${f(tY)}`);
-          outer.push(`L ${f(xL)} ${f(yBot)}`);
-        };
-
-        const appendHookPointingRight = (xL, xR) => {
-          const tX = xR - throatX;
-          const tY = yBot + throatY;
-          const arcEndX = tX + diagDxShallow;
-          const arcEndY = tY + diagDyShallow;
-          const arcStartX = arcEndX - arcDx;
-          const botY = yBot + hHookShallow;
-          outer.push(`L ${f(tX)} ${f(tY)}`);
-          outer.push(`L ${f(arcEndX)} ${f(arcEndY)}`);
-          outer.push(`A ${f(rHook)} ${f(rHook)} 0 0 1 ${f(arcStartX)} ${f(botY)}`);
-          outer.push(`L ${f(xL + step)} ${f(botY)}`);
-          outer.push(`L ${f(xL + step)} ${f(yBot + step)}`);
-          outer.push(`L ${f(xL)} ${f(yBot)}`);
-        };
-
-        if (hooksOnP2P4) {
-          appendHookPointingRight(x4, x5);
-          appendTongue(x3, x4);
-          appendHookPointingLeft(x2, x3);
-          appendSlot(x1, x2);
-          bottomInfoHtml = `A55.20.01.01: язычок P3 <span class="text-slate-200">${f(tongueW)} мм</span> / паз P1 <span class="text-emerald-300">${f(slotW)} мм</span>`;
-        } else {
-          appendTongue(x4, x5);
-          appendHookPointingLeft(x3, x4);
-          appendSlot(x2, x3);
-          appendHookPointingRight(x1, x2);
-          bottomInfoHtml = `A55.20 (сдвиг): язычок P4 <span class="text-slate-200">${f(tongueW)} мм</span> / паз P2 <span class="text-emerald-300">${f(slotW)} мм</span>`;
-        }
-
-        extraCreases.push({ x1: x1, y1: yBot, x2: x5, y2: yBot });
-        maxBottomDepth = Math.max(hHookDeep, hSlotFlap);
-
       } else {
         const innerGap = Math.min(3.39, L * 0.05, W * 0.05);
 
@@ -1241,7 +1655,7 @@
         isCone: false,
         boxType: state.boxType,
         isAutolock,
-        isEcma055,
+        isEcma055: false,
         isEcma020,
         L, W, H, d, glueW, tuckH,
         p1W, p2W, p3W, p4W,
@@ -1305,17 +1719,10 @@
       }
 
       const best = Math.max(n0, n90, nValet0, nValet90);
-      if (best <= 0) {
-        return { fits: false, text: 'Не помещается' };
-      }
-      if (best === 1) {
-        return { fits: true, text: n0 >= 1 ? 'Входит (1 шт, 0°)' : 'Входит (1 шт, 90°)' };
-      }
+      if (best <= 0) return { fits: false, text: 'Не помещается' };
+      if (best === 1) return { fits: true, text: n0 >= 1 ? 'Входит (1 шт, 0°)' : 'Входит (1 шт, 90°)' };
       const isValetWin = Math.max(nValet0, nValet90) > Math.max(n0, n90);
-      return {
-        fits: true,
-        text: isValetWin ? `${best} шт/л (валет)` : `${best} шт/л`
-      };
+      return { fits: true, text: isValetWin ? `${best} шт/л (валет)` : `${best} шт/л` };
     }
 
     // =========================================================================
@@ -1323,23 +1730,30 @@
     // =========================================================================
     function syncBottomSwapUI() {
       const wrap = document.getElementById('bottomSwapWrap');
+      const a55Sec = document.getElementById('a55VarsSection');
       const btn = document.getElementById('btnSwapBottom');
       const badge = document.getElementById('swapBottomBadge');
+      const hookTitle = document.getElementById('a55HookPanelTitle');
+      const slotTitle = document.getElementById('a55SlotPanelTitle');
 
-      if (state.boxType !== 'ecma055') {
-        wrap.classList.add('hidden');
-        return;
-      }
-      wrap.classList.remove('hidden');
+      const isA55 = state.boxType === 'ecma055';
+      wrap.classList.toggle('hidden', !isA55);
+      a55Sec.classList.toggle('hidden', !isA55);
+
+      if (!isA55) return;
 
       if (state.bottomSwapped) {
         btn.className = 'w-full px-3 py-2 rounded-xl bg-purple-500/15 hover:bg-purple-500/20 border border-purple-500/60 text-xs font-medium text-purple-100 flex items-center justify-between gap-2 transition cursor-pointer';
         badge.textContent = 'P1/P3 крючки';
         badge.className = 'px-1.5 py-0.5 rounded bg-purple-500/25 border border-purple-400/40 text-[10px] font-mono text-purple-200 font-semibold';
+        hookTitle.textContent = '2. Крючки дна (P1 / P3)';
+        slotTitle.textContent = '3. П-паз (P2) и язычок (P4)';
       } else {
         btn.className = 'w-full px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-medium text-slate-200 flex items-center justify-between gap-2 transition cursor-pointer';
         badge.textContent = 'P2/P4 крючки';
         badge.className = 'px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-300';
+        hookTitle.textContent = '2. Крючки дна (P2 / P4)';
+        slotTitle.textContent = '3. П-паз (P1) и язычок (P3)';
       }
     }
 
@@ -1400,30 +1814,22 @@
 
       const cards = [
         {
-          id: 'btnTypeAutolock',
-          dot: 'dotTypeAutolock',
-          active: t === 'autolock',
+          id: 'btnTypeAutolock', dot: 'dotTypeAutolock', active: t === 'autolock',
           activeCls: 'text-left p-2 rounded-xl border-2 border-cyan-500 bg-cyan-500/10 transition cursor-pointer',
           dotCls: 'w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] shrink-0'
         },
         {
-          id: 'btnTypeEcma055',
-          dot: 'dotTypeEcma055',
-          active: t === 'ecma055',
+          id: 'btnTypeEcma055', dot: 'dotTypeEcma055', active: t === 'ecma055',
           activeCls: 'text-left p-2 rounded-xl border-2 border-purple-500 bg-purple-500/10 transition cursor-pointer',
           dotCls: 'w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)] shrink-0'
         },
         {
-          id: 'btnTypeEcma020',
-          dot: 'dotTypeEcma020',
-          active: t === 'ecma020',
+          id: 'btnTypeEcma020', dot: 'dotTypeEcma020', active: t === 'ecma020',
           activeCls: 'text-left p-2 rounded-xl border-2 border-amber-500 bg-amber-500/10 transition cursor-pointer',
           dotCls: 'w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)] shrink-0'
         },
         {
-          id: 'btnTypeCone',
-          dot: 'dotTypeCone',
-          active: t === 'cone',
+          id: 'btnTypeCone', dot: 'dotTypeCone', active: t === 'cone',
           activeCls: 'text-left p-2 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 transition cursor-pointer',
           dotCls: 'w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] shrink-0'
         }
@@ -1464,6 +1870,10 @@
             document.getElementById('inputL').value = state.L;
             document.getElementById('inputW').value = state.W;
             document.getElementById('inputH').value = state.H;
+            if (state.boxType === 'ecma055' && state.a55AutoFormula) {
+              recomputeA55DerivedParams();
+              syncA55Inputs();
+            }
             render();
             fitToViewport();
           });
@@ -1497,6 +1907,47 @@
           });
         });
       }
+    }
+
+    // =========================================================================
+    // ГЕНЕРАЦИЯ ОВЕРЛЕЯ БУКВ (A–K, R) ДЛЯ A55 НА ПРЕДПРОСМОТРЕ
+    // =========================================================================
+    function buildA55OverlaySvg(g, maxDim) {
+      if (!g.isEcma055 || !state.a55ShowOverlay || !g.overlayPoints) return '';
+
+      const r = Math.max(4.5, Math.min(8.5, maxDim / 65));
+      const fSz = r * 1.25;
+      const lW = Math.max(0.4, r * 0.12);
+
+      const palette = {
+        cyan:    { fill: '#083344', stroke: '#22d3ee', text: '#67e8f9', line: '#06b6d4' },
+        amber:   { fill: '#451a03', stroke: '#fbbf24', text: '#fde68a', line: '#f59e0b' },
+        emerald: { fill: '#022c22', stroke: '#34d399', text: '#a7f3d0', line: '#10b981' }
+      };
+
+      const allPts = [
+        ...g.overlayPoints.top,
+        ...g.overlayPoints.slot,
+        ...g.overlayPoints.hook
+      ];
+
+      const items = allPts.map(pt => {
+        const pal = palette[pt.color] || palette.amber;
+        const dist = Math.hypot(pt.lx - pt.px, pt.ly - pt.py);
+        const leader = dist > r * 0.8
+          ? `<line x1="${f(pt.px)}" y1="${f(pt.py)}" x2="${f(pt.lx)}" y2="${f(pt.ly)}" stroke="${pal.line}" stroke-width="${f(lW)}" stroke-dasharray="${f(lW * 3)} ${f(lW * 2)}" />` +
+            `<circle cx="${f(pt.px)}" cy="${f(pt.py)}" r="${f(lW * 2.1)}" fill="${pal.stroke}" />`
+          : '';
+        return `
+          <g>
+            ${leader}
+            <circle cx="${f(pt.lx)}" cy="${f(pt.ly)}" r="${f(r)}" fill="${pal.fill}" stroke="${pal.stroke}" stroke-width="${f(lW * 1.2)}" />
+            <text x="${f(pt.lx)}" y="${f(pt.ly + fSz * 0.06)}" fill="${pal.text}" font-family="JetBrains Mono, monospace" font-size="${f(fSz)}" font-weight="700" text-anchor="middle" dominant-baseline="central">${pt.code}</text>
+          </g>
+        `;
+      }).join('');
+
+      return `<g id="A55_OVERLAY">${items}</g>`;
     }
 
     // =========================================================================
@@ -1542,7 +1993,7 @@
       const padLeft = state.showDims ? Math.max(26, maxDim * 0.08) : 16;
       const padTop = state.showDims ? Math.max(24, maxDim * 0.07) : 16;
       const padRight = state.showDims ? Math.max(36, maxDim * 0.10) : 16;
-      const padBottom = state.showDims ? Math.max(24, maxDim * 0.07) : 16;
+      const padBottom = state.showDims ? Math.max(28, maxDim * 0.08) : 20;
 
       const vbW = g.totalW + padLeft + padRight;
       const vbH = g.totalH + padTop + padBottom;
@@ -1628,6 +2079,9 @@
         }
       }
 
+      // Оверлей букв A–K, R для A55 (только на предпросмотре, в экспорт SVG не попадает)
+      svgContent += buildA55OverlaySvg(g, maxDim);
+
       svgContent += `</g>`;
 
       const svgEl = document.getElementById('previewSvg');
@@ -1668,7 +2122,7 @@
       return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="0 0 ${w} ${h}">
   <!-- ${commentLine} -->
-${creaseGroup}  <g id="CUT" stroke="#FF0000" stroke-width="0.2" fill="none" stroke-linejoin="miter">
+${creaseGroup}  <g id="CUT" stroke="#FF0000" stroke-width="0.2" fill="none" stroke-linejoin="round" stroke-linecap="round">
     <path d="${g.outerPath}" />
 ${innerPaths}${notchLines ? '\n' + notchLines : ''}
   </g>
@@ -1715,7 +2169,7 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
     // =========================================================================
     function isDefaultPreset(type, l, w, h) {
       if (type === 'autolock') return l === 90 && w === 90 && h === 297;
-      if (type === 'ecma055') return l === 65 && w === 70 && h === 290;
+      if (type === 'ecma055') return l === 70 && w === 100 && h === 220;
       if (type === 'ecma020') return l === 60 && w === 80 && h === 180;
       return false;
     }
@@ -1736,6 +2190,11 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
       document.getElementById('inputW').value = state.W;
       document.getElementById('inputH').value = state.H;
 
+      if (newType === 'ecma055' && state.a55AutoFormula) {
+        recomputeA55DerivedParams();
+        syncA55Inputs();
+      }
+
       syncTypeUI();
       render();
       fitToViewport();
@@ -1752,32 +2211,77 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
 
       document.getElementById('btnSwapBottom').addEventListener('click', () => {
         state.bottomSwapped = !state.bottomSwapped;
+        if (state.a55AutoFormula) {
+          recomputeA55DerivedParams();
+          syncA55Inputs();
+        }
         syncBottomSwapUI();
         render();
       });
 
-      const bindNum = (id, key) => {
+      const bindNum = (id, key, recalcA55 = false) => {
         const el = document.getElementById(id);
         el.addEventListener('input', () => {
-          state[key] = parseFloat(el.value);
-          render();
+          const val = parseFloat(el.value);
+          if (!Number.isNaN(val)) {
+            state[key] = val;
+            if (recalcA55 && state.boxType === 'ecma055' && state.a55AutoFormula) {
+              recomputeA55DerivedParams();
+              syncA55Inputs();
+            }
+            render();
+          }
         });
       };
 
-      // Коробки
-      bindNum('inputL', 'L');
-      bindNum('inputW', 'W');
-      bindNum('inputH', 'H');
-      bindNum('inputD', 'd');
-      bindNum('inputGlueW', 'glueW');
-      bindNum('inputTuckH', 'tuckH');
+      // Основные размеры коробок
+      bindNum('inputL', 'L', true);
+      bindNum('inputW', 'W', true);
+      bindNum('inputH', 'H', false);
+      bindNum('inputD', 'd', false);
+      bindNum('inputGlueW', 'glueW', false);
+      bindNum('inputTuckH', 'tuckH', false);
+
+      // Переменные A55 (по клапанам)
+      bindNum('inA55TopB', 'a55TopB', false);
+      bindNum('inA55TopC', 'a55TopC', false);
+      bindNum('inA55TopD', 'a55TopD', false);
+      bindNum('inA55TopE', 'a55TopE', false);
+      bindNum('inA55BotB', 'a55BotB', false);
+      bindNum('inA55BotC', 'a55BotC', false);
+      bindNum('inA55BotD', 'a55BotD', false);
+      bindNum('inA55BotR', 'a55BotR', false);
+      bindNum('inA55BotF', 'a55BotF', true);
+      bindNum('inA55BotG', 'a55BotG', false);
+      bindNum('inA55BotK', 'a55BotK', false);
+
+      document.getElementById('chkA55Auto').addEventListener('change', (e) => {
+        state.a55AutoFormula = e.target.checked;
+        if (state.a55AutoFormula) {
+          recomputeA55DerivedParams();
+          syncA55Inputs();
+          render();
+        }
+      });
+
+      document.getElementById('chkA55Overlay').addEventListener('change', (e) => {
+        state.a55ShowOverlay = e.target.checked;
+        render();
+      });
+
+      document.getElementById('btnA55Recalc').addEventListener('click', () => {
+        recomputeA55DerivedParams();
+        syncA55Inputs();
+        render();
+        showToast('Формулы A55 пересчитаны от текущих L и W');
+      });
 
       // Конус
-      bindNum('inputConeD1', 'coneD1');
-      bindNum('inputConeD2', 'coneD2');
-      bindNum('inputConeH', 'coneH');
-      bindNum('inputConeLabelLen', 'coneLabelLen');
-      bindNum('inputConeOverlap', 'coneOverlap');
+      bindNum('inputConeD1', 'coneD1', false);
+      bindNum('inputConeD2', 'coneD2', false);
+      bindNum('inputConeH', 'coneH', false);
+      bindNum('inputConeLabelLen', 'coneLabelLen', false);
+      bindNum('inputConeOverlap', 'coneOverlap', false);
 
       document.getElementById('btnSwapLW').addEventListener('click', () => {
         const tmp = state.L;
@@ -1785,6 +2289,10 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
         state.W = tmp;
         document.getElementById('inputL').value = state.L;
         document.getElementById('inputW').value = state.W;
+        if (state.boxType === 'ecma055' && state.a55AutoFormula) {
+          recomputeA55DerivedParams();
+          syncA55Inputs();
+        }
         render();
       });
 
@@ -1927,6 +2435,8 @@ ${innerPaths}${notchLines ? '\n' + notchLines : ''}
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      recomputeA55DerivedParams();
+      syncA55Inputs();
       syncTypeUI();
       bindEvents();
       render();

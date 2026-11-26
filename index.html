@@ -815,7 +815,7 @@
       const yLidCrease = tuckH;
       const earSlotDepth = 1.0;
       const yEarTop = yLidCrease - earSlotDepth;
-      const yTop1 = yLidCrease + L;
+      const yTop1 = yLidCrease + Math.max(10, L - 0.5);
       const yTopSide = yTop1 + d;
       const yBot = yTopSide + H;
 
